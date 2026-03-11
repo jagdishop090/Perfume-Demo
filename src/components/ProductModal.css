@@ -1,0 +1,574 @@
+/* Product Modal Styles - Professional & Properly Aligned */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 2rem;
+  backdrop-filter: blur(5px);
+}
+
+.modal-content {
+  background: #ffffff;
+  border-radius: 16px;
+  max-width: 800px;
+  width: 100%;
+  max-height: 90vh;
+  position: relative;
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+  animation: modalSlideIn 0.3s ease-out;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+@keyframes modalSlideIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9) translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.modal-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: rgba(0, 0, 0, 0.6);
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #fff;
+  z-index: 10;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.modal-close:hover {
+  background: rgba(0, 0, 0, 0.8);
+  transform: scale(1.1);
+}
+
+.modal-body {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow-y: auto;
+}
+
+.modal-image-section {
+  position: relative;
+  background: #f8f9fa;
+  min-height: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.modal-image-container {
+  width: 100%;
+  height: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.modal-product-image {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  border-radius: 8px;
+}
+
+.modal-featured-badge {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  padding: 0.5rem 1rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  border-radius: 20px;
+  z-index: 5;
+  text-transform: uppercase;
+}
+
+.modal-details {
+  padding: 2rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.modal-header {
+  margin-bottom: 2rem;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.modal-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem;
+  font-weight: 300;
+  letter-spacing: 1px;
+  margin: 0 0 1rem 0;
+  line-height: 1.2;
+}
+
+.modal-price {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.modal-info {
+  flex: 1;
+  margin-bottom: 2rem;
+  overflow-y: auto;
+}
+
+.modal-section {
+  margin-bottom: 1.5rem;
+}
+
+.modal-section:last-child {
+  margin-bottom: 0;
+}
+
+.modal-section h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  margin-bottom: 0.75rem;
+  text-transform: uppercase;
+  opacity: 0.8;
+}
+
+.modal-notes {
+  font-size: 1rem;
+  line-height: 1.6;
+  margin: 0;
+  font-style: italic;
+  opacity: 0.9;
+}
+
+.modal-description {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin: 0;
+  opacity: 0.8;
+}
+
+.modal-specs {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.spec-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.spec-item:last-child {
+  border-bottom: none;
+}
+
+.spec-label {
+  font-weight: 500;
+  opacity: 0.7;
+  font-size: 0.9rem;
+}
+
+.spec-value {
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.modal-footer {
+  text-align: center;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  flex-shrink: 0;
+}
+
+.order-now-btn {
+  background: linear-gradient(45deg, #000000, #333333);
+  color: #ffffff;
+  border: none;
+  padding: 1.2rem 2.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 200px;
+  display: inline-block;
+}
+
+.order-now-btn:hover {
+  background: linear-gradient(45deg, #333333, #555555);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+}
+
+/* Men's Mode Styles */
+.men-modal .modal-content {
+  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+  color: #f5f5f5;
+}
+
+.men-modal .modal-image-section {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.men-modal .modal-title {
+  color: #d4af37;
+}
+
+.men-modal .modal-price {
+  color: #d4af37;
+}
+
+.men-modal .modal-section h3 {
+  color: #d4af37;
+}
+
+.men-modal .modal-featured-badge {
+  background: #d4af37;
+  color: #1a1a1a;
+}
+
+.men-modal .spec-item {
+  border-bottom-color: rgba(212, 175, 55, 0.2);
+}
+
+.men-modal .modal-footer {
+  border-top-color: rgba(212, 175, 55, 0.2);
+}
+
+.men-modal .order-now-btn {
+  background: linear-gradient(45deg, #d4af37, #b8860b);
+  color: #1a1a1a;
+}
+
+.men-modal .order-now-btn:hover {
+  background: linear-gradient(45deg, #b8860b, #9a7209);
+}
+
+/* Women's Mode Styles */
+.women-modal .modal-content {
+  background: linear-gradient(135deg, #fdf7f4 0%, #f5e6e0 100%);
+  color: #4a3c3c;
+}
+
+.women-modal .modal-image-section {
+  background: rgba(255, 255, 255, 0.6);
+}
+
+.women-modal .modal-title {
+  color: #d4749a;
+}
+
+.women-modal .modal-price {
+  color: #d4749a;
+}
+
+.women-modal .modal-section h3 {
+  color: #d4749a;
+}
+
+.women-modal .modal-featured-badge {
+  background: #d4749a;
+  color: #fdf7f4;
+}
+
+.women-modal .spec-item {
+  border-bottom-color: rgba(212, 116, 154, 0.2);
+}
+
+.women-modal .modal-footer {
+  border-top-color: rgba(212, 116, 154, 0.2);
+}
+
+.women-modal .order-now-btn {
+  background: linear-gradient(45deg, #d4749a, #c2185b);
+  color: #fdf7f4;
+}
+
+.women-modal .order-now-btn:hover {
+  background: linear-gradient(45deg, #c2185b, #ad1457);
+}
+
+/* Unisex Mode Styles */
+.unisex-modal .modal-content {
+  background: #ffffff;
+  color: #000000;
+}
+
+.unisex-modal .modal-title {
+  color: #ff8c00;
+}
+
+.unisex-modal .modal-price {
+  color: #ff8c00;
+}
+
+.unisex-modal .modal-section h3 {
+  color: #ff8c00;
+}
+
+.unisex-modal .modal-featured-badge {
+  background: linear-gradient(45deg, #ff8c00, #ff6600);
+  color: #ffffff;
+}
+
+.unisex-modal .spec-item {
+  border-bottom-color: rgba(255, 140, 0, 0.2);
+}
+
+.unisex-modal .modal-footer {
+  border-top-color: rgba(255, 140, 0, 0.2);
+}
+
+.unisex-modal .order-now-btn {
+  background: linear-gradient(45deg, #ff8c00, #ff6600);
+  color: #ffffff;
+}
+
+.unisex-modal .order-now-btn:hover {
+  background: linear-gradient(45deg, #ff6600, #ff4500);
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .modal-overlay {
+    padding: 1rem;
+  }
+
+  .modal-content {
+    max-width: 95vw;
+    max-height: 95vh;
+  }
+
+  .modal-image-container {
+    height: 250px;
+    padding: 1rem;
+  }
+
+  .modal-details {
+    padding: 1.5rem;
+  }
+
+  .modal-title {
+    font-size: 1.6rem;
+  }
+
+  .modal-price {
+    font-size: 1.3rem;
+  }
+
+  .order-now-btn {
+    padding: 1rem 2rem;
+    font-size: 0.9rem;
+    min-width: 180px;
+  }
+
+  .spec-item {
+    padding: 0.5rem 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .modal-overlay {
+    padding: 0.5rem;
+  }
+
+  .modal-content {
+    border-radius: 12px;
+  }
+
+  .modal-image-container {
+    height: 200px;
+  }
+
+  .modal-details {
+    padding: 1rem;
+  }
+
+  .modal-title {
+    font-size: 1.4rem;
+  }
+
+  .modal-section {
+    margin-bottom: 1rem;
+  }
+
+  .spec-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.25rem;
+    padding: 0.5rem 0;
+  }
+
+  .order-now-btn {
+    padding: 0.875rem 1.5rem;
+    font-size: 0.85rem;
+    min-width: 160px;
+  }
+}
+
+/* Large screens - side by side layout */
+@media (min-width: 1200px) {
+  .modal-content {
+    max-width: 900px;
+  }
+
+  .modal-body {
+    flex-direction: row;
+  }
+
+  .modal-image-section {
+    flex: 1;
+    min-height: 500px;
+  }
+
+  .modal-image-container {
+    height: 100%;
+  }
+
+  .modal-details {
+    flex: 1;
+    max-width: 450px;
+  }
+
+  .modal-header {
+    text-align: left;
+  }
+
+  .modal-footer {
+    text-align: left;
+  }
+
+  .order-now-btn {
+    min-width: 220px;
+  }
+}
+
+/* Custom Scrollbar Styles - Theme Specific */
+
+/* Default Scrollbar */
+.modal-body::-webkit-scrollbar,
+.modal-info::-webkit-scrollbar {
+  width: 8px;
+}
+
+.modal-body::-webkit-scrollbar-track,
+.modal-info::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+}
+
+.modal-body::-webkit-scrollbar-thumb,
+.modal-info::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 4px;
+  transition: background 0.3s ease;
+}
+
+.modal-body::-webkit-scrollbar-thumb:hover,
+.modal-info::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.5);
+}
+
+/* Men's Mode Scrollbar - Gold Theme */
+.men-modal .modal-body::-webkit-scrollbar-track,
+.men-modal .modal-info::-webkit-scrollbar-track {
+  background: rgba(212, 175, 55, 0.1);
+}
+
+.men-modal .modal-body::-webkit-scrollbar-thumb,
+.men-modal .modal-info::-webkit-scrollbar-thumb {
+  background: rgba(212, 175, 55, 0.6);
+}
+
+.men-modal .modal-body::-webkit-scrollbar-thumb:hover,
+.men-modal .modal-info::-webkit-scrollbar-thumb:hover {
+  background: #d4af37;
+}
+
+/* Women's Mode Scrollbar - Pink Theme */
+.women-modal .modal-body::-webkit-scrollbar-track,
+.women-modal .modal-info::-webkit-scrollbar-track {
+  background: rgba(212, 116, 154, 0.1);
+}
+
+.women-modal .modal-body::-webkit-scrollbar-thumb,
+.women-modal .modal-info::-webkit-scrollbar-thumb {
+  background: rgba(212, 116, 154, 0.6);
+}
+
+.women-modal .modal-body::-webkit-scrollbar-thumb:hover,
+.women-modal .modal-info::-webkit-scrollbar-thumb:hover {
+  background: #d4749a;
+}
+
+/* Unisex Mode Scrollbar - Orange Theme */
+.unisex-modal .modal-body::-webkit-scrollbar-track,
+.unisex-modal .modal-info::-webkit-scrollbar-track {
+  background: rgba(255, 140, 0, 0.1);
+}
+
+.unisex-modal .modal-body::-webkit-scrollbar-thumb,
+.unisex-modal .modal-info::-webkit-scrollbar-thumb {
+  background: rgba(255, 140, 0, 0.6);
+}
+
+.unisex-modal .modal-body::-webkit-scrollbar-thumb:hover,
+.unisex-modal .modal-info::-webkit-scrollbar-thumb:hover {
+  background: #ff8c00;
+}
+
+/* Firefox Scrollbar Support */
+.modal-body,
+.modal-info {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.3) rgba(0, 0, 0, 0.1);
+}
+
+.men-modal .modal-body,
+.men-modal .modal-info {
+  scrollbar-color: rgba(212, 175, 55, 0.6) rgba(212, 175, 55, 0.1);
+}
+
+.women-modal .modal-body,
+.women-modal .modal-info {
+  scrollbar-color: rgba(212, 116, 154, 0.6) rgba(212, 116, 154, 0.1);
+}
+
+.unisex-modal .modal-body,
+.unisex-modal .modal-info {
+  scrollbar-color: rgba(255, 140, 0, 0.6) rgba(255, 140, 0, 0.1);
+}

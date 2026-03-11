@@ -1,0 +1,18 @@
+const fs = require('fs');
+const path = require('path');
+
+// Delete the entire database file to start fresh
+const dbPath = path.join(__dirname, 'database', 'essence.db');
+
+try {
+  if (fs.existsSync(dbPath)) {
+    fs.unlinkSync(dbPath);
+    console.log('✅ Database file deleted successfully!');
+  } else {
+    console.log('ℹ️ Database file does not exist');
+  }
+} catch (error) {
+  console.error('❌ Error deleting database:', error);
+}
+
+console.log('🔄 Database will be recreated when server starts...');
