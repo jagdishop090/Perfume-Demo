@@ -322,10 +322,49 @@
   background: linear-gradient(45deg, #c2185b, #ad1457);
 }
 
-/* Unisex Mode Styles */
-.unisex-modal .modal-content {
-  background: #ffffff;
-  color: #000000;
+/* UNIFIED MODAL STYLES */
+.unified-modal .modal-content {
+  background: white;
+  color: #1a202c;
+  border: none;
+}
+
+.unified-modal .modal-header {
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.unified-modal .modal-title {
+  color: #1a202c;
+}
+
+.unified-modal .modal-close {
+  background: #f7fafc;
+  color: #4a5568;
+}
+
+.unified-modal .modal-close:hover {
+  background: #edf2f7;
+  color: #1a202c;
+}
+
+.unified-modal .modal-image-section {
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+}
+
+.unified-modal .modal-price {
+  color: #6b46c1;
+}
+
+.unified-modal .order-now-btn {
+  background: linear-gradient(135deg, #6b46c1 0%, #ec4899 100%);
+  color: white;
+  border: none;
+}
+
+.unified-modal .order-now-btn:hover {
+  background: linear-gradient(135deg, #553c9a 0%, #be185d 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(107, 70, 193, 0.3);
 }
 
 .unisex-modal .modal-title {

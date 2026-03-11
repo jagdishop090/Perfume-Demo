@@ -1,16 +1,13 @@
 {
   "files": {
-    "main.css": "/static/css/main.16dc8271.css",
-    "main.js": "/static/js/main.e398b18e.js",
-    "static/media/unisex-hero-banner..png": "/static/media/unisex-hero-banner..acd7e476927d29f5ef41.png",
-    "static/media/mens-perfume.png": "/static/media/mens-perfume.8133e4f7f25b9282c353.png",
-    "static/media/womens-perfume.png": "/static/media/womens-perfume.c2f3a4c14bd4534fbc04.png",
+    "main.css": "/static/css/main.83665307.css",
+    "main.js": "/static/js/main.b39f00cf.js",
     "index.html": "/index.html",
-    "main.16dc8271.css.map": "/static/css/main.16dc8271.css.map",
-    "main.e398b18e.js.map": "/static/js/main.e398b18e.js.map"
+    "main.83665307.css.map": "/static/css/main.83665307.css.map",
+    "main.b39f00cf.js.map": "/static/js/main.b39f00cf.js.map"
   },
   "entrypoints": [
-    "static/css/main.16dc8271.css",
-    "static/js/main.e398b18e.js"
+    "static/css/main.83665307.css",
+    "static/js/main.b39f00cf.js"
   ]
 }
