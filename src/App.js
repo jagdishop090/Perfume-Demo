@@ -46,7 +46,7 @@ const MainSite = ({ isTransitioning: pageTransitioning }) => {
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { content, loading } = useContent();
+  const { content, loading, connectionError } = useContent();
 
   const toggleMode = () => {
     setIsTransitioning(true);
@@ -88,6 +88,12 @@ const MainSite = ({ isTransitioning: pageTransitioning }) => {
 
   return (
     <div className={`app ${isMenMode ? 'men-mode' : 'women-mode'} ${isTransitioning || pageTransitioning ? 'transitioning' : ''}`}>
+      {/* Connection Status Indicator (only show in development) */}
+      {process.env.NODE_ENV === 'development' && (
+        <div className={`connection-status ${connectionError ? 'disconnected' : 'connected'}`}>
+          {connectionError ? '⚠️ Backend Offline' : '✅ Backend Connected'}
+        </div>
+      )}
       {/* Header */}
       <header className="header">
         <div className="logo">
@@ -270,7 +276,7 @@ const UnisexPage = ({ isTransitioning: pageTransitioning }) => {
   const [showAllProducts, setShowAllProducts] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { content, loading } = useContent();
+  const { content, loading, connectionError } = useContent();
 
   const openProductModal = (product) => {
     setSelectedProduct(product);
@@ -313,6 +319,12 @@ const UnisexPage = ({ isTransitioning: pageTransitioning }) => {
 
   return (
     <div className={`app unisex-mode ${pageTransitioning ? 'transitioning' : ''}`}>
+      {/* Connection Status Indicator (only show in development) */}
+      {process.env.NODE_ENV === 'development' && (
+        <div className={`connection-status ${connectionError ? 'disconnected' : 'connected'}`}>
+          {connectionError ? '⚠️ Backend Offline' : '✅ Backend Connected'}
+        </div>
+      )}
       {/* Header */}
       <header className="header">
         <div className="logo">

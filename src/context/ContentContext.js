@@ -58,35 +58,44 @@ export const ContentProvider = ({ children }) => {
   const [socket, setSocket] = useState(null);
   const [connectionError, setConnectionError] = useState(false);
 
-  // Initialize socket connection
+  // Initialize socket connection with better error handling
   useEffect(() => {
     const initSocket = () => {
       try {
         const newSocket = io('http://localhost:5000', {
-          timeout: 5000,
-          reconnection: true,
-          reconnectionDelay: 1000,
-          reconnectionAttempts: 5
+          timeout: 3000,
+          reconnection: false, // Disable reconnection for production
+          autoConnect: false // Don't auto-connect
         });
 
-        newSocket.on('connect', () => {
-          console.log('Socket.IO connected');
-          setConnectionError(false);
-        });
+        // Only try to connect if we're in development
+        if (process.env.NODE_ENV === 'development' || window.location.hostname === 'localhost') {
+          newSocket.connect();
+          
+          newSocket.on('connect', () => {
+            console.log('Socket.IO connected');
+            setConnectionError(false);
+          });
 
-        newSocket.on('disconnect', () => {
-          console.log('Socket.IO disconnected');
-        });
+          newSocket.on('disconnect', () => {
+            console.log('Socket.IO disconnected');
+          });
 
-        newSocket.on('connect_error', (error) => {
-          console.log('Socket.IO connection error:', error);
-          setConnectionError(true);
-        });
+          newSocket.on('connect_error', (error) => {
+            console.log('Socket.IO connection error (development mode):', error.message);
+            setConnectionError(true);
+          });
 
-        setSocket(newSocket);
+          setSocket(newSocket);
+        } else {
+          console.log('Production mode: Skipping socket connection');
+          setConnectionError(true); // Indicate no backend connection in production
+        }
 
         return () => {
-          newSocket.close();
+          if (newSocket) {
+            newSocket.close();
+          }
         };
       } catch (error) {
         console.error('Error initializing socket:', error);
@@ -98,36 +107,34 @@ export const ContentProvider = ({ children }) => {
     return cleanup;
   }, []);
 
-  // Fetch initial content
+  // Fetch initial content with better error handling
   useEffect(() => {
     const fetchContent = async () => {
+      // Skip API calls in production if not localhost
+      if (process.env.NODE_ENV === 'production' && window.location.hostname !== 'localhost') {
+        console.log('Production mode: Using fallback content');
+        setLoading(false);
+        setConnectionError(true);
+        return;
+      }
+
       try {
         console.log('Fetching content from:', `${API_BASE_URL}/content`);
         
         const response = await axios.get(`${API_BASE_URL}/content`, {
-          timeout: 10000
+          timeout: 5000
         });
         console.log('Content fetched successfully:', response.data);
-        console.log('Men featured products:', response.data.men?.featuredProducts?.length);
-        console.log('Women featured products:', response.data.women?.featuredProducts?.length);
-        console.log('Unisex featured products:', response.data.unisex?.featuredProducts?.length);
         setContent(response.data);
         setLoading(false);
         setConnectionError(false);
       } catch (error) {
-        console.error('Error fetching content:', error);
-        console.error('Error details:', error.response?.data || error.message);
+        console.log('Using fallback content due to server unavailability');
         
-        // Only set connection error if it's a network issue, not a data issue
-        if (error.code === 'ECONNREFUSED' || error.code === 'NETWORK_ERROR' || !error.response) {
-          setConnectionError(true);
-        } else {
-          setConnectionError(false);
-        }
-        
+        setConnectionError(true);
         setLoading(false);
         
-        // Use fallback content if server is not available
+        // Use fallback content when server is not available
         setContent({
           men: {
             hero: { 
@@ -141,18 +148,21 @@ export const ContentProvider = ({ children }) => {
               { title: "DAY TO NIGHT", desc: "Versatile fragrances for every occasion" }
             ],
             products: [
-              { name: "NOIR INTENSE", price: "$120", notes: "Bergamot, Cedar, Amber", image: "", isFeatured: true },
-              { name: "ROYAL OUD", price: "$180", notes: "Oud, Rose, Saffron", image: "", isFeatured: true },
-              { name: "MIDNIGHT", price: "$95", notes: "Lavender, Vetiver, Musk", image: "", isFeatured: true }
+              { id: 1, name: "NOIR INTENSE", price: "$120", notes: "Bergamot, Cedar, Amber", image: "", isFeatured: true },
+              { id: 2, name: "ROYAL OUD", price: "$180", notes: "Oud, Rose, Saffron", image: "", isFeatured: true },
+              { id: 3, name: "MIDNIGHT", price: "$95", notes: "Lavender, Vetiver, Musk", image: "", isFeatured: true },
+              { id: 4, name: "URBAN LEGEND", price: "$110", notes: "Grapefruit, Cardamom, Leather", image: "", isFeatured: false },
+              { id: 5, name: "STEEL RESERVE", price: "$140", notes: "Metal Accord, Pepper, Tobacco", image: "", isFeatured: false },
+              { id: 6, name: "DARK KNIGHT", price: "$160", notes: "Black Pepper, Oud, Vanilla", image: "", isFeatured: false }
             ],
             featuredProducts: [
-              { name: "NOIR INTENSE", price: "$120", notes: "Bergamot, Cedar, Amber", image: "", isFeatured: true },
-              { name: "ROYAL OUD", price: "$180", notes: "Oud, Rose, Saffron", image: "", isFeatured: true },
-              { name: "MIDNIGHT", price: "$95", notes: "Lavender, Vetiver, Musk", image: "", isFeatured: true }
+              { id: 1, name: "NOIR INTENSE", price: "$120", notes: "Bergamot, Cedar, Amber", image: "", isFeatured: true },
+              { id: 2, name: "ROYAL OUD", price: "$180", notes: "Oud, Rose, Saffron", image: "", isFeatured: true },
+              { id: 3, name: "MIDNIGHT", price: "$95", notes: "Lavender, Vetiver, Musk", image: "", isFeatured: true }
             ],
             about: { 
               title: "CRAFTED FOR THE MODERN GENTLEMAN", 
-              description: "Our men's collection embodies strength, sophistication, and timeless appeal." 
+              description: "Our men's collection embodies strength, sophistication, and timeless appeal. Each fragrance is carefully crafted to complement the modern man's lifestyle." 
             },
             heroImage: ""
           },
@@ -168,18 +178,21 @@ export const ContentProvider = ({ children }) => {
               { title: "ENCHANTING AURA", desc: "Captivating fragrances that inspire" }
             ],
             products: [
-              { name: "ROSE GARDEN", price: "$135", notes: "Rose Petals, Peony, White Musk", image: "", isFeatured: true },
-              { name: "CHERRY BLOSSOM", price: "$110", notes: "Sakura, Jasmine, Vanilla", image: "", isFeatured: true },
-              { name: "PINK DIAMOND", price: "$165", notes: "Pink Pepper, Magnolia, Amber", image: "", isFeatured: true }
+              { id: 7, name: "ROSE GARDEN", price: "$135", notes: "Rose Petals, Peony, White Musk", image: "", isFeatured: true },
+              { id: 8, name: "CHERRY BLOSSOM", price: "$110", notes: "Sakura, Jasmine, Vanilla", image: "", isFeatured: true },
+              { id: 9, name: "PINK DIAMOND", price: "$165", notes: "Pink Pepper, Magnolia, Amber", image: "", isFeatured: true },
+              { id: 10, name: "VELVET ROSE", price: "$125", notes: "Bulgarian Rose, Silk Accord, Musk", image: "", isFeatured: false },
+              { id: 11, name: "GOLDEN LILY", price: "$145", notes: "Lily, Gold Leaf, Sandalwood", image: "", isFeatured: false },
+              { id: 12, name: "CRYSTAL BLOOM", price: "$155", notes: "Crystal Accord, Peony, Cedar", image: "", isFeatured: false }
             ],
             featuredProducts: [
-              { name: "ROSE GARDEN", price: "$135", notes: "Rose Petals, Peony, White Musk", image: "", isFeatured: true },
-              { name: "CHERRY BLOSSOM", price: "$110", notes: "Sakura, Jasmine, Vanilla", image: "", isFeatured: true },
-              { name: "PINK DIAMOND", price: "$165", notes: "Pink Pepper, Magnolia, Amber", image: "", isFeatured: true }
+              { id: 7, name: "ROSE GARDEN", price: "$135", notes: "Rose Petals, Peony, White Musk", image: "", isFeatured: true },
+              { id: 8, name: "CHERRY BLOSSOM", price: "$110", notes: "Sakura, Jasmine, Vanilla", image: "", isFeatured: true },
+              { id: 9, name: "PINK DIAMOND", price: "$165", notes: "Pink Pepper, Magnolia, Amber", image: "", isFeatured: true }
             ],
             about: { 
               title: "DESIGNED FOR THE ELEGANT WOMAN", 
-              description: "Our women's collection celebrates femininity, grace, and inner beauty." 
+              description: "Our women's collection celebrates femininity, grace, and inner beauty. Each scent tells a story of elegance and sophistication." 
             },
             heroImage: ""
           },
@@ -195,18 +208,21 @@ export const ContentProvider = ({ children }) => {
               { title: "TIMELESS APPEAL", desc: "Classic fragrances that never go out of style" }
             ],
             products: [
-              { name: "PURE ESSENCE", price: "$145", notes: "Bergamot, White Tea, Cedar", image: "", isFeatured: true },
-              { name: "HARMONY", price: "$125", notes: "Citrus, Lavender, Sandalwood", image: "", isFeatured: true },
-              { name: "ETERNAL", price: "$155", notes: "Neroli, Jasmine, Amber", image: "", isFeatured: true }
+              { id: 13, name: "PURE ESSENCE", price: "$145", notes: "Bergamot, White Tea, Cedar", image: "", isFeatured: true },
+              { id: 14, name: "HARMONY", price: "$125", notes: "Citrus, Lavender, Sandalwood", image: "", isFeatured: true },
+              { id: 15, name: "ETERNAL", price: "$155", notes: "Neroli, Jasmine, Amber", image: "", isFeatured: true },
+              { id: 16, name: "BALANCE", price: "$135", notes: "Green Tea, Mint, White Woods", image: "", isFeatured: false },
+              { id: 17, name: "INFINITY", price: "$165", notes: "Cosmic Accord, Iris, Vetiver", image: "", isFeatured: false },
+              { id: 18, name: "UNITY", price: "$175", notes: "Unisex Blend, Ambergris, Musk", image: "", isFeatured: false }
             ],
             featuredProducts: [
-              { name: "PURE ESSENCE", price: "$145", notes: "Bergamot, White Tea, Cedar", image: "", isFeatured: true },
-              { name: "HARMONY", price: "$125", notes: "Citrus, Lavender, Sandalwood", image: "", isFeatured: true },
-              { name: "ETERNAL", price: "$155", notes: "Neroli, Jasmine, Amber", image: "", isFeatured: true }
+              { id: 13, name: "PURE ESSENCE", price: "$145", notes: "Bergamot, White Tea, Cedar", image: "", isFeatured: true },
+              { id: 14, name: "HARMONY", price: "$125", notes: "Citrus, Lavender, Sandalwood", image: "", isFeatured: true },
+              { id: 15, name: "ETERNAL", price: "$155", notes: "Neroli, Jasmine, Amber", image: "", isFeatured: true }
             ],
             about: { 
               title: "CREATED FOR EVERYONE", 
-              description: "Our unisex collection breaks traditional boundaries, offering sophisticated fragrances that celebrate individuality." 
+              description: "Our unisex collection breaks traditional boundaries, offering sophisticated fragrances that celebrate individuality and personal expression." 
             },
             heroImage: ""
           },
