@@ -237,7 +237,7 @@ const MainSite = ({ isTransitioning: pageTransitioning }) => {
             <h4>CUSTOMER CARE</h4>
             <ul>
               {content.global.footer.customerCare.map((link, index) => (
-                <li key={index}><a href="#">{link}</a></li>
+                <li key={index}><button type="button" className="footer-link">{link}</button></li>
               ))}
             </ul>
           </div>
@@ -245,7 +245,7 @@ const MainSite = ({ isTransitioning: pageTransitioning }) => {
             <h4>CONNECT</h4>
             <div className="social-links">
               {content.global.footer.socialLinks.map((social, index) => (
-                <a key={index} href="#">{social}</a>
+                <button key={index} type="button" className="footer-link">{social}</button>
               ))}
             </div>
           </div>
@@ -441,7 +441,7 @@ const UnisexPage = ({ isTransitioning: pageTransitioning }) => {
             <h4>CUSTOMER CARE</h4>
             <ul>
               {content.global.footer.customerCare.map((link, index) => (
-                <li key={index}><a href="#">{link}</a></li>
+                <li key={index}><button type="button" className="footer-link">{link}</button></li>
               ))}
             </ul>
           </div>
@@ -449,7 +449,7 @@ const UnisexPage = ({ isTransitioning: pageTransitioning }) => {
             <h4>CONNECT</h4>
             <div className="social-links">
               {content.global.footer.socialLinks.map((social, index) => (
-                <a key={index} href="#">{social}</a>
+                <button key={index} type="button" className="footer-link">{social}</button>
               ))}
             </div>
           </div>

@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
+  <defs>
+    <linearGradient id="bottleGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ffd700;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#d4af37;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background circle for better visibility -->
+  <circle cx="16" cy="16" r="15" fill="#1a1a1a" stroke="#333" stroke-width="1"/>
+  
+  <!-- Perfume bottle body -->
+  <rect x="9" y="11" width="14" height="18" rx="3" fill="url(#bottleGradient)" stroke="#b8860b" stroke-width="2"/>
+  
+  <!-- Bottle neck -->
+  <rect x="12" y="6" width="8" height="6" fill="url(#bottleGradient)" stroke="#b8860b" stroke-width="2"/>
+  
+  <!-- Cap -->
+  <rect x="11" y="2" width="10" height="5" rx="2" fill="#333" stroke="#555" stroke-width="1"/>
+  
+  <!-- Spray nozzle -->
+  <circle cx="16" cy="4" r="1.5" fill="#888"/>
+  
+  <!-- Brand initial "E" -->
+  <text x="16" y="22" font-family="serif" font-size="10" font-weight="bold" text-anchor="middle" fill="#1a1a1a">E</text>
+</svg>

@@ -246,19 +246,6 @@ const AdminPanel = () => {
     }
   };
 
-  const saveFeatures = async (mode) => {
-    try {
-      setSaving(true);
-      // Note: This is a simplified approach. In a real app, you'd track which features are new/updated/deleted
-      alert('Features updated! (Note: Individual feature updates happen in real-time)');
-      setSaving(false);
-    } catch (error) {
-      console.error('Error saving features:', error);
-      alert('Error saving features');
-      setSaving(false);
-    }
-  };
-
   const handleAddFeature = async (mode) => {
     try {
       setSaving(true);
