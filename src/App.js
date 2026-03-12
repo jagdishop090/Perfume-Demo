@@ -200,7 +200,8 @@ const MainSite = () => {
   const { content, loading } = useContent();
 
   // Banner images - using correct paths from public/Banners folder
-  const banners = [
+  // These are fallback banners when Supabase data is not available
+  const defaultBanners = [
     {
       id: 1,
       image: '/Banners/banner-1.jpg',
@@ -226,6 +227,9 @@ const MainSite = () => {
       alt: 'Exclusive Scent Collection'
     }
   ];
+
+  // Use default banners since we're not using Supabase hero sections for the main banner slider
+  const banners = defaultBanners;
 
   // Auto-rotate banners every 5 seconds
   React.useEffect(() => {
@@ -325,6 +329,11 @@ const MainSite = () => {
                     src={banner.image} 
                     alt={banner.alt}
                     className="banner-image"
+                    onError={(e) => {
+                      console.log('Banner image failed to load:', banner.image);
+                      // Hide the image if it fails to load
+                      e.target.style.display = 'none';
+                    }}
                   />
                 </div>
                 <div className="banner-text-section">
