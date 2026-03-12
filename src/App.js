@@ -199,11 +199,11 @@ const MainSite = () => {
   const [prevBanner, setPrevBanner] = useState(0);
   const { content, loading } = useContent();
 
-  // Banner images - you can update these paths with your actual banner images
+  // Banner images - using correct paths from public/Banners folder
   const banners = [
     {
       id: 1,
-      image: '/banners/banner-1.jpg',
+      image: '/Banners/banner-1.jpg',
       title: 'Introducing',
       subtitle: 'SIGNATURE COLLECTION',
       description: 'Discover the art of luxury fragrance',
@@ -211,7 +211,7 @@ const MainSite = () => {
     },
     {
       id: 2,
-      image: '/banners/banner-2.jpg', 
+      image: '/Banners/banner-2.jpg', 
       title: 'Experience',
       subtitle: 'TIMELESS ELEGANCE',
       description: 'Crafted with the finest ingredients',
@@ -219,7 +219,7 @@ const MainSite = () => {
     },
     {
       id: 3,
-      image: '/banners/banner-3.jpg',
+      image: '/Banners/banner-3.jpg',
       title: 'Explore',
       subtitle: 'EXCLUSIVE SCENTS',
       description: 'Where sophistication meets passion',
