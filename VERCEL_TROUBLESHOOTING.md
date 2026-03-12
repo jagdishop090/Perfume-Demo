@@ -3,10 +3,12 @@
 ## 🚨 Issue: Changes Not Visible on Vercel
 
 ### ✅ Steps Already Completed:
-1. ✅ Committed and pushed latest changes to GitHub (commit: a5dca38)
+1. ✅ Committed and pushed latest changes to GitHub (commit: bf83dbc)
 2. ✅ Added `vercel.json` configuration file
 3. ✅ Added `.env.production` with correct environment variables
-4. ✅ Verified local build works correctly (107.54 kB main bundle)
+4. ✅ Fixed banner image paths from `/banners/` to `/Banners/`
+5. ✅ Verified local build works correctly (107.54 kB main bundle)
+6. ✅ Confirmed banner images are included in build folder
 
 ### 🔍 Potential Issues & Solutions:
 
