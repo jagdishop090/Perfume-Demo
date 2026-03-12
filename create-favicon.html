@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Favicon Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .canvas-container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            display: inline-block;
+        }
+        canvas {
+            border: 1px solid #ddd;
+            margin: 10px;
+        }
+        button {
+            padding: 10px 20px;
+            background: #3A2D28;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #A48374;
+        }
+    </style>
+</head>
+<body>
+    <h1>Essence Perfume Favicon Generator</h1>
+    <div class="canvas-container">
+        <h3>192x192 (PWA Icon)</h3>
+        <canvas id="canvas192" width="192" height="192"></canvas>
+        <button onclick="downloadCanvas('canvas192', 'favicon-192.png')">Download 192x192</button>
+    </div>
+    
+    <div class="canvas-container">
+        <h3>64x64 (Standard Favicon)</h3>
+        <canvas id="canvas64" width="64" height="64"></canvas>
+        <button onclick="downloadCanvas('canvas64', 'favicon-64.png')">Download 64x64</button>
+    </div>
+    
+    <div class="canvas-container">
+        <h3>32x32 (Browser Tab)</h3>
+        <canvas id="canvas32" width="32" height="32"></canvas>
+        <button onclick="downloadCanvas('canvas32', 'favicon-32.png')">Download 32x32</button>
+    </div>
+
+    <script>
+        function drawFavicon(canvas) {
+            const ctx = canvas.getContext('2d');
+            const size = canvas.width;
+            const scale = size / 64;
+            
+            // Clear canvas
+            ctx.clearRect(0, 0, size, size);
+            
+            // Draw gradient background circle
+            const gradient = ctx.createLinearGradient(0, 0, size, size);
+            gradient.addColorStop(0, '#3A2D28');
+            gradient.addColorStop(0.5, '#A48374');
+            gradient.addColorStop(1, '#CBAD8D');
+            
+            ctx.fillStyle = gradient;
+            ctx.beginPath();
+            ctx.arc(size/2, size/2, size/2, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Scale for drawing
+            ctx.save();
+            ctx.scale(scale, scale);
+            
+            // Draw perfume bottle
+            ctx.fillStyle = '#F1EDE6';
+            
+            // Bottle cap
+            ctx.fillRect(26, 12, 12, 4);
+            
+            // Bottle neck
+            ctx.globalAlpha = 0.9;
+            ctx.fillRect(28, 16, 8, 6);
+            
+            // Main bottle body
+            ctx.globalAlpha = 0.95;
+            ctx.beginPath();
+            ctx.moveTo(24, 22);
+            ctx.lineTo(24, 48);
+            ctx.quadraticCurveTo(24, 50, 26, 50);
+            ctx.lineTo(38, 50);
+            ctx.quadraticCurveTo(40, 50, 40, 48);
+            ctx.lineTo(40, 22);
+            ctx.closePath();
+            ctx.fill();
+            
+            // Bottle highlight
+            ctx.globalAlpha = 0.3;
+            ctx.fillStyle = '#FFFFFF';
+            ctx.beginPath();
+            ctx.moveTo(26, 24);
+            ctx.lineTo(26, 46);
+            ctx.quadraticCurveTo(26, 47, 27, 47);
+            ctx.lineTo(29, 47);
+            ctx.lineTo(29, 24);
+            ctx.closePath();
+            ctx.fill();
+            
+            // Decorative line
+            ctx.globalAlpha = 0.3;
+            ctx.strokeStyle = '#3A2D28';
+            ctx.lineWidth = 0.5;
+            ctx.beginPath();
+            ctx.moveTo(24, 30);
+            ctx.lineTo(40, 30);
+            ctx.stroke();
+            
+            // Letter E
+            ctx.globalAlpha = 0.6;
+            ctx.fillStyle = '#3A2D28';
+            ctx.font = 'bold 14px serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('E', 32, 40);
+            
+            ctx.restore();
+        }
+        
+        function downloadCanvas(canvasId, filename) {
+            const canvas = document.getElementById(canvasId);
+            const link = document.createElement('a');
+            link.download = filename;
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+        }
+        
+        // Draw all favicons
+        drawFavicon(document.getElementById('canvas192'));
+        drawFavicon(document.getElementById('canvas64'));
+        drawFavicon(document.getElementById('canvas32'));
+        
+        console.log('Favicons generated! Click the download buttons to save them.');
+    </script>
+</body>
+</html>
