@@ -199,12 +199,13 @@ const MainSite = () => {
   const [prevBanner, setPrevBanner] = useState(0);
   const { content, loading } = useContent();
 
-  // Banner images - using correct paths from public/Banners folder
+  // Banner images - using multiple fallback paths for better compatibility
   // These are fallback banners when Supabase data is not available
   const defaultBanners = [
     {
       id: 1,
-      image: '/Banners/banner-1.jpg',
+      image: '/banner-1.jpg', // Primary path (root of public)
+      fallbackImage: '/Banners/banner-1.jpg', // Fallback path
       title: 'Introducing',
       subtitle: 'SIGNATURE COLLECTION',
       description: 'Discover the art of luxury fragrance',
@@ -212,7 +213,8 @@ const MainSite = () => {
     },
     {
       id: 2,
-      image: '/Banners/banner-2.jpg', 
+      image: '/banner-2.jpg', // Primary path (root of public)
+      fallbackImage: '/Banners/banner-2.jpg', // Fallback path
       title: 'Experience',
       subtitle: 'TIMELESS ELEGANCE',
       description: 'Crafted with the finest ingredients',
@@ -220,7 +222,8 @@ const MainSite = () => {
     },
     {
       id: 3,
-      image: '/Banners/banner-3.jpg',
+      image: '/banner-3.jpg', // Primary path (root of public)
+      fallbackImage: '/Banners/banner-3.jpg', // Fallback path
       title: 'Explore',
       subtitle: 'EXCLUSIVE SCENTS',
       description: 'Where sophistication meets passion',
@@ -331,8 +334,15 @@ const MainSite = () => {
                     className="banner-image"
                     onError={(e) => {
                       console.log('Banner image failed to load:', banner.image);
-                      // Hide the image if it fails to load
-                      e.target.style.display = 'none';
+                      // Try fallback image if available
+                      if (banner.fallbackImage && e.target.src !== banner.fallbackImage) {
+                        console.log('Trying fallback image:', banner.fallbackImage);
+                        e.target.src = banner.fallbackImage;
+                      } else {
+                        // Hide the image if both primary and fallback fail
+                        e.target.style.display = 'none';
+                        console.log('Both primary and fallback images failed');
+                      }
                     }}
                   />
                 </div>

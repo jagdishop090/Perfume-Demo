@@ -183,6 +183,9 @@ body {
   height: 100%;
   object-fit: cover;
   object-position: center;
+  /* Fallback background when image fails to load */
+  background: linear-gradient(135deg, #3A2D28 0%, #A48374 50%, #CBAD8D 100%);
+  min-height: 400px;
 }
 
 .banner-text-section {
