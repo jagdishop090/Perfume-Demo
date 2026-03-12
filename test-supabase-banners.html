@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Supabase Banner Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .test-section { margin: 20px 0; padding: 20px; border: 1px solid #ccc; }
+        .banner-test { width: 300px; height: 150px; margin: 10px; border: 2px solid #ddd; }
+        .success { border-color: green; }
+        .error { border-color: red; }
+        .loading { border-color: orange; }
+    </style>
+</head>
+<body>
+    <h1>🎯 Supabase CDN Banner Test</h1>
+    <p>Testing banner images from Supabase CDN - these should work on Vercel!</p>
+    
+    <div class="test-section">
+        <h2>✅ Supabase CDN URLs (Primary)</h2>
+        <div>
+            <p><strong>Banner 1:</strong></p>
+            <img src="https://tqrztmpxiagerohadtfl.supabase.co/storage/v1/object/public/perfume-images/banners/banner-1.jpg" 
+                 class="banner-test loading" 
+                 onload="this.className='banner-test success'; console.log('✅ Banner 1 loaded successfully')" 
+                 onerror="this.className='banner-test error'; console.log('❌ Banner 1 failed to load')">
+        </div>
+        
+        <div>
+            <p><strong>Banner 2:</strong></p>
+            <img src="https://tqrztmpxiagerohadtfl.supabase.co/storage/v1/object/public/perfume-images/banners/banner-2.jpg" 
+                 class="banner-test loading" 
+                 onload="this.className='banner-test success'; console.log('✅ Banner 2 loaded successfully')" 
+                 onerror="this.className='banner-test error'; console.log('❌ Banner 2 failed to load')">
+        </div>
+        
+        <div>
+            <p><strong>Banner 3:</strong></p>
+            <img src="https://tqrztmpxiagerohadtfl.supabase.co/storage/v1/object/public/perfume-images/banners/banner-3.jpg" 
+                 class="banner-test loading" 
+                 onload="this.className='banner-test success'; console.log('✅ Banner 3 loaded successfully')" 
+                 onerror="this.className='banner-test error'; console.log('❌ Banner 3 failed to load')">
+        </div>
+    </div>
+    
+    <div class="test-section">
+        <h2>📊 Test Results</h2>
+        <div id="results">
+            <p>⏳ Loading images...</p>
+        </div>
+    </div>
+    
+    <script>
+        console.log('🧪 Starting Supabase banner test...');
+        
+        setTimeout(() => {
+            const images = document.querySelectorAll('.banner-test');
+            let successCount = 0;
+            let errorCount = 0;
+            let loadingCount = 0;
+            
+            images.forEach(img => {
+                if (img.className.includes('success')) successCount++;
+                else if (img.className.includes('error')) errorCount++;
+                else loadingCount++;
+            });
+            
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = `
+                <p><strong>📊 Test Results:</strong></p>
+                <p>✅ <strong>Success:</strong> ${successCount}/3 images loaded</p>
+                <p>❌ <strong>Failed:</strong> ${errorCount}/3 images failed</p>
+                <p>⏳ <strong>Loading:</strong> ${loadingCount}/3 still loading</p>
+                <p><strong>Status:</strong> ${successCount === 3 ? '🎉 ALL WORKING!' : errorCount > 0 ? '⚠️ Some issues' : '⏳ Still loading...'}</p>
+            `;
+            
+            console.log(`📊 Final results: ${successCount} success, ${errorCount} errors, ${loadingCount} loading`);
+            
+            if (successCount === 3) {
+                console.log('🎉 SUCCESS! All Supabase banner images are working!');
+                resultsDiv.style.backgroundColor = '#d4edda';
+                resultsDiv.style.color = '#155724';
+                resultsDiv.style.border = '1px solid #c3e6cb';
+                resultsDiv.style.padding = '10px';
+                resultsDiv.style.borderRadius = '5px';
+            } else if (errorCount > 0) {
+                console.log('⚠️ Some banner images failed to load');
+                resultsDiv.style.backgroundColor = '#f8d7da';
+                resultsDiv.style.color = '#721c24';
+                resultsDiv.style.border = '1px solid #f5c6cb';
+                resultsDiv.style.padding = '10px';
+                resultsDiv.style.borderRadius = '5px';
+            }
+        }, 3000);
+    </script>
+</body>
+</html>
