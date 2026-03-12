@@ -2,6 +2,7 @@ import React, { useState, useCallback, useMemo, Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
 import { ContentProvider, useContent } from './context/SupabaseContentContext';
 import ProductModal from './components/ProductModal';
+import { getBannerWithFallbacks } from './utils/bannerFallbacks';
 import './App.css';
 
 // Lazy load the admin panel for better performance
@@ -204,8 +205,7 @@ const MainSite = () => {
   const defaultBanners = [
     {
       id: 1,
-      image: '/banner-1.jpg', // Primary path (root of public)
-      fallbackImage: '/Banners/banner-1.jpg', // Fallback path
+      ...getBannerWithFallbacks('/banner-1.jpg', '/Banners/banner-1.jpg', 'banner1'),
       title: 'Introducing',
       subtitle: 'SIGNATURE COLLECTION',
       description: 'Discover the art of luxury fragrance',
@@ -213,8 +213,7 @@ const MainSite = () => {
     },
     {
       id: 2,
-      image: '/banner-2.jpg', // Primary path (root of public)
-      fallbackImage: '/Banners/banner-2.jpg', // Fallback path
+      ...getBannerWithFallbacks('/banner-2.jpg', '/Banners/banner-2.jpg', 'banner2'),
       title: 'Experience',
       subtitle: 'TIMELESS ELEGANCE',
       description: 'Crafted with the finest ingredients',
@@ -222,8 +221,7 @@ const MainSite = () => {
     },
     {
       id: 3,
-      image: '/banner-3.jpg', // Primary path (root of public)
-      fallbackImage: '/Banners/banner-3.jpg', // Fallback path
+      ...getBannerWithFallbacks('/banner-3.jpg', '/Banners/banner-3.jpg', 'banner3'),
       title: 'Explore',
       subtitle: 'EXCLUSIVE SCENTS',
       description: 'Where sophistication meets passion',
@@ -329,19 +327,22 @@ const MainSite = () => {
               <div className="banner-content-wrapper">
                 <div className="banner-image-section">
                   <img 
-                    src={banner.image} 
+                    src={banner.primary} 
                     alt={banner.alt}
                     className="banner-image"
                     onError={(e) => {
-                      console.log('Banner image failed to load:', banner.image);
+                      console.log('Banner image failed to load:', e.target.src);
                       // Try fallback image if available
-                      if (banner.fallbackImage && e.target.src !== banner.fallbackImage) {
-                        console.log('Trying fallback image:', banner.fallbackImage);
-                        e.target.src = banner.fallbackImage;
+                      if (banner.fallback && e.target.src !== banner.fallback) {
+                        console.log('Trying fallback image:', banner.fallback);
+                        e.target.src = banner.fallback;
+                      } else if (banner.placeholder && e.target.src !== banner.placeholder) {
+                        console.log('Using placeholder image');
+                        e.target.src = banner.placeholder;
                       } else {
-                        // Hide the image if both primary and fallback fail
+                        // Hide the image if all fallbacks fail
                         e.target.style.display = 'none';
-                        console.log('Both primary and fallback images failed');
+                        console.log('All banner image fallbacks failed');
                       }
                     }}
                   />
