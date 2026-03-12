@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Banner URL Debug</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background: #f5f5f5; }
+        .debug-box { background: white; padding: 20px; margin: 10px 0; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .url-test { margin: 10px 0; padding: 10px; border: 1px solid #ddd; border-radius: 4px; }
+        .success { background: #d4edda; border-color: #c3e6cb; color: #155724; }
+        .error { background: #f8d7da; border-color: #f5c6cb; color: #721c24; }
+        .loading { background: #fff3cd; border-color: #ffeaa7; color: #856404; }
+        img { max-width: 200px; height: 100px; object-fit: cover; margin: 10px 0; }
+    </style>
+</head>
+<body>
+    <h1>🔍 Banner URL Debug Test</h1>
+    
+    <div class="debug-box">
+        <h2>✅ Supabase CDN URLs (Should Work)</h2>
+        <div id="supabase-tests"></div>
+    </div>
+    
+    <div class="debug-box">
+        <h2>❌ Local URLs (Will Fail on Vercel)</h2>
+        <div id="local-tests"></div>
+    </div>
+    
+    <div class="debug-box">
+        <h2>📊 Summary</h2>
+        <div id="summary">Testing...</div>
+    </div>
+
+    <script>
+        const supabaseUrls = [
+            "https://tqrztmpxiagerohadtfl.supabase.co/storage/v1/object/public/perfume-images/banners/banner-1.jpg",
+            "https://tqrztmpxiagerohadtfl.supabase.co/storage/v1/object/public/perfume-images/banners/banner-2.jpg",
+            "https://tqrztmpxiagerohadtfl.supabase.co/storage/v1/object/public/perfume-images/banners/banner-3.jpg"
+        ];
+        
+        const localUrls = [
+            "/banner-1.jpg",
+            "/banner-2.jpg", 
+            "/banner-3.jpg"
+        ];
+        
+        let results = { supabase: 0, local: 0, total: 6 };
+        
+        function testUrl(url, container, type) {
+            const div = document.createElement('div');
+            div.className = 'url-test loading';
+            div.innerHTML = `
+                <strong>${url}</strong><br>
+                <span>Testing...</span>
+                <img src="${url}" style="display: none;">
+            `;
+            container.appendChild(div);
+            
+            const img = div.querySelector('img');
+            
+            img.onload = () => {
+                div.className = 'url-test success';
+                div.querySelector('span').textContent = '✅ SUCCESS - Image loaded';
+                img.style.display = 'block';
+                results[type]++;
+                updateSummary();
+            };
+            
+            img.onerror = () => {
+                div.className = 'url-test error';
+                div.querySelector('span').textContent = '❌ FAILED - Image not found';
+                updateSummary();
+            };
+        }
+        
+        function updateSummary() {
+            const tested = results.supabase + results.local;
+            if (tested === results.total) {
+                const summaryDiv = document.getElementById('summary');
+                summaryDiv.innerHTML = `
+                    <p><strong>🎯 Test Results:</strong></p>
+                    <p>✅ <strong>Supabase CDN:</strong> ${results.supabase}/3 working</p>
+                    <p>❌ <strong>Local Files:</strong> ${results.local}/3 working</p>
+                    <p><strong>Status:</strong> ${results.supabase === 3 ? '🎉 Supabase URLs working perfectly!' : '⚠️ Issues detected'}</p>
+                    <p><strong>Expected:</strong> Supabase should work, local should fail on Vercel</p>
+                `;
+                
+                if (results.supabase === 3) {
+                    summaryDiv.style.background = '#d4edda';
+                    summaryDiv.style.color = '#155724';
+                    summaryDiv.style.padding = '15px';
+                    summaryDiv.style.borderRadius = '5px';
+                }
+            }
+        }
+        
+        // Test Supabase URLs
+        const supabaseContainer = document.getElementById('supabase-tests');
+        supabaseUrls.forEach(url => testUrl(url, supabaseContainer, 'supabase'));
+        
+        // Test Local URLs  
+        const localContainer = document.getElementById('local-tests');
+        localUrls.forEach(url => testUrl(url, localContainer, 'local'));
+        
+        console.log('🧪 Starting banner URL debug test...');
+        console.log('Supabase URLs:', supabaseUrls);
+        console.log('Local URLs:', localUrls);
+    </script>
+</body>
+</html>
