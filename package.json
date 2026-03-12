@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "dependencies": {
+    "@supabase/supabase-js": "^2.99.1",
     "axios": "^1.13.6",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -14,7 +15,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "build:analyze": "npm run build && npx serve -s build"
   },
   "eslintConfig": {
     "extends": [

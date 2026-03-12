@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback, useMemo, Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
-import { ContentProvider, useContent } from './context/ContentContext';
-import AdminPanel from './components/AdminPanel';
+import { ContentProvider, useContent } from './context/SupabaseContentContext';
 import ProductModal from './components/ProductModal';
 import './App.css';
+
+// Lazy load the admin panel for better performance
+const AdminPanel = lazy(() => import('./components/ModernAdminPanel'));
 
 const ProductsPage = () => {
   const location = useLocation();
@@ -12,26 +14,29 @@ const ProductsPage = () => {
   const [activeCategory, setActiveCategory] = useState('all');
   const { content, loading } = useContent();
 
-  const openProductModal = (product) => {
-    setSelectedProduct(product);
-    setIsModalOpen(true);
-  };
-
-  const closeProductModal = () => {
-    setIsModalOpen(false);
-    setSelectedProduct(null);
-  };
-
-  // Combine all products
-  const allProducts = [
+  // Combine all products with memoization for performance
+  const allProducts = useMemo(() => [
     ...(content.men?.products || []).map(p => ({ ...p, category: 'men' })),
     ...(content.women?.products || []).map(p => ({ ...p, category: 'women' })),
     ...(content.unisex?.products || []).map(p => ({ ...p, category: 'unisex' }))
-  ];
+  ], [content.men?.products, content.women?.products, content.unisex?.products]);
 
-  const filteredProducts = activeCategory === 'all' 
-    ? allProducts 
-    : allProducts.filter(p => p.category === activeCategory);
+  const filteredProducts = useMemo(() => 
+    activeCategory === 'all' 
+      ? allProducts 
+      : allProducts.filter(p => p.category === activeCategory),
+    [allProducts, activeCategory]
+  );
+
+  const openProductModal = useCallback((product) => {
+    setSelectedProduct(product);
+    setIsModalOpen(true);
+  }, []);
+
+  const closeProductModal = useCallback(() => {
+    setIsModalOpen(false);
+    setSelectedProduct(null);
+  }, []);
 
   if (loading) {
     return (
@@ -704,7 +709,18 @@ const App = () => {
         <Routes>
           <Route path="/" element={<MainSite />} />
           <Route path="/products" element={<ProductsPage />} />
-          <Route path="/admin" element={<AdminPanel />} />
+          <Route path="/admin" element={
+            <Suspense fallback={
+              <div className="loading-container">
+                <div className="loading-spinner">
+                  <div className="spinner"></div>
+                  <h2>Loading Admin Panel...</h2>
+                </div>
+              </div>
+            }>
+              <AdminPanel />
+            </Suspense>
+          } />
         </Routes>
       </Router>
     </ContentProvider>
