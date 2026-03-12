@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
 import { ContentProvider, useContent } from './context/ContentContext';
 import AdminPanel from './components/AdminPanel';
 import ProductModal from './components/ProductModal';
 import './App.css';
 
-const MainSite = () => {
+const ProductsPage = () => {
+  const location = useLocation();
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [activeCategory, setActiveCategory] = useState('all');
@@ -21,7 +22,7 @@ const MainSite = () => {
     setSelectedProduct(null);
   };
 
-  // Combine all products for the new unified design
+  // Combine all products
   const allProducts = [
     ...(content.men?.products || []).map(p => ({ ...p, category: 'men' })),
     ...(content.women?.products || []).map(p => ({ ...p, category: 'women' })),
@@ -31,6 +32,228 @@ const MainSite = () => {
   const filteredProducts = activeCategory === 'all' 
     ? allProducts 
     : allProducts.filter(p => p.category === activeCategory);
+
+  if (loading) {
+    return (
+      <div className="loading-container">
+        <div className="loading-spinner">
+          <div className="spinner"></div>
+          <h2>Loading Products...</h2>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="app">
+      {/* Header */}
+      <header className="header">
+        <div className="header-container">
+          <div className="logo">
+            <Link to="/">
+              <h1>{content.global?.brandName || 'ESSENCE'}</h1>
+            </Link>
+          </div>
+          
+          <nav className="nav">
+            <Link to="/" className={`nav-link ${location.pathname === '/' ? 'active' : ''}`}>Home</Link>
+            <Link to="/products" className={`nav-link ${location.pathname === '/products' ? 'active' : ''}`}>Products</Link>
+            <a href="/#collections" className="nav-link">Collections</a>
+            <a href="/#about" className="nav-link">About</a>
+            <a href="/#contact" className="nav-link">Contact</a>
+          </nav>
+
+          <div className="header-actions">
+            <button className="search-btn">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <circle cx="11" cy="11" r="8"></circle>
+                <path d="m21 21-4.35-4.35"></path>
+              </svg>
+            </button>
+            <button className="cart-btn">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+                <line x1="3" y1="6" x2="21" y2="6"></line>
+                <path d="M16 10a4 4 0 0 1-8 0"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <div className="products-page">
+        <section className="products-page-section">
+          <div className="container">
+            <div className="section-header">
+              <h2>All Products</h2>
+              <p>Explore our complete collection of premium fragrances</p>
+            </div>
+
+            <div className="product-filters">
+              <button 
+                className={`filter-btn ${activeCategory === 'all' ? 'active' : ''}`}
+                onClick={() => setActiveCategory('all')}
+              >
+                All Products
+              </button>
+              <button 
+                className={`filter-btn ${activeCategory === 'men' ? 'active' : ''}`}
+                onClick={() => setActiveCategory('men')}
+              >
+                Men
+              </button>
+              <button 
+                className={`filter-btn ${activeCategory === 'women' ? 'active' : ''}`}
+                onClick={() => setActiveCategory('women')}
+              >
+                Women
+              </button>
+              <button 
+                className={`filter-btn ${activeCategory === 'unisex' ? 'active' : ''}`}
+                onClick={() => setActiveCategory('unisex')}
+              >
+                Unisex
+              </button>
+            </div>
+
+            <div className="products-grid">
+              {filteredProducts.map((product, index) => (
+                <div key={product.id || index} className="product-card" onClick={() => openProductModal(product)}>
+                  <div className="product-image">
+                    {product.image ? (
+                      <img src={product.image} alt={product.name} />
+                    ) : (
+                      <div className={`product-bottle ${product.category}`}></div>
+                    )}
+                    <div className="product-overlay">
+                      <button className="quick-view-btn">Quick View</button>
+                    </div>
+                  </div>
+                  <div className="product-info">
+                    <span className="product-category">{product.category}</span>
+                    <h3 className="product-name">{product.name}</h3>
+                    <p className="product-notes">{product.notes}</p>
+                    <div className="product-price">{product.price}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <ProductModal
+        product={selectedProduct}
+        isOpen={isModalOpen}
+        onClose={closeProductModal}
+        mode="unified"
+      />
+
+      {/* Mobile Footer Navigation */}
+      <nav className="mobile-footer-nav">
+        <Link to="/" className={`mobile-nav-item ${location.pathname === '/' ? 'active' : ''}`}>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+            <polyline points="9,22 9,12 15,12 15,22"></polyline>
+          </svg>
+          <span>Home</span>
+        </Link>
+        <Link to="/products" className={`mobile-nav-item ${location.pathname === '/products' ? 'active' : ''}`}>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+            <line x1="8" y1="21" x2="16" y2="21"></line>
+            <line x1="12" y1="17" x2="12" y2="21"></line>
+          </svg>
+          <span>Products</span>
+        </Link>
+        <a href="/#about" className="mobile-nav-item">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="16" x2="12" y2="12"></line>
+            <line x1="12" y1="8" x2="12.01" y2="8"></line>
+          </svg>
+          <span>About</span>
+        </a>
+        <a href="/#contact" className="mobile-nav-item">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+            <polyline points="22,6 12,13 2,6"></polyline>
+          </svg>
+          <span>Contact</span>
+        </a>
+      </nav>
+    </div>
+  );
+};
+const MainSite = () => {
+  const location = useLocation();
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [activeCategory, setActiveCategory] = useState('men');
+  const [currentBanner, setCurrentBanner] = useState(0);
+  const [prevBanner, setPrevBanner] = useState(0);
+  const { content, loading } = useContent();
+
+  // Banner images - you can update these paths with your actual banner images
+  const banners = [
+    {
+      id: 1,
+      image: '/banners/banner-1.jpg',
+      title: 'Introducing',
+      subtitle: 'SIGNATURE COLLECTION',
+      description: 'Discover the art of luxury fragrance',
+      alt: 'Premium Fragrance Collection'
+    },
+    {
+      id: 2,
+      image: '/banners/banner-2.jpg', 
+      title: 'Experience',
+      subtitle: 'TIMELESS ELEGANCE',
+      description: 'Crafted with the finest ingredients',
+      alt: 'Luxury Perfume Experience'
+    },
+    {
+      id: 3,
+      image: '/banners/banner-3.jpg',
+      title: 'Explore',
+      subtitle: 'EXCLUSIVE SCENTS',
+      description: 'Where sophistication meets passion',
+      alt: 'Exclusive Scent Collection'
+    }
+  ];
+
+  // Auto-rotate banners every 5 seconds
+  React.useEffect(() => {
+    const interval = setInterval(() => {
+      setPrevBanner(currentBanner);
+      setCurrentBanner((prev) => (prev + 1) % banners.length);
+    }, 5000);
+    return () => clearInterval(interval);
+  }, [currentBanner, banners.length]);
+
+  const handleBannerChange = (index) => {
+    setPrevBanner(currentBanner);
+    setCurrentBanner(index);
+  };
+
+  const openProductModal = (product) => {
+    setSelectedProduct(product);
+    setIsModalOpen(true);
+  };
+
+  const closeProductModal = () => {
+    setIsModalOpen(false);
+    setSelectedProduct(null);
+  };
+
+  // Combine all products for the featured section
+  const allProducts = [
+    ...(content.men?.products || []).map(p => ({ ...p, category: 'men' })),
+    ...(content.women?.products || []).map(p => ({ ...p, category: 'women' })),
+    ...(content.unisex?.products || []).map(p => ({ ...p, category: 'unisex' }))
+  ];
+
+  const filteredProducts = allProducts.filter(p => p.category === activeCategory);
 
   if (loading) {
     return (
@@ -55,7 +278,8 @@ const MainSite = () => {
           </div>
           
           <nav className="nav">
-            <a href="#home" className="nav-link">Home</a>
+            <Link to="/" className={`nav-link ${location.pathname === '/' ? 'active' : ''}`}>Home</Link>
+            <Link to="/products" className={`nav-link ${location.pathname === '/products' ? 'active' : ''}`}>Products</Link>
             <a href="#collections" className="nav-link">Collections</a>
             <a href="#about" className="nav-link">About</a>
             <a href="#contact" className="nav-link">Contact</a>
@@ -79,29 +303,47 @@ const MainSite = () => {
         </div>
       </header>
 
-      {/* Hero Banner */}
+      {/* Hero Banner Slider */}
       <section id="home" className="hero-banner">
-        <div className="hero-slide active">
-          <div className="hero-content">
-            <div className="hero-text">
-              <span className="hero-subtitle">Discover Luxury</span>
-              <h1 className="hero-title">Premium Fragrances</h1>
-              <p className="hero-description">
-                Indulge in our exquisite collection of handcrafted perfumes, 
-                where each scent tells a unique story of elegance and sophistication.
-              </p>
-              <div className="hero-buttons">
-                <button className="btn-primary">Shop Now</button>
-                <button className="btn-secondary">Explore Collection</button>
-              </div>
-            </div>
-            <div className="hero-image">
-              <div className="hero-product">
-                <div className="product-showcase">
-                  <div className="product-bottle-hero"></div>
+        <div className="banner-slider">
+          {banners.map((banner, index) => (
+            <div 
+              key={banner.id}
+              className={`banner-slide ${
+                index === currentBanner ? 'active' : 
+                index === prevBanner ? 'prev' : ''
+              }`}
+            >
+              <div className="banner-content-wrapper">
+                <div className="banner-image-section">
+                  <img 
+                    src={banner.image} 
+                    alt={banner.alt}
+                    className="banner-image"
+                  />
+                </div>
+                <div className="banner-text-section">
+                  <div className="banner-text-content">
+                    <span className="banner-intro">{banner.title}</span>
+                    <h1 className="banner-title">{banner.subtitle}</h1>
+                    <p className="banner-description">{banner.description}</p>
+                    <button className="banner-cta">Shop Now</button>
+                  </div>
                 </div>
               </div>
             </div>
+          ))}
+          
+          {/* Banner Navigation Dots */}
+          <div className="banner-dots">
+            {banners.map((_, index) => (
+              <button
+                key={index}
+                className={`banner-dot ${index === currentBanner ? 'active' : ''}`}
+                onClick={() => handleBannerChange(index)}
+                aria-label={`Go to banner ${index + 1}`}
+              />
+            ))}
           </div>
         </div>
       </section>
@@ -158,12 +400,6 @@ const MainSite = () => {
 
           <div className="product-filters">
             <button 
-              className={`filter-btn ${activeCategory === 'all' ? 'active' : ''}`}
-              onClick={() => setActiveCategory('all')}
-            >
-              All Products
-            </button>
-            <button 
               className={`filter-btn ${activeCategory === 'men' ? 'active' : ''}`}
               onClick={() => setActiveCategory('men')}
             >
@@ -184,7 +420,7 @@ const MainSite = () => {
           </div>
 
           <div className="products-grid">
-            {filteredProducts.slice(0, 8).map((product, index) => (
+            {filteredProducts.slice(0, 3).map((product, index) => (
               <div key={product.id || index} className="product-card" onClick={() => openProductModal(product)}>
                 <div className="product-image">
                   {product.image ? (
@@ -265,8 +501,95 @@ const MainSite = () => {
         </div>
       </section>
 
+      {/* Contact Section */}
+      <section id="contact" className="contact-section">
+        <div className="container">
+          <div className="section-header">
+            <h2>Get in Touch</h2>
+            <p>We'd love to hear from you. Send us a message and we'll respond as soon as possible.</p>
+          </div>
+          
+          <div className="contact-content">
+            <div className="contact-info">
+              <div className="contact-item">
+                <div className="contact-icon">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                    <polyline points="22,6 12,13 2,6"></polyline>
+                  </svg>
+                </div>
+                <div className="contact-details">
+                  <h3>Email Us</h3>
+                  <p>info@essence.com</p>
+                  <p>support@essence.com</p>
+                </div>
+              </div>
+
+              <div className="contact-item">
+                <div className="contact-icon">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                  </svg>
+                </div>
+                <div className="contact-details">
+                  <h3>Call Us</h3>
+                  <p>+1 (555) 123-4567</p>
+                  <p>Mon - Fri: 9AM - 6PM</p>
+                </div>
+              </div>
+
+              <div className="contact-item">
+                <div className="contact-icon">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                    <circle cx="12" cy="10" r="3"></circle>
+                  </svg>
+                </div>
+                <div className="contact-details">
+                  <h3>Visit Us</h3>
+                  <p>123 Fragrance Street</p>
+                  <p>Perfume City, PC 12345</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="contact-form">
+              <form>
+                <div className="form-row">
+                  <div className="form-group">
+                    <label htmlFor="firstName">First Name</label>
+                    <input type="text" id="firstName" name="firstName" required />
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="lastName">Last Name</label>
+                    <input type="text" id="lastName" name="lastName" required />
+                  </div>
+                </div>
+                
+                <div className="form-group">
+                  <label htmlFor="email">Email</label>
+                  <input type="email" id="email" name="email" required />
+                </div>
+                
+                <div className="form-group">
+                  <label htmlFor="subject">Subject</label>
+                  <input type="text" id="subject" name="subject" required />
+                </div>
+                
+                <div className="form-group">
+                  <label htmlFor="message">Message</label>
+                  <textarea id="message" name="message" rows="5" required></textarea>
+                </div>
+                
+                <button type="submit" className="contact-submit-btn">Send Message</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Footer */}
-      <footer id="contact" className="footer">
+      <footer className="footer">
         <div className="container">
           <div className="footer-content">
             <div className="footer-section">
@@ -336,6 +659,40 @@ const MainSite = () => {
         onClose={closeProductModal}
         mode="unified"
       />
+
+      {/* Mobile Footer Navigation */}
+      <nav className="mobile-footer-nav">
+        <Link to="/" className={`mobile-nav-item ${location.pathname === '/' ? 'active' : ''}`}>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+            <polyline points="9,22 9,12 15,12 15,22"></polyline>
+          </svg>
+          <span>Home</span>
+        </Link>
+        <Link to="/products" className={`mobile-nav-item ${location.pathname === '/products' ? 'active' : ''}`}>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+            <line x1="8" y1="21" x2="16" y2="21"></line>
+            <line x1="12" y1="17" x2="12" y2="21"></line>
+          </svg>
+          <span>Products</span>
+        </Link>
+        <a href="#about" className="mobile-nav-item">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="16" x2="12" y2="12"></line>
+            <line x1="12" y1="8" x2="12.01" y2="8"></line>
+          </svg>
+          <span>About</span>
+        </a>
+        <a href="#contact" className="mobile-nav-item">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+            <polyline points="22,6 12,13 2,6"></polyline>
+          </svg>
+          <span>Contact</span>
+        </a>
+      </nav>
     </div>
   );
 };
@@ -346,6 +703,7 @@ const App = () => {
       <Router future={{ v7_relativeSplatPath: true, v7_startTransition: true }}>
         <Routes>
           <Route path="/" element={<MainSite />} />
+          <Route path="/products" element={<ProductsPage />} />
           <Route path="/admin" element={<AdminPanel />} />
         </Routes>
       </Router>
