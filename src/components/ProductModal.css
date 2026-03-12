@@ -421,85 +421,186 @@
 /* Mobile Responsive */
 @media (max-width: 768px) {
   .modal-overlay {
-    padding: 1rem;
-    padding-bottom: 5rem; /* Extra padding for mobile footer nav */
+    padding: 0.5rem;
+    padding-bottom: 5.5rem; /* Space for mobile footer nav */
+    align-items: flex-start; /* Align to top for better space usage */
+    padding-top: 1rem;
   }
 
   .modal-content {
     max-width: 95vw;
-    max-height: calc(95vh - 4rem); /* Account for mobile footer */
-    margin-bottom: 4rem; /* Space for mobile footer nav */
+    max-height: calc(100vh - 7rem); /* Fit between header and footer */
+    margin: 0;
   }
 
   .modal-image-container {
-    height: 250px;
-    padding: 1rem;
+    height: 180px; /* Reduced from 250px */
+    padding: 0.75rem;
   }
 
   .modal-details {
-    padding: 1.5rem;
-    padding-bottom: 2rem; /* Extra padding at bottom */
+    padding: 1rem;
+    padding-bottom: 1rem;
+  }
+
+  .modal-header {
+    margin-bottom: 1rem; /* Reduced from 2rem */
   }
 
   .modal-title {
-    font-size: 1.6rem;
+    font-size: 1.4rem;
+    margin-bottom: 0.5rem;
   }
 
   .modal-price {
-    font-size: 1.3rem;
+    font-size: 1.2rem;
+  }
+
+  .modal-info {
+    margin-bottom: 1rem; /* Reduced from 2rem */
+  }
+
+  .modal-section {
+    margin-bottom: 0.75rem;
+  }
+
+  .modal-section h3 {
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .modal-notes,
+  .modal-description {
+    font-size: 0.9rem;
+    line-height: 1.5;
+  }
+
+  .modal-footer {
+    padding-top: 1rem;
   }
 
   .order-now-btn {
-    padding: 1rem 2rem;
-    font-size: 0.9rem;
-    min-width: 180px;
+    padding: 0.875rem 1.75rem;
+    font-size: 0.85rem;
+    min-width: 160px;
+    width: 100%;
   }
 
   .spec-item {
-    padding: 0.5rem 0;
+    padding: 0.4rem 0;
+  }
+
+  .spec-label,
+  .spec-value {
+    font-size: 0.85rem;
   }
 }
 
 @media (max-width: 480px) {
   .modal-overlay {
     padding: 0.5rem;
-    padding-bottom: 5rem; /* Extra padding for mobile footer nav */
+    padding-bottom: 5.5rem; /* Space for mobile footer nav */
+    align-items: flex-start;
+    padding-top: 0.75rem;
   }
 
   .modal-content {
     border-radius: 12px;
-    max-height: calc(90vh - 4rem); /* Account for mobile footer */
-    margin-bottom: 4rem; /* Space for mobile footer nav */
+    max-height: calc(100vh - 6.5rem); /* Fit between top and footer */
+    margin: 0;
+  }
+
+  .modal-close {
+    width: 36px;
+    height: 36px;
+    font-size: 1.25rem;
+    top: 0.75rem;
+    right: 0.75rem;
   }
 
   .modal-image-container {
-    height: 200px;
+    height: 150px; /* Smaller image on small screens */
+    padding: 0.5rem;
   }
 
   .modal-details {
-    padding: 1rem;
-    padding-bottom: 1.5rem; /* Extra padding at bottom */
+    padding: 0.875rem;
+    padding-bottom: 0.875rem;
+  }
+
+  .modal-header {
+    margin-bottom: 0.75rem;
   }
 
   .modal-title {
-    font-size: 1.4rem;
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .modal-price {
+    font-size: 1.1rem;
+  }
+
+  .modal-info {
+    margin-bottom: 0.75rem;
   }
 
   .modal-section {
-    margin-bottom: 1rem;
+    margin-bottom: 0.625rem;
+  }
+
+  .modal-section h3 {
+    font-size: 0.8rem;
+    margin-bottom: 0.4rem;
+  }
+
+  .modal-notes,
+  .modal-description {
+    font-size: 0.85rem;
+    line-height: 1.4;
+  }
+
+  .modal-footer {
+    padding-top: 0.75rem;
   }
 
   .spec-item {
     flex-direction: column;
     align-items: flex-start;
-    gap: 0.25rem;
-    padding: 0.5rem 0;
+    gap: 0.2rem;
+    padding: 0.35rem 0;
+  }
+
+  .spec-label,
+  .spec-value {
+    font-size: 0.8rem;
   }
 
   .order-now-btn {
-    padding: 0.875rem 1.5rem;
-    font-size: 0.85rem;
-    min-width: 160px;
+    padding: 0.75rem 1.25rem;
+    font-size: 0.8rem;
+    min-width: 140px;
+    width: 100%;
+    letter-spacing: 1px;
+  }
+}
+
+/* iPhone 13 Pro and similar devices */
+@media (max-width: 430px) and (min-height: 800px) {
+  .modal-content {
+    max-height: calc(100vh - 7rem);
+  }
+
+  .modal-image-container {
+    height: 160px;
+  }
+
+  .modal-details {
+    padding: 1rem;
+  }
+
+  .modal-section {
+    margin-bottom: 0.75rem;
   }
 }
 
