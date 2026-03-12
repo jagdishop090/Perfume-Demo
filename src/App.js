@@ -215,7 +215,7 @@ const MainSite = () => {
       primary: supabaseBannerUrls[0], // Supabase CDN (most reliable)
       fallback: '/banner-1.jpg', // Local fallback
       fallback2: '/Banners/banner-1.jpg', // Secondary local fallback
-      ...getBannerWithFallbacks('/banner-1.jpg', '/Banners/banner-1.jpg', 'banner1'),
+      placeholder: getBannerWithFallbacks('/banner-1.jpg', '/Banners/banner-1.jpg', 'banner1').placeholder,
       title: 'Introducing',
       subtitle: 'SIGNATURE COLLECTION',
       description: 'Discover the art of luxury fragrance',
@@ -226,7 +226,7 @@ const MainSite = () => {
       primary: supabaseBannerUrls[1], // Supabase CDN (most reliable)
       fallback: '/banner-2.jpg', // Local fallback
       fallback2: '/Banners/banner-2.jpg', // Secondary local fallback
-      ...getBannerWithFallbacks('/banner-2.jpg', '/Banners/banner-2.jpg', 'banner2'),
+      placeholder: getBannerWithFallbacks('/banner-2.jpg', '/Banners/banner-2.jpg', 'banner2').placeholder,
       title: 'Experience',
       subtitle: 'TIMELESS ELEGANCE',
       description: 'Crafted with the finest ingredients',
@@ -237,7 +237,7 @@ const MainSite = () => {
       primary: supabaseBannerUrls[2], // Supabase CDN (most reliable)
       fallback: '/banner-3.jpg', // Local fallback
       fallback2: '/Banners/banner-3.jpg', // Secondary local fallback
-      ...getBannerWithFallbacks('/banner-3.jpg', '/Banners/banner-3.jpg', 'banner3'),
+      placeholder: getBannerWithFallbacks('/banner-3.jpg', '/Banners/banner-3.jpg', 'banner3').placeholder,
       title: 'Explore',
       subtitle: 'EXCLUSIVE SCENTS',
       description: 'Where sophistication meets passion',
