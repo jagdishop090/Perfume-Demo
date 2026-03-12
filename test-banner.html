@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Banner Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .test-section { margin: 20px 0; padding: 20px; border: 1px solid #ccc; }
+        .banner-test { width: 300px; height: 150px; margin: 10px; border: 2px solid #ddd; }
+        .success { border-color: green; }
+        .error { border-color: red; }
+    </style>
+</head>
+<body>
+    <h1>Banner Images Test</h1>
+    
+    <div class="test-section">
+        <h2>Primary Paths (Root)</h2>
+        <img src="/banner-1.jpg" class="banner-test" onload="this.className+=' success'" onerror="this.className+=' error'">
+        <img src="/banner-2.jpg" class="banner-test" onload="this.className+=' success'" onerror="this.className+=' error'">
+        <img src="/banner-3.jpg" class="banner-test" onload="this.className+=' success'" onerror="this.className+=' error'">
+    </div>
+    
+    <div class="test-section">
+        <h2>Fallback Paths (Banners folder)</h2>
+        <img src="/Banners/banner-1.jpg" class="banner-test" onload="this.className+=' success'" onerror="this.className+=' error'">
+        <img src="/Banners/banner-2.jpg" class="banner-test" onload="this.className+=' success'" onerror="this.className+=' error'">
+        <img src="/Banners/banner-3.jpg" class="banner-test" onload="this.className+=' success'" onerror="this.className+=' error'">
+    </div>
+    
+    <div class="test-section">
+        <h2>SVG Placeholder Test</h2>
+        <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICAgIDxkZWZzPgogICAgICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZCIgeDE9IjAlIiB5MT0iMCUiIHgyPSIxMDAlIiB5Mj0iMTAwJSI+CiAgICAgICAgICAgIDxzdG9wIG9mZnNldD0iMCUiIHN0eWxlPSJzdG9wLWNvbG9yOiMzQTJEMjg7c3RvcC1vcGFjaXR5OjEiIC8+CiAgICAgICAgICAgIDxzdG9wIG9mZnNldD0iNTAlIiBzdHlsZT0ic3RvcC1jb2xvcjojQTQ4Mzc0O3N0b3Atb3BhY2l0eToxIiAvPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0eWxlPSJzdG9wLWNvbG9yOiNDQkFEOEQ7c3RvcC1vcGFjaXR5OjEiIC8+CiAgICAgICAgPC9saW5lYXJHcmFkaWVudD4KICAgIDwvZGVmcz4KICAgIDxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JhZCkiIHJ4PSIyMCIvPgogICAgPHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSI0OCIgZm9udC13ZWlnaHQ9ImJvbGQiIAogICAgICAgICAgdGV4dC1hbmNob3I9Im1pZGRsZSIgZG9taW5hbnQtYmFzZWxpbmU9Im1pZGRsZSIgZmlsbD0id2hpdGUiIG9wYWNpdHk9IjAuOSI+CiAgICAgICAgU0lHTkFUVVJFCiAgICA8L3RleHQ+Cjwvc3ZnPg==" class="banner-test" style="width: 300px; height: 150px;">
+    </div>
+    
+    <script>
+        console.log('Banner test page loaded');
+        setTimeout(() => {
+            const images = document.querySelectorAll('.banner-test');
+            let successCount = 0;
+            let errorCount = 0;
+            
+            images.forEach(img => {
+                if (img.className.includes('success')) successCount++;
+                if (img.className.includes('error')) errorCount++;
+            });
+            
+            console.log(`Banner test results: ${successCount} success, ${errorCount} errors`);
+        }, 2000);
+    </script>
+</body>
+</html>
