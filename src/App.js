@@ -200,11 +200,21 @@ const MainSite = () => {
   const [prevBanner, setPrevBanner] = useState(0);
   const { content, loading } = useContent();
 
-  // Banner images - using multiple fallback paths for better compatibility
-  // These are fallback banners when Supabase data is not available
+  // Banner images - using Supabase CDN URLs for reliable delivery
+  // These URLs are served from Supabase CDN and will work on all platforms
+  const supabaseBannerUrls = [
+    "https://tqrztmpxiagerohadtfl.supabase.co/storage/v1/object/public/perfume-images/banners/banner-1.jpg",
+    "https://tqrztmpxiagerohadtfl.supabase.co/storage/v1/object/public/perfume-images/banners/banner-2.jpg",
+    "https://tqrztmpxiagerohadtfl.supabase.co/storage/v1/object/public/perfume-images/banners/banner-3.jpg"
+  ];
+
+  // Banner configuration with Supabase URLs as primary source
   const defaultBanners = [
     {
       id: 1,
+      primary: supabaseBannerUrls[0], // Supabase CDN (most reliable)
+      fallback: '/banner-1.jpg', // Local fallback
+      fallback2: '/Banners/banner-1.jpg', // Secondary local fallback
       ...getBannerWithFallbacks('/banner-1.jpg', '/Banners/banner-1.jpg', 'banner1'),
       title: 'Introducing',
       subtitle: 'SIGNATURE COLLECTION',
@@ -213,6 +223,9 @@ const MainSite = () => {
     },
     {
       id: 2,
+      primary: supabaseBannerUrls[1], // Supabase CDN (most reliable)
+      fallback: '/banner-2.jpg', // Local fallback
+      fallback2: '/Banners/banner-2.jpg', // Secondary local fallback
       ...getBannerWithFallbacks('/banner-2.jpg', '/Banners/banner-2.jpg', 'banner2'),
       title: 'Experience',
       subtitle: 'TIMELESS ELEGANCE',
@@ -221,6 +234,9 @@ const MainSite = () => {
     },
     {
       id: 3,
+      primary: supabaseBannerUrls[2], // Supabase CDN (most reliable)
+      fallback: '/banner-3.jpg', // Local fallback
+      fallback2: '/Banners/banner-3.jpg', // Secondary local fallback
       ...getBannerWithFallbacks('/banner-3.jpg', '/Banners/banner-3.jpg', 'banner3'),
       title: 'Explore',
       subtitle: 'EXCLUSIVE SCENTS',
@@ -229,7 +245,7 @@ const MainSite = () => {
     }
   ];
 
-  // Use default banners since we're not using Supabase hero sections for the main banner slider
+  // Use default banners with Supabase CDN URLs
   const banners = defaultBanners;
 
   // Auto-rotate banners every 5 seconds
@@ -332,17 +348,21 @@ const MainSite = () => {
                     className="banner-image"
                     onError={(e) => {
                       console.log('Banner image failed to load:', e.target.src);
-                      // Try fallback image if available
+                      
+                      // Try fallback sequence: Supabase → Local root → Local Banners → SVG placeholder
                       if (banner.fallback && e.target.src !== banner.fallback) {
-                        console.log('Trying fallback image:', banner.fallback);
+                        console.log('Trying local fallback:', banner.fallback);
                         e.target.src = banner.fallback;
+                      } else if (banner.fallback2 && e.target.src !== banner.fallback2) {
+                        console.log('Trying secondary fallback:', banner.fallback2);
+                        e.target.src = banner.fallback2;
                       } else if (banner.placeholder && e.target.src !== banner.placeholder) {
-                        console.log('Using placeholder image');
+                        console.log('Using SVG placeholder');
                         e.target.src = banner.placeholder;
                       } else {
-                        // Hide the image if all fallbacks fail
+                        // Hide the image if all fallbacks fail - CSS gradient will show
                         e.target.style.display = 'none';
-                        console.log('All banner image fallbacks failed');
+                        console.log('All banner image fallbacks failed, showing CSS gradient');
                       }
                     }}
                   />
