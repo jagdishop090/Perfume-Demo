@@ -198,6 +198,11 @@ const MainSite = () => {
   const [activeCategory, setActiveCategory] = useState('men');
   const [currentBanner, setCurrentBanner] = useState(0);
   const [prevBanner, setPrevBanner] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
+  const [startX, setStartX] = useState(0);
+  const [currentX, setCurrentX] = useState(0);
+  const [dragOffset, setDragOffset] = useState(0);
+  const [showBogoBanner, setShowBogoBanner] = useState(true);
   const { content, loading } = useContent();
 
   // Banner images - using Supabase CDN URLs for reliable delivery
@@ -248,18 +253,69 @@ const MainSite = () => {
   // Use default banners with Supabase CDN URLs
   const banners = defaultBanners;
 
-  // Auto-rotate banners every 5 seconds
+  // Auto-rotate banners every 5 seconds (pause when dragging)
   React.useEffect(() => {
+    if (isDragging) return; // Don't auto-rotate while dragging
+    
     const interval = setInterval(() => {
       setPrevBanner(currentBanner);
       setCurrentBanner((prev) => (prev + 1) % banners.length);
     }, 5000);
     return () => clearInterval(interval);
-  }, [currentBanner, banners.length]);
+  }, [currentBanner, banners.length, isDragging]);
 
   const handleBannerChange = (index) => {
     setPrevBanner(currentBanner);
     setCurrentBanner(index);
+  };
+
+  // Touch and drag handlers
+  const handleDragStart = (e) => {
+    setIsDragging(true);
+    const clientX = e.type === 'mousedown' ? e.clientX : e.touches[0].clientX;
+    setStartX(clientX);
+    setCurrentX(clientX);
+    setDragOffset(0);
+  };
+
+  const handleDragMove = (e) => {
+    if (!isDragging) return;
+    
+    e.preventDefault();
+    const clientX = e.type === 'mousemove' ? e.clientX : e.touches[0].clientX;
+    setCurrentX(clientX);
+    const offset = clientX - startX;
+    
+    // Limit drag distance to prevent excessive movement
+    const maxDrag = 100;
+    const limitedOffset = Math.max(-maxDrag, Math.min(maxDrag, offset));
+    setDragOffset(limitedOffset);
+  };
+
+  const handleDragEnd = () => {
+    if (!isDragging) return;
+    
+    setIsDragging(false);
+    const threshold = 30; // Reduced threshold for better responsiveness
+    
+    if (Math.abs(dragOffset) > threshold) {
+      if (dragOffset > 0) {
+        // Dragged right - go to previous banner
+        const newIndex = currentBanner === 0 ? banners.length - 1 : currentBanner - 1;
+        handleBannerChange(newIndex);
+      } else {
+        // Dragged left - go to next banner
+        const newIndex = (currentBanner + 1) % banners.length;
+        handleBannerChange(newIndex);
+      }
+    }
+    
+    // Smooth return to position
+    setTimeout(() => {
+      setDragOffset(0);
+    }, 50);
+    setStartX(0);
+    setCurrentX(0);
   };
 
   const openProductModal = (product) => {
@@ -294,8 +350,28 @@ const MainSite = () => {
 
   return (
     <div className="app">
+      {/* BOGO Offer Banner */}
+      {showBogoBanner && (
+        <div className="bogo-banner">
+          <div className="bogo-content">
+            <div className="bogo-scroll-container">
+              <div className="bogo-scroll-text">
+                🎉 Limited Time: Buy One Get One 50% OFF on All Fragrances | Free Shipping Over $75 • 🎉 Limited Time: Buy One Get One 50% OFF on All Fragrances | Free Shipping Over $75 • 🎉 Limited Time: Buy One Get One 50% OFF on All Fragrances | Free Shipping Over $75 • 
+              </div>
+            </div>
+            <button 
+              className="bogo-close" 
+              onClick={() => setShowBogoBanner(false)}
+              aria-label="Close offer banner"
+            >
+              ×
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* Header */}
-      <header className="header">
+      <header className={`header ${!showBogoBanner ? 'header-no-bogo' : ''}`}>
         <div className="header-container">
           <div className="logo">
             <Link to="/">
@@ -330,8 +406,14 @@ const MainSite = () => {
       </header>
 
       {/* Hero Banner Slider */}
-      <section id="home" className="hero-banner">
-        <div className="banner-slider">
+      <section id="home" className={`hero-banner ${!showBogoBanner ? 'hero-no-bogo' : ''}`}>
+        <div 
+          className="banner-slider"
+          style={{
+            transform: isDragging ? `translateX(${dragOffset}px)` : 'none',
+            transition: isDragging ? 'none' : 'transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)'
+          }}
+        >
           {banners.map((banner, index) => (
             <div 
               key={banner.id}
@@ -341,11 +423,25 @@ const MainSite = () => {
               }`}
             >
               <div className="banner-content-wrapper">
-                <div className="banner-image-section">
+                <div 
+                  className="banner-image-section"
+                  onMouseDown={handleDragStart}
+                  onMouseMove={handleDragMove}
+                  onMouseUp={handleDragEnd}
+                  onMouseLeave={handleDragEnd}
+                  onTouchStart={handleDragStart}
+                  onTouchMove={handleDragMove}
+                  onTouchEnd={handleDragEnd}
+                  style={{
+                    cursor: isDragging ? 'grabbing' : 'grab',
+                    userSelect: 'none'
+                  }}
+                >
                   <img 
                     src={banner.primary} 
                     alt={banner.alt}
                     className="banner-image"
+                    draggable={false}
                     onError={(e) => {
                       console.log('Banner image failed to load:', e.target.src);
                       

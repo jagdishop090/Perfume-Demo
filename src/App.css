@@ -40,10 +40,78 @@ body {
   box-sizing: border-box;
 }
 
+/* BOGO OFFER BANNER */
+.bogo-banner {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(90deg, #A48374 0%, #CBAD8D 100%);
+  color: #FFFFFF;
+  z-index: 1001;
+  font-size: 0.85rem;
+  font-weight: 500;
+  box-shadow: 0 2px 8px rgba(58, 45, 40, 0.2);
+  overflow: hidden;
+}
+
+.bogo-content {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  max-width: 100%;
+  position: relative;
+  height: 36px;
+}
+
+.bogo-scroll-container {
+  flex: 1;
+  overflow: hidden;
+  white-space: nowrap;
+  margin-right: 2rem; /* Space for close button */
+}
+
+.bogo-scroll-text {
+  display: inline-block;
+  white-space: nowrap;
+  animation: scroll-left 30s linear infinite;
+  letter-spacing: 0.5px;
+}
+
+@keyframes scroll-left {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+.bogo-close {
+  position: absolute;
+  right: 1rem;
+  background: none;
+  border: none;
+  color: #FFFFFF;
+  font-size: 1.2rem;
+  font-weight: bold;
+  cursor: pointer;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+  line-height: 1;
+  z-index: 10;
+}
+
+.bogo-close:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: scale(1.1);
+}
+
 /* HEADER */
 .header {
   position: fixed;
-  top: 0;
+  top: 36px; /* Adjusted for BOGO banner height */
   left: 0;
   right: 0;
   background: rgba(241, 237, 230, 0.95);
@@ -51,6 +119,10 @@ body {
   border-bottom: 1px solid rgba(58, 45, 40, 0.1);
   z-index: 1000;
   transition: all 0.3s ease;
+}
+
+.header-no-bogo {
+  top: 0; /* Reset to top when BOGO banner is closed */
 }
 
 .header-container {
@@ -134,7 +206,7 @@ body {
 
 /* HERO BANNER SLIDER - SIMPLE LEFT TO RIGHT SWIPE */
 .hero-banner {
-  margin-top: 70px;
+  margin-top: 120px; /* Increased gap: BOGO banner (36px) + header (70px) + gap (14px) */
   position: relative;
   height: 55vh;
   min-height: 450px;
@@ -142,11 +214,16 @@ body {
   width: 100%;
 }
 
+.hero-no-bogo {
+  margin-top: 84px; /* When BOGO is closed: header (70px) + gap (14px) */
+}
+
 .banner-slider {
   position: relative;
   width: 100%;
   height: 100%;
   overflow: hidden;
+  will-change: transform; /* Optimize for animations */
 }
 
 .banner-slide {
@@ -155,8 +232,9 @@ body {
   left: 100%;
   width: 100%;
   height: 100%;
-  transition: left 0.8s ease-in-out;
+  transition: left 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   visibility: hidden;
+  will-change: left; /* Optimize slide transitions */
 }
 
 .banner-slide.active {
@@ -169,6 +247,36 @@ body {
   left: -100%;
   visibility: visible;
   z-index: 1;
+}
+
+/* Drag functionality only for image section */
+.banner-image-section {
+  touch-action: pan-y; /* Allow vertical scrolling but handle horizontal ourselves */
+  cursor: grab;
+  position: relative;
+  z-index: 10;
+}
+
+.banner-image-section:active {
+  cursor: grabbing;
+}
+
+/* Disable text selection during drag on image section only */
+.banner-image-section * {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  pointer-events: none; /* Prevent image drag interference */
+}
+
+.banner-image-section {
+  pointer-events: auto; /* Re-enable pointer events on the container */
+}
+
+/* Smooth image transitions */
+.banner-image {
+  transition: transform 0.3s ease;
 }
 
 .banner-content-wrapper {
@@ -1035,20 +1143,20 @@ body {
   font-weight: 600;
 }
 
-/* MOBILE FOOTER NAVIGATION */
+/* MOBILE FOOTER NAVIGATION - MYOP Style */
 .mobile-footer-nav {
   display: none;
   position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
-  background: rgba(241, 237, 230, 0.95);
+  background: rgba(255, 255, 255, 0.98);
   backdrop-filter: blur(20px);
-  border-top: 1px solid rgba(58, 45, 40, 0.1);
-  border-radius: 20px 20px 0 0;
-  padding: 0.5rem 0;
+  border-top: 1px solid rgba(58, 45, 40, 0.08);
+  border-radius: 16px 16px 0 0;
+  padding: 0.5rem 0 0.75rem;
   z-index: 1000;
-  box-shadow: 0 -2px 10px rgba(58, 45, 40, 0.1);
+  box-shadow: 0 -4px 20px rgba(58, 45, 40, 0.1);
 }
 
 .mobile-nav-item {
@@ -1058,12 +1166,12 @@ body {
   justify-content: center;
   text-decoration: none;
   color: #A48374;
-  font-size: 0.7rem;
+  font-size: 0.65rem;
   font-weight: 500;
   padding: 0.5rem;
   transition: all 0.3s ease;
   flex: 1;
-  gap: 0.25rem;
+  gap: 0.2rem;
 }
 
 .mobile-nav-item:hover,
@@ -1074,17 +1182,20 @@ body {
 .mobile-nav-item svg {
   stroke-width: 1.5;
   transition: all 0.3s ease;
+  width: 20px;
+  height: 20px;
 }
 
 .mobile-nav-item:hover svg,
 .mobile-nav-item.active svg {
   stroke: #3A2D28;
-  transform: scale(1.1);
+  transform: scale(1.05);
 }
 
 .mobile-nav-item span {
-  margin-top: 0.2rem;
-  letter-spacing: 0.5px;
+  margin-top: 0.15rem;
+  letter-spacing: 0.3px;
+  text-transform: capitalize;
 }
 
 /* PRODUCTS PAGE */
@@ -1119,14 +1230,44 @@ body {
     padding: 0 1rem;
   }
 
+  /* BOGO Banner Mobile */
+  .bogo-banner {
+    font-size: 0.75rem;
+  }
+
+  .bogo-content {
+    padding: 0.4rem 1rem;
+    height: 32px;
+  }
+
+  .bogo-scroll-container {
+    margin-right: 1.75rem; /* Adjusted for smaller close button */
+  }
+
+  .bogo-scroll-text {
+    animation: scroll-left 25s linear infinite; /* Slightly faster on mobile */
+  }
+
+  .bogo-close {
+    right: 0.75rem;
+    font-size: 1.1rem;
+    padding: 0.2rem 0.4rem;
+  }
+
+  /* Header Mobile */
+  .header {
+    top: 32px; /* Adjusted for smaller BOGO banner on mobile */
+  }
+
   .header-container {
-    padding: 1.25rem 1rem;
-    flex-wrap: wrap;
+    padding: 1rem;
+    flex-wrap: nowrap;
+    gap: 1rem;
   }
 
   .logo h1 {
-    font-size: 1.6rem;
-    letter-spacing: 1.5px;
+    font-size: 1.4rem;
+    letter-spacing: 1px;
   }
 
   .nav {
@@ -1134,21 +1275,37 @@ body {
   }
 
   .header-actions {
-    gap: 0.5rem;
+    gap: 0.75rem;
   }
 
+  /* Hero Banner - Compact Mobile View */
   .hero-banner {
-    height: calc(100vh - 70px);
-    min-height: calc(100vh - 70px);
-    margin-top: 70px;
+    height: 45vh;
+    min-height: 350px;
+    max-height: 450px;
+    margin-top: 120px; /* Increased gap: BOGO banner (32px) + header (75px) + gap (13px) */
+    margin-left: 1rem;
+    margin-right: 1rem;
+    border-radius: 16px;
+    overflow: hidden;
+  }
+
+  .hero-no-bogo {
+    margin-top: 88px; /* When BOGO is closed: header (75px) + gap (13px) */
   }
 
   .banner-content-wrapper {
     grid-template-columns: 1fr;
+    height: 100%;
   }
 
   .banner-image-section {
     display: block;
+    height: 100%;
+  }
+
+  .banner-image {
+    border-radius: 16px;
   }
 
   .banner-text-section {
@@ -1156,45 +1313,112 @@ body {
   }
 
   .banner-dots {
-    bottom: 1rem;
+    bottom: 1.5rem;
+    gap: 0.5rem;
+  }
+
+  .banner-dot {
+    width: 8px;
+    height: 8px;
+  }
+
+  /* Categories Section - Mobile Optimized */
+  .categories {
+    padding: 3rem 0;
+  }
+
+  /* Section Headers - MYOP Style */
+  .section-header {
+    margin-bottom: 1.5rem;
+    text-align: left;
+    padding: 0 1rem;
+  }
+
+  .section-header h2 {
+    font-size: 1.5rem;
+    margin-bottom: 0.25rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .section-header p {
+    font-size: 0.9rem;
+    text-align: left;
+    color: #CBAD8D;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-weight: 500;
   }
 
   .category-grid {
     grid-template-columns: 1fr;
-    gap: 1.5rem;
+    gap: 1rem;
+    padding: 0 1rem;
   }
 
   .category-card {
-    height: 300px;
+    height: 280px;
+    border-radius: 16px;
   }
 
+  /* Products Grid - MYOP Style */
+  .products-section {
+    padding: 3rem 0;
+  }
+
+  /* Products Grid - MYOP Style */
   .products-grid {
-    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-    gap: 1rem;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+    padding: 0 1rem;
   }
 
   .product-card {
     font-size: 0.9rem;
+    border-radius: 12px;
+    background: #FFFFFF;
+    box-shadow: 0 2px 12px rgba(58, 45, 40, 0.08);
+    border: 1px solid rgba(58, 45, 40, 0.05);
   }
 
   .product-image {
-    height: 200px;
+    height: 160px;
+    border-radius: 12px 12px 0 0;
+    background: linear-gradient(135deg, #EBE3DB 0%, #D1C7BD 100%);
   }
 
   .product-info {
-    padding: 1rem;
+    padding: 0.75rem;
   }
 
   .product-name {
-    font-size: 1rem;
+    font-size: 0.85rem;
+    margin-bottom: 0.2rem;
+    line-height: 1.3;
+    font-weight: 600;
+    color: #3A2D28;
   }
 
   .product-notes {
-    font-size: 0.85rem;
+    font-size: 0.7rem;
+    margin-bottom: 0.4rem;
+    line-height: 1.4;
+    color: #A48374;
   }
 
   .product-price {
-    font-size: 1.1rem;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #3A2D28;
+  }
+
+  .product-category {
+    font-size: 0.65rem;
+    margin-bottom: 0.2rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #CBAD8D;
   }
 
   .about-content {
@@ -1204,7 +1428,7 @@ body {
   }
 
   .about-text h2 {
-    font-size: 2rem;
+    font-size: 1.75rem;
   }
 
   .about-stats {
@@ -1213,7 +1437,7 @@ body {
   }
 
   .stat-number {
-    font-size: 2rem;
+    font-size: 1.75rem;
   }
 
   .newsletter-content {
@@ -1227,7 +1451,7 @@ body {
   }
 
   .newsletter-text h2 {
-    font-size: 1.8rem;
+    font-size: 1.6rem;
   }
 
   .footer-content {
@@ -1284,17 +1508,10 @@ body {
     padding-bottom: 5rem;
   }
 
-  .section-header h2 {
-    font-size: 2rem;
-  }
-
-  .section-header p {
-    font-size: 1rem;
-  }
-
   .product-filters {
     flex-wrap: wrap;
     gap: 0.75rem;
+    padding: 0 1rem;
   }
 
   .filter-btn {
@@ -1303,7 +1520,7 @@ body {
   }
 
   .products-page-section {
-    padding: 6rem 0 6rem;
+    padding: 5rem 0 6rem;
   }
 
   .products-page {
@@ -1321,13 +1538,41 @@ body {
 }
 
 @media (max-width: 480px) {
+  /* BOGO Banner Small Mobile */
+  .bogo-banner {
+    font-size: 0.7rem;
+  }
+
+  .bogo-content {
+    padding: 0.35rem 0.75rem;
+    height: 28px;
+  }
+
+  .bogo-scroll-container {
+    margin-right: 1.5rem;
+  }
+
+  .bogo-scroll-text {
+    animation: scroll-left 20s linear infinite; /* Faster on small screens */
+  }
+
+  .bogo-close {
+    right: 0.5rem;
+    font-size: 1rem;
+  }
+
+  /* Header Small Mobile */
+  .header {
+    top: 28px; /* Adjusted for smaller BOGO banner */
+  }
+
   .header-container {
-    padding: 1rem 0.75rem;
+    padding: 0.875rem 1rem;
   }
 
   .logo h1 {
-    font-size: 1.4rem;
-    letter-spacing: 1.5px;
+    font-size: 1.2rem;
+    letter-spacing: 1px;
   }
 
   .header-actions button {
@@ -1335,14 +1580,27 @@ body {
   }
 
   .header-actions svg {
-    width: 18px;
-    height: 18px;
+    width: 20px;
+    height: 20px;
   }
 
+  /* Hero Banner - Optimized for Small Screens */
   .hero-banner {
-    height: calc(100vh - 65px);
-    min-height: calc(100vh - 65px);
-    margin-top: 65px;
+    height: 40vh;
+    min-height: 320px;
+    max-height: 400px;
+    margin-top: 110px; /* Increased gap: BOGO banner (28px) + header (70px) + gap (12px) */
+    margin-left: 1rem;
+    margin-right: 1rem;
+    border-radius: 14px;
+  }
+
+  .hero-no-bogo {
+    margin-top: 82px; /* When BOGO is closed: header (70px) + gap (12px) */
+  }
+
+  .banner-image {
+    border-radius: 14px;
   }
 
   .banner-content-wrapper {
@@ -1358,51 +1616,76 @@ body {
   }
 
   .banner-dot {
-    width: 6px;
-    height: 6px;
+    width: 7px;
+    height: 7px;
   }
 
   .banner-dots {
     gap: 0.4rem;
-    bottom: 0.75rem;
+    bottom: 1.25rem;
+  }
+
+  /* Section Headers */
+  .section-header {
+    padding: 0 1rem;
+    margin-bottom: 1.5rem;
   }
 
   .section-header h2 {
-    font-size: 1.8rem;
+    font-size: 1.5rem;
+    line-height: 1.3;
   }
 
   .section-header p {
-    font-size: 0.95rem;
+    font-size: 0.9rem;
+  }
+
+  /* Categories */
+  .categories {
+    padding: 2.5rem 0;
+  }
+
+  .category-grid {
+    padding: 0 1rem;
   }
 
   .category-card {
-    height: 250px;
+    height: 240px;
+    border-radius: 14px;
   }
 
   .category-overlay h3 {
-    font-size: 1.5rem;
+    font-size: 1.4rem;
   }
 
   .category-overlay p {
-    font-size: 0.95rem;
+    font-size: 0.9rem;
+    margin-bottom: 1.5rem;
   }
 
   .category-btn {
-    padding: 0.7rem 1.5rem;
-    font-size: 0.85rem;
+    padding: 0.65rem 1.4rem;
+    font-size: 0.8rem;
+  }
+
+  /* Products Section - MYOP Style 2 Column Grid */
+  .products-section {
+    padding: 2.5rem 0;
   }
 
   .products-grid {
-    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-    gap: 0.75rem;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.875rem;
+    padding: 0 1rem;
   }
 
   .product-card {
-    border-radius: 12px;
+    border-radius: 14px;
   }
 
   .product-image {
     height: 160px;
+    border-radius: 14px 14px 0 0;
   }
 
   .product-info {
@@ -1410,77 +1693,99 @@ body {
   }
 
   .product-category {
-    font-size: 0.7rem;
+    font-size: 0.65rem;
+    margin-bottom: 0.2rem;
   }
 
   .product-name {
-    font-size: 0.95rem;
+    font-size: 0.875rem;
+    margin-bottom: 0.2rem;
+    line-height: 1.3;
   }
 
   .product-notes {
-    font-size: 0.8rem;
-    margin-bottom: 0.5rem;
+    font-size: 0.75rem;
+    margin-bottom: 0.4rem;
+    line-height: 1.4;
   }
 
   .product-price {
-    font-size: 1rem;
+    font-size: 0.95rem;
   }
 
+  /* Product Filters */
   .filter-btn {
     padding: 0.6rem 1rem;
     font-size: 0.8rem;
   }
 
+  /* About Section */
+  .about-section {
+    padding: 2.5rem 0;
+  }
+
   .about-text h2 {
-    font-size: 1.6rem;
+    font-size: 1.5rem;
   }
 
   .about-text p {
-    font-size: 1rem;
+    font-size: 0.95rem;
   }
 
   .about-stats {
     grid-template-columns: 1fr;
-    gap: 1.5rem;
+    gap: 1.25rem;
   }
 
   .stat-number {
-    font-size: 2rem;
+    font-size: 1.75rem;
+  }
+
+  /* Newsletter */
+  .newsletter-section {
+    padding: 2.5rem 0;
   }
 
   .newsletter-text h2 {
-    font-size: 1.6rem;
+    font-size: 1.5rem;
   }
 
   .newsletter-text p {
-    font-size: 1rem;
+    font-size: 0.95rem;
   }
 
   .newsletter-form input {
-    padding: 0.9rem 1.2rem;
-    font-size: 0.95rem;
+    padding: 0.875rem 1.2rem;
+    font-size: 0.9rem;
   }
 
   .newsletter-form button {
-    padding: 0.9rem 1.5rem;
-    font-size: 0.95rem;
+    padding: 0.875rem 1.5rem;
+    font-size: 0.9rem;
+  }
+
+  /* Contact Section */
+  .contact-section {
+    padding: 2.5rem 0;
   }
 
   .contact-text h2 {
-    font-size: 1.6rem;
+    font-size: 1.5rem;
   }
 
+  /* Mobile Footer Nav */
   .mobile-footer-nav {
-    padding: 0.75rem 0.5rem;
+    padding: 0.625rem 0.5rem;
   }
 
   .mobile-nav-item {
-    font-size: 0.7rem;
+    font-size: 0.65rem;
+    padding: 0.4rem;
   }
 
   .mobile-nav-item svg {
-    width: 18px;
-    height: 18px;
+    width: 20px;
+    height: 20px;
   }
 }
 
@@ -1503,44 +1808,56 @@ body {
   }
 
   .header-container {
-    padding: 1rem;
+    padding: 0.875rem 1rem;
     max-width: 100%;
   }
 
+  /* Hero Banner - Properly Sized */
   .hero-banner {
-    width: 100%;
-    max-width: 100vw;
-    height: calc(100vh - 70px);
-    min-height: calc(100vh - 70px);
+    width: calc(100% - 2rem);
+    max-width: calc(100vw - 2rem);
+    height: 42vh;
+    min-height: 300px;
+    max-height: 380px;
+    margin-top: 115px; /* Increased gap: BOGO banner (28px) + header (75px) + gap (12px) */
+    margin-left: 1rem;
+    margin-right: 1rem;
+    border-radius: 14px;
   }
 
   .banner-slider {
     width: 100%;
-    max-width: 100vw;
+    max-width: 100%;
+    border-radius: 14px;
   }
 
   .banner-slide {
     width: 100%;
-    max-width: 100vw;
+    max-width: 100%;
+    border-radius: 14px;
   }
 
   .banner-content-wrapper {
     width: 100%;
-    max-width: 100vw;
+    max-width: 100%;
     padding: 0;
+    border-radius: 14px;
   }
 
   .banner-image-section {
     width: 100%;
-    max-width: 100vw;
+    max-width: 100%;
+    border-radius: 14px;
   }
 
   .banner-image {
     width: 100%;
-    max-width: 100vw;
+    max-width: 100%;
     object-fit: cover;
+    border-radius: 14px;
   }
 
+  /* Sections */
   .categories,
   .products-section,
   .about-section,
@@ -1549,6 +1866,7 @@ body {
     width: 100%;
     max-width: 100vw;
     overflow-x: hidden;
+    padding: 2.5rem 0;
   }
 
   .category-grid,
@@ -1562,51 +1880,272 @@ body {
     width: 100%;
     max-width: 100%;
   }
+
+  /* Product Grid - 2 Columns MYOP Style */
+  .products-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.875rem;
+  }
+
+  .product-card {
+    border-radius: 14px;
+  }
+
+  .product-image {
+    height: 155px;
+  }
 }
 
 /* EXTRA SMALL DEVICES */
 @media (max-width: 375px) {
   /* iPhone SE, iPhone 12 mini, and smaller devices */
   .container {
-    padding: 0 0.75rem;
+    padding: 0 0.875rem;
   }
 
   .header-container {
-    padding: 0.75rem 1rem;
+    padding: 0.75rem 0.875rem;
   }
 
   .logo h1 {
-    font-size: 1.2rem;
-    letter-spacing: 1px;
+    font-size: 1.1rem;
+    letter-spacing: 0.5px;
   }
 
-  .products-grid {
-    grid-template-columns: 1fr;
-    gap: 1rem;
+  /* Hero Banner - Compact for Small Screens */
+  .hero-banner {
+    height: 38vh;
+    min-height: 280px;
+    max-height: 350px;
+    margin-top: 105px; /* Increased gap: BOGO banner (28px) + header (65px) + gap (12px) */
+    margin-left: 0.875rem;
+    margin-right: 0.875rem;
+    border-radius: 12px;
   }
 
-  .product-card {
-    max-width: 100%;
+  .banner-image {
+    border-radius: 12px;
+  }
+
+  /* Section Headers - Left Aligned Like MYOP */
+  .section-header {
+    text-align: left;
+    padding: 0 0.875rem;
+    margin-bottom: 1.25rem;
   }
 
   .section-header h2 {
-    font-size: 1.5rem;
+    font-size: 1.4rem;
+    line-height: 1.2;
+    margin-bottom: 0.25rem;
   }
 
-  .about-text h2,
+  .section-header p {
+    font-size: 0.85rem;
+    color: #A48374;
+  }
+
+  /* Products Grid - MYOP 2-Column Style */
+  .products-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+    padding: 0 0.875rem;
+  }
+
+  .product-card {
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(58, 45, 40, 0.08);
+  }
+
+  .product-image {
+    height: 145px;
+    border-radius: 12px 12px 0 0;
+  }
+
+  .product-info {
+    padding: 0.625rem;
+  }
+
+  .product-category {
+    font-size: 0.6rem;
+    margin-bottom: 0.15rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .product-name {
+    font-size: 0.8rem;
+    margin-bottom: 0.15rem;
+    line-height: 1.2;
+    font-weight: 600;
+  }
+
+  .product-notes {
+    font-size: 0.7rem;
+    margin-bottom: 0.3rem;
+    line-height: 1.3;
+    color: #A48374;
+  }
+
+  .product-price {
+    font-size: 0.875rem;
+    font-weight: 700;
+  }
+
+  /* Categories - Single Column */
+  .category-grid {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+    padding: 0 0.875rem;
+  }
+
+  .category-card {
+    height: 200px;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(58, 45, 40, 0.12);
+  }
+
+  .category-overlay h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+  }
+
+  .category-overlay p {
+    font-size: 0.8rem;
+    margin-bottom: 1rem;
+  }
+
+  .category-btn {
+    padding: 0.6rem 1.2rem;
+    font-size: 0.75rem;
+    border-radius: 20px;
+  }
+
+  /* Product Filters */
+  .product-filters {
+    padding: 0 0.875rem;
+    gap: 0.5rem;
+  }
+
+  .filter-btn {
+    padding: 0.55rem 0.875rem;
+    font-size: 0.75rem;
+    border-radius: 20px;
+  }
+
+  /* About Section */
+  .about-section {
+    padding: 2rem 0;
+  }
+
+  .about-text h2 {
+    font-size: 1.4rem;
+  }
+
+  .about-text p {
+    font-size: 0.9rem;
+  }
+
+  /* Newsletter */
+  .newsletter-section {
+    padding: 2rem 0;
+  }
+
   .newsletter-text h2 {
     font-size: 1.4rem;
+  }
+
+  .newsletter-text p {
+    font-size: 0.9rem;
+  }
+
+  .newsletter-form input {
+    padding: 0.8rem 1rem;
+    font-size: 0.875rem;
+  }
+
+  .newsletter-form button {
+    padding: 0.8rem 1.25rem;
+    font-size: 0.875rem;
+  }
+
+  /* Mobile Footer Nav */
+  .mobile-footer-nav {
+    padding: 0.5rem 0.25rem;
+  }
+
+  .mobile-nav-item {
+    font-size: 0.6rem;
+    padding: 0.35rem;
+  }
+
+  .mobile-nav-item svg {
+    width: 18px;
+    height: 18px;
   }
 }
 
 /* LANDSCAPE MODE FIX */
 @media (max-height: 500px) and (orientation: landscape) {
   .hero-banner {
-    height: 80vh;
-    min-height: 400px;
+    height: 75vh;
+    min-height: 350px;
+    max-height: 400px;
   }
 
   .banner-dots {
-    bottom: 1rem;
+    bottom: 0.75rem;
+  }
+}
+
+/* MOBILE SPECIFIC ENHANCEMENTS */
+@media (max-width: 768px) {
+  /* Improve touch targets */
+  .banner-dot {
+    width: 10px;
+    height: 10px;
+    margin: 0 2px;
+  }
+
+  .banner-dot.active {
+    background: #CBAD8D;
+    box-shadow: 0 0 0 2px rgba(203, 173, 141, 0.3);
+  }
+
+  /* Better spacing for mobile */
+  .categories {
+    padding: 2.5rem 0 1.5rem;
+  }
+
+  .products-section {
+    padding: 1.5rem 0 2.5rem;
+  }
+
+  /* Mobile-optimized section headers */
+  .section-header {
+    text-align: left;
+    padding: 0 1rem;
+  }
+
+  .section-header h2 {
+    color: #3A2D28;
+    font-weight: 700;
+  }
+
+  .section-header p {
+    color: #A48374;
+    font-weight: 400;
+  }
+
+  /* Product card hover effects for mobile */
+  .product-card:active {
+    transform: scale(0.98);
+    transition: transform 0.1s ease;
+  }
+
+  /* Category card mobile interactions */
+  .category-card:active {
+    transform: scale(0.98);
+    transition: transform 0.1s ease;
   }
 }
