@@ -1263,13 +1263,13 @@ body {
   }
 
   .header-container {
-    padding: 1rem;
+    padding: 1.25rem 1rem; /* Increased from 1rem */
     flex-wrap: nowrap;
     gap: 1rem;
   }
 
   .logo h1 {
-    font-size: 1.4rem;
+    font-size: 1.6rem; /* Increased from 1.4rem */
     letter-spacing: 1px;
   }
 
@@ -1281,12 +1281,21 @@ body {
     gap: 0.75rem;
   }
 
+  .header-actions button {
+    padding: 0.6rem; /* Increased from default */
+  }
+
+  .header-actions svg {
+    width: 22px; /* Increased from 20px */
+    height: 22px;
+  }
+
   /* Hero Banner - Compact Mobile View */
   .hero-banner {
     height: 45vh;
     min-height: 350px;
     max-height: 450px;
-    margin-top: 120px; /* Increased gap: BOGO banner (32px) + header (75px) + gap (13px) */
+    margin-top: 125px; /* Increased for larger header: BOGO banner (32px) + header (80px) + gap (13px) */
     margin-left: 1rem;
     margin-right: 1rem;
     border-radius: 16px;
@@ -1294,7 +1303,7 @@ body {
   }
 
   .hero-no-bogo {
-    margin-top: 88px; /* When BOGO is closed: header (75px) + gap (13px) */
+    margin-top: 93px; /* When BOGO is closed: header (80px) + gap (13px) */
   }
 
   .banner-content-wrapper {
@@ -1570,21 +1579,21 @@ body {
   }
 
   .header-container {
-    padding: 0.875rem 1rem;
+    padding: 1.125rem 1rem; /* Increased from 0.875rem */
   }
 
   .logo h1 {
-    font-size: 1.2rem;
+    font-size: 1.4rem; /* Increased from 1.2rem */
     letter-spacing: 1px;
   }
 
   .header-actions button {
-    padding: 0.4rem;
+    padding: 0.5rem; /* Increased from 0.4rem */
   }
 
   .header-actions svg {
-    width: 20px;
-    height: 20px;
+    width: 22px; /* Increased from 20px */
+    height: 22px;
   }
 
   /* Hero Banner - Optimized for Small Screens */
@@ -1592,14 +1601,14 @@ body {
     height: 40vh;
     min-height: 320px;
     max-height: 400px;
-    margin-top: 110px; /* Increased gap: BOGO banner (28px) + header (70px) + gap (12px) */
+    margin-top: 115px; /* Increased for larger header: BOGO banner (28px) + header (75px) + gap (12px) */
     margin-left: 1rem;
     margin-right: 1rem;
     border-radius: 14px;
   }
 
   .hero-no-bogo {
-    margin-top: 82px; /* When BOGO is closed: header (70px) + gap (12px) */
+    margin-top: 87px; /* When BOGO is closed: header (75px) + gap (12px) */
   }
 
   .banner-image {
@@ -1920,10 +1929,14 @@ body {
     height: 38vh;
     min-height: 280px;
     max-height: 350px;
-    margin-top: 105px; /* Increased gap: BOGO banner (28px) + header (65px) + gap (12px) */
+    margin-top: 110px; /* Increased for larger header: BOGO banner (28px) + header (70px) + gap (12px) */
     margin-left: 0.875rem;
     margin-right: 0.875rem;
     border-radius: 12px;
+  }
+
+  .hero-no-bogo {
+    margin-top: 82px; /* When BOGO is closed: header (70px) + gap (12px) */
   }
 
   .banner-image {
