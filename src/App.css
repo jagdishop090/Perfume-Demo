@@ -72,16 +72,31 @@ body {
   position: relative;
 }
 
+.bogo-scroll-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
 .bogo-scroll-text {
   display: inline-block;
   white-space: nowrap;
-  animation: scroll-left 45s linear infinite;
   letter-spacing: 0.5px;
-  will-change: transform; /* Optimize for animation performance */
-  animation-fill-mode: forwards; /* Ensure animation completes properly */
+  will-change: transform;
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 
-@keyframes scroll-left {
+.bogo-scroll-text-1 {
+  animation: scroll-seamless-1 20s linear infinite;
+}
+
+.bogo-scroll-text-2 {
+  animation: scroll-seamless-2 20s linear infinite;
+}
+
+@keyframes scroll-seamless-1 {
   0% {
     transform: translateX(100%);
   }
@@ -89,6 +104,17 @@ body {
     transform: translateX(-100%);
   }
 }
+
+@keyframes scroll-seamless-2 {
+  0% {
+    transform: translateX(200%);
+  }
+  100% {
+    transform: translateX(0%);
+  }
+}
+
+
 
 .bogo-close {
   position: absolute;
@@ -1247,8 +1273,12 @@ body {
     margin-right: 1.75rem; /* Adjusted for smaller close button */
   }
 
-  .bogo-scroll-text {
-    animation: scroll-left 40s linear infinite; /* Slower on mobile */
+  .bogo-scroll-text-1 {
+    animation: scroll-seamless-1 18s linear infinite;
+  }
+
+  .bogo-scroll-text-2 {
+    animation: scroll-seamless-2 18s linear infinite;
   }
 
   .bogo-close {
@@ -1564,8 +1594,12 @@ body {
     margin-right: 1.5rem;
   }
 
-  .bogo-scroll-text {
-    animation: scroll-left 35s linear infinite; /* Slower on small screens */
+  .bogo-scroll-text-1 {
+    animation: scroll-seamless-1 16s linear infinite;
+  }
+
+  .bogo-scroll-text-2 {
+    animation: scroll-seamless-2 16s linear infinite;
   }
 
   .bogo-close {

@@ -351,8 +351,13 @@ const MainSite = () => {
         <div className="bogo-banner">
           <div className="bogo-content">
             <div className="bogo-scroll-container">
-              <div className="bogo-scroll-text">
-                🎉 Limited Time: Buy One Get One 50% OFF on All Fragrances | Free Shipping Over $75 • 🎉 Limited Time: Buy One Get One 50% OFF on All Fragrances | Free Shipping Over $75 • 🎉 Limited Time: Buy One Get One 50% OFF on All Fragrances | Free Shipping Over $75 • 🎉 Limited Time: Buy One Get One 50% OFF on All Fragrances | Free Shipping Over $75 • 🎉 Limited Time: Buy One Get One 50% OFF on All Fragrances | Free Shipping Over $75 • 
+              <div className="bogo-scroll-wrapper">
+                <div className="bogo-scroll-text bogo-scroll-text-1">
+                  🎉 Limited Time: Buy One Get One 50% OFF on All Fragrances | Free Shipping Over $75 • 
+                </div>
+                <div className="bogo-scroll-text bogo-scroll-text-2">
+                  🎉 Limited Time: Buy One Get One 50% OFF on All Fragrances | Free Shipping Over $75 • 
+                </div>
               </div>
             </div>
             <button 
