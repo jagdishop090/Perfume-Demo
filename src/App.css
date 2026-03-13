@@ -1183,13 +1183,13 @@ body {
   display: flex;
   align-items: flex-start;
   justify-content: flex-start;
-  padding-top: 100px; /* Account for header height */
+  padding-top: 68px; /* Start from header bottom: BOGO (32px) + header (36px) */
 }
 
 .mobile-menu {
   background: #F1EDE6;
   width: 280px;
-  height: calc(100vh - 100px);
+  height: calc(100vh - 68px);
   border-radius: 0 20px 20px 0;
   box-shadow: 0 4px 20px rgba(58, 45, 40, 0.3);
   overflow-y: auto;
@@ -1258,9 +1258,15 @@ body {
 
 /* MOBILE SEARCH BAR */
 .mobile-search-bar {
+  position: absolute;
+  top: 100%; /* Start right below the header */
+  left: 0;
+  right: 0;
   background: #EBE3DB;
   border-top: 1px solid rgba(58, 45, 40, 0.1);
   padding: 1rem;
+  z-index: 1500;
+  box-shadow: 0 4px 12px rgba(58, 45, 40, 0.15);
 }
 
 .search-form {
@@ -1395,6 +1401,15 @@ body {
 @media (max-width: 768px) {
   .container {
     padding: 0 1rem;
+  }
+
+  /* Mobile menu positioning for tablet */
+  .mobile-menu-overlay {
+    padding-top: 64px; /* BOGO (32px) + header with padding (32px) */
+  }
+
+  .mobile-menu {
+    height: calc(100vh - 64px);
   }
 
   /* Show mobile menu and search on mobile */
@@ -1781,12 +1796,13 @@ body {
     margin-right: 1.5rem;
   }
 
-  .bogo-scroll-wrapper {
-    animation: scroll-seamless 22s linear infinite; /* Faster on small screens */
+  /* Mobile menu positioning for small screens */
+  .mobile-menu-overlay {
+    padding-top: 60px; /* BOGO (28px) + header (32px) */
   }
 
-  .bogo-scroll-text {
-    font-size: 0.7rem; /* Even smaller on small screens */
+  .mobile-menu {
+    height: calc(100vh - 60px);
   }
 
   .bogo-close {
