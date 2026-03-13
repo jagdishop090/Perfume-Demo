@@ -351,7 +351,7 @@ const MainSite = () => {
         <div className="bogo-banner">
           <div className="bogo-content">
             <div className="bogo-scroll-container">
-              <span className="bogo-text">🎉 BOGO 50% OFF All Fragrances + Free Shipping $75+</span>
+              <span className="bogo-text">🎉 BOGO 1+1 Free For All Fragrances</span>
             </div>
             <button 
               className="bogo-close" 
