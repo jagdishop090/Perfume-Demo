@@ -202,6 +202,9 @@ const MainSite = () => {
   const [startX, setStartX] = useState(0);
   const [dragOffset, setDragOffset] = useState(0);
   const [showBogoBanner, setShowBogoBanner] = useState(true);
+  const [showMobileMenu, setShowMobileMenu] = useState(false);
+  const [showSearchBar, setShowSearchBar] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
   const { content, loading } = useContent();
 
   // Banner images - using Supabase CDN URLs for reliable delivery
@@ -324,6 +327,33 @@ const MainSite = () => {
     setSelectedProduct(null);
   };
 
+  // Mobile menu handlers
+  const toggleMobileMenu = () => {
+    setShowMobileMenu(!showMobileMenu);
+  };
+
+  const closeMobileMenu = () => {
+    setShowMobileMenu(false);
+  };
+
+  // Search handlers
+  const toggleSearchBar = () => {
+    setShowSearchBar(!showSearchBar);
+    if (showSearchBar) {
+      setSearchQuery('');
+    }
+  };
+
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      // Implement search functionality here
+      console.log('Searching for:', searchQuery);
+      // You can add navigation to products page with search query
+      // navigate(`/products?search=${encodeURIComponent(searchQuery)}`);
+    }
+  };
+
   // Combine all products for the featured section
   const allProducts = [
     ...(content.men?.products || []).map(p => ({ ...p, category: 'men' })),
@@ -353,10 +383,10 @@ const MainSite = () => {
             <div className="bogo-scroll-container">
               <div className="bogo-scroll-wrapper">
                 <div className="bogo-scroll-text bogo-text-1">
-                  🎉 BOGO 1+1 Free For All Fragrances • 🎉 BOGO 1+1 Free For All Fragrances • 🎉 BOGO 1+1 Free For All Fragrances • 🎉 BOGO 1+1 Free For All Fragrances • 🎉 BOGO 1+1 Free For All Fragrances • 
+                  🎉 BOGO 1+1 Free For All Fragrances • 🎉 BOGO 1+1 Free For All Fragrances • 🎉 BOGO 1+1 Free For All Fragrances • 🎉 BOGO 1+1 Free For All Fragrances • 🎉 BOGO 1+1 Free For All Fragrances
                 </div>
                 <div className="bogo-scroll-text bogo-text-2">
-                  🎉 BOGO 1+1 Free For All Fragrances • 🎉 BOGO 1+1 Free For All Fragrances • 🎉 BOGO 1+1 Free For All Fragrances • 🎉 BOGO 1+1 Free For All Fragrances • 🎉 BOGO 1+1 Free For All Fragrances • 
+                  • 🎉 BOGO 1+1 Free For All Fragrances • 🎉 BOGO 1+1 Free For All Fragrances • 🎉 BOGO 1+1 Free For All Fragrances • 🎉 BOGO 1+1 Free For All Fragrances • 🎉 BOGO 1+1 Free For All Fragrances
                 </div>
               </div>
             </div>
@@ -374,8 +404,17 @@ const MainSite = () => {
       {/* Header */}
       <header className={`header ${!showBogoBanner ? 'header-no-bogo' : ''}`}>
         <div className="header-container">
+          {/* Hamburger Menu - Mobile Only */}
+          <button className="hamburger-menu" onClick={toggleMobileMenu}>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <line x1="3" y1="6" x2="21" y2="6"></line>
+              <line x1="3" y1="12" x2="21" y2="12"></line>
+              <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
+          </button>
+
           <div className="logo">
-            <Link to="/">
+            <Link to="/" onClick={closeMobileMenu}>
               <h1>{content.global?.brandName || 'ESSENCE'}</h1>
             </Link>
           </div>
@@ -389,7 +428,7 @@ const MainSite = () => {
           </nav>
 
           <div className="header-actions">
-            <button className="search-btn">
+            <button className="search-btn" onClick={toggleSearchBar}>
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                 <circle cx="11" cy="11" r="8"></circle>
                 <path d="m21 21-4.35-4.35"></path>
@@ -404,6 +443,90 @@ const MainSite = () => {
             </button>
           </div>
         </div>
+
+        {/* Mobile Search Bar */}
+        {showSearchBar && (
+          <div className="mobile-search-bar">
+            <form onSubmit={handleSearchSubmit} className="search-form">
+              <input
+                type="text"
+                placeholder="Search fragrances..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="search-input"
+                autoFocus
+              />
+              <button type="submit" className="search-submit">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <circle cx="11" cy="11" r="8"></circle>
+                  <path d="m21 21-4.35-4.35"></path>
+                </svg>
+              </button>
+              <button type="button" onClick={toggleSearchBar} className="search-close">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <line x1="18" y1="6" x2="6" y2="18"></line>
+                  <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+              </button>
+            </form>
+          </div>
+        )}
+
+        {/* Mobile Menu Overlay */}
+        {showMobileMenu && (
+          <div className="mobile-menu-overlay" onClick={closeMobileMenu}>
+            <div className="mobile-menu" onClick={(e) => e.stopPropagation()}>
+              <div className="mobile-menu-header">
+                <h3>Menu</h3>
+                <button className="mobile-menu-close" onClick={closeMobileMenu}>
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                  </svg>
+                </button>
+              </div>
+              <nav className="mobile-menu-nav">
+                <Link to="/" className="mobile-menu-link" onClick={closeMobileMenu}>
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                    <polyline points="9,22 9,12 15,12 15,22"></polyline>
+                  </svg>
+                  Home
+                </Link>
+                <Link to="/products" className="mobile-menu-link" onClick={closeMobileMenu}>
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                    <line x1="8" y1="21" x2="16" y2="21"></line>
+                    <line x1="12" y1="17" x2="12" y2="21"></line>
+                  </svg>
+                  Products
+                </Link>
+                <a href="#collections" className="mobile-menu-link" onClick={closeMobileMenu}>
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="12" cy="7" r="4"></circle>
+                  </svg>
+                  Collections
+                </a>
+                <a href="#about" className="mobile-menu-link" onClick={closeMobileMenu}>
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="16" x2="12" y2="12"></line>
+                    <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                  </svg>
+                  About
+                </a>
+                <a href="#contact" className="mobile-menu-link" onClick={closeMobileMenu}>
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                    <polyline points="22,6 12,13 2,6"></polyline>
+                  </svg>
+                  Contact
+                </a>
+              </nav>
+            </div>
+          </div>
+        )}
       </header>
 
       {/* Hero Banner Slider */}
