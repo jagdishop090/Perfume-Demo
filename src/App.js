@@ -351,7 +351,9 @@ const MainSite = () => {
         <div className="bogo-banner">
           <div className="bogo-content">
             <div className="bogo-scroll-container">
-              <span className="bogo-text">🎉 BOGO 1+1 Free For All Fragrances</span>
+              <div className="bogo-scroll-text">
+                🎉 BOGO 1+1 Free For All Fragrances • 🎉 BOGO 1+1 Free For All Fragrances • 🎉 BOGO 1+1 Free For All Fragrances • 🎉 BOGO 1+1 Free For All Fragrances • 🎉 BOGO 1+1 Free For All Fragrances • 
+              </div>
             </div>
             <button 
               className="bogo-close" 

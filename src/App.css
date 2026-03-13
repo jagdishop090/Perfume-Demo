@@ -69,17 +69,25 @@ body {
   overflow: hidden;
   white-space: nowrap;
   margin-right: 2rem; /* Space for close button */
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  position: relative;
 }
 
-.bogo-text {
+.bogo-scroll-text {
   display: inline-block;
   white-space: nowrap;
   letter-spacing: 0.5px;
-  text-align: center;
   font-weight: 500;
+  animation: scroll-horizontal 25s linear infinite;
+  will-change: transform;
+}
+
+@keyframes scroll-horizontal {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
 }
 
 
@@ -1241,8 +1249,9 @@ body {
     margin-right: 1.75rem; /* Adjusted for smaller close button */
   }
 
-  .bogo-text {
+  .bogo-scroll-text {
     font-size: 0.75rem; /* Smaller text on mobile */
+    animation: scroll-horizontal 22s linear infinite; /* Slightly faster on mobile */
   }
 
   .bogo-close {
@@ -1558,8 +1567,9 @@ body {
     margin-right: 1.5rem;
   }
 
-  .bogo-text {
+  .bogo-scroll-text {
     font-size: 0.7rem; /* Even smaller on small screens */
+    animation: scroll-horizontal 20s linear infinite; /* Faster on small screens */
   }
 
   .bogo-close {
