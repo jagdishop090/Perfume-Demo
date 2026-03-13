@@ -200,7 +200,6 @@ const MainSite = () => {
   const [prevBanner, setPrevBanner] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
-  const [currentX, setCurrentX] = useState(0);
   const [dragOffset, setDragOffset] = useState(0);
   const [showBogoBanner, setShowBogoBanner] = useState(true);
   const { content, loading } = useContent();
@@ -274,7 +273,6 @@ const MainSite = () => {
     setIsDragging(true);
     const clientX = e.type === 'mousedown' ? e.clientX : e.touches[0].clientX;
     setStartX(clientX);
-    setCurrentX(clientX);
     setDragOffset(0);
   };
 
@@ -283,7 +281,6 @@ const MainSite = () => {
     
     e.preventDefault();
     const clientX = e.type === 'mousemove' ? e.clientX : e.touches[0].clientX;
-    setCurrentX(clientX);
     const offset = clientX - startX;
     
     // Limit drag distance to prevent excessive movement
@@ -315,7 +312,6 @@ const MainSite = () => {
       setDragOffset(0);
     }, 50);
     setStartX(0);
-    setCurrentX(0);
   };
 
   const openProductModal = (product) => {

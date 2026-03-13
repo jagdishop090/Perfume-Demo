@@ -23,5 +23,8 @@
   ],
   "env": {
     "REACT_APP_ENVIRONMENT": "production"
-  }
+  },
+  "buildCommand": "npm run build",
+  "outputDirectory": "build",
+  "installCommand": "npm install"
 }
