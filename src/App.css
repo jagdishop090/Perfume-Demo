@@ -72,21 +72,33 @@ body {
   position: relative;
 }
 
+.bogo-scroll-wrapper {
+  display: flex;
+  width: 200%; /* Double width to fit both text elements */
+  animation: scroll-seamless 30s linear infinite;
+  will-change: transform;
+}
+
 .bogo-scroll-text {
   display: inline-block;
   white-space: nowrap;
   letter-spacing: 0.5px;
   font-weight: 500;
-  animation: scroll-horizontal 25s linear infinite;
-  will-change: transform;
+  width: 50%; /* Each text takes half the wrapper width */
+  flex-shrink: 0;
 }
 
-@keyframes scroll-horizontal {
+.bogo-text-1,
+.bogo-text-2 {
+  /* Both texts are identical and positioned side by side */
+}
+
+@keyframes scroll-seamless {
   0% {
-    transform: translateX(100%);
+    transform: translateX(0%);
   }
   100% {
-    transform: translateX(-100%);
+    transform: translateX(-50%); /* Move by half width to show second text */
   }
 }
 
@@ -1249,9 +1261,12 @@ body {
     margin-right: 1.75rem; /* Adjusted for smaller close button */
   }
 
+  .bogo-scroll-wrapper {
+    animation: scroll-seamless 25s linear infinite; /* Slightly faster on mobile */
+  }
+
   .bogo-scroll-text {
     font-size: 0.75rem; /* Smaller text on mobile */
-    animation: scroll-horizontal 22s linear infinite; /* Slightly faster on mobile */
   }
 
   .bogo-close {
@@ -1567,9 +1582,12 @@ body {
     margin-right: 1.5rem;
   }
 
+  .bogo-scroll-wrapper {
+    animation: scroll-seamless 22s linear infinite; /* Faster on small screens */
+  }
+
   .bogo-scroll-text {
     font-size: 0.7rem; /* Even smaller on small screens */
-    animation: scroll-horizontal 20s linear infinite; /* Faster on small screens */
   }
 
   .bogo-close {

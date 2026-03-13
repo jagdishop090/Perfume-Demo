@@ -351,8 +351,13 @@ const MainSite = () => {
         <div className="bogo-banner">
           <div className="bogo-content">
             <div className="bogo-scroll-container">
-              <div className="bogo-scroll-text">
-                🎉 BOGO 1+1 Free For All Fragrances • 🎉 BOGO 1+1 Free For All Fragrances • 🎉 BOGO 1+1 Free For All Fragrances • 🎉 BOGO 1+1 Free For All Fragrances • 🎉 BOGO 1+1 Free For All Fragrances • 
+              <div className="bogo-scroll-wrapper">
+                <div className="bogo-scroll-text bogo-text-1">
+                  🎉 BOGO 1+1 Free For All Fragrances • 🎉 BOGO 1+1 Free For All Fragrances • 🎉 BOGO 1+1 Free For All Fragrances • 🎉 BOGO 1+1 Free For All Fragrances • 🎉 BOGO 1+1 Free For All Fragrances • 
+                </div>
+                <div className="bogo-scroll-text bogo-text-2">
+                  🎉 BOGO 1+1 Free For All Fragrances • 🎉 BOGO 1+1 Free For All Fragrances • 🎉 BOGO 1+1 Free For All Fragrances • 🎉 BOGO 1+1 Free For All Fragrances • 🎉 BOGO 1+1 Free For All Fragrances • 
+                </div>
               </div>
             </div>
             <button 
