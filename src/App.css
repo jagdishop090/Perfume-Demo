@@ -69,13 +69,16 @@ body {
   overflow: hidden;
   white-space: nowrap;
   margin-right: 2rem; /* Space for close button */
+  position: relative;
 }
 
 .bogo-scroll-text {
   display: inline-block;
   white-space: nowrap;
-  animation: scroll-left 30s linear infinite;
+  animation: scroll-left 45s linear infinite;
   letter-spacing: 0.5px;
+  will-change: transform; /* Optimize for animation performance */
+  animation-fill-mode: forwards; /* Ensure animation completes properly */
 }
 
 @keyframes scroll-left {
@@ -1245,7 +1248,7 @@ body {
   }
 
   .bogo-scroll-text {
-    animation: scroll-left 25s linear infinite; /* Slightly faster on mobile */
+    animation: scroll-left 40s linear infinite; /* Slower on mobile */
   }
 
   .bogo-close {
@@ -1553,7 +1556,7 @@ body {
   }
 
   .bogo-scroll-text {
-    animation: scroll-left 20s linear infinite; /* Faster on small screens */
+    animation: scroll-left 35s linear infinite; /* Slower on small screens */
   }
 
   .bogo-close {
