@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useMemo, Suspense, lazy } from 'react';
+import React, { useState, useCallback, useMemo, Suspense, lazy, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
 import { ContentProvider, useContent } from './context/SupabaseContentContext';
 import ProductModal from './components/ProductModal';
@@ -13,7 +13,16 @@ const ProductsPage = () => {
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [activeCategory, setActiveCategory] = useState('all');
+  const [showBogoBanner, setShowBogoBanner] = useState(true);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [showSearchBar, setShowSearchBar] = useState(false);
+  const [showMobileMenu, setShowMobileMenu] = useState(false);
   const { content, loading } = useContent();
+
+  // Scroll to top when products page loads
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  }, []);
 
   // Combine all products with memoization for performance
   const allProducts = useMemo(() => [
@@ -22,12 +31,21 @@ const ProductsPage = () => {
     ...(content.unisex?.products || []).map(p => ({ ...p, category: 'unisex' }))
   ], [content.men?.products, content.women?.products, content.unisex?.products]);
 
-  const filteredProducts = useMemo(() => 
-    activeCategory === 'all' 
+  const filteredProducts = useMemo(() => {
+    let filtered = activeCategory === 'all' 
       ? allProducts 
-      : allProducts.filter(p => p.category === activeCategory),
-    [allProducts, activeCategory]
-  );
+      : allProducts.filter(p => p.category === activeCategory);
+    
+    // Filter by search query
+    if (searchQuery.trim()) {
+      filtered = filtered.filter(p => 
+        p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        p.notes.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+    }
+    
+    return filtered;
+  }, [allProducts, activeCategory, searchQuery]);
 
   const openProductModal = useCallback((product) => {
     setSelectedProduct(product);
@@ -39,26 +57,118 @@ const ProductsPage = () => {
     setSelectedProduct(null);
   }, []);
 
-  if (loading) {
-    return (
-      <div className="loading-container">
-        <div className="loading-spinner">
-          <div className="spinner"></div>
-          <h2>Loading Products...</h2>
-        </div>
-      </div>
-    );
-  }
+  const toggleSearchBar = () => {
+    setShowSearchBar(!showSearchBar);
+    if (showSearchBar) {
+      setSearchQuery('');
+    }
+  };
+
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+    // Search is already filtered in filteredProducts
+  };
+
+  const toggleMobileMenu = () => {
+    setShowMobileMenu(!showMobileMenu);
+    // Prevent body scroll when menu is open
+    if (!showMobileMenu) {
+      document.body.classList.add('menu-open');
+    } else {
+      document.body.classList.remove('menu-open');
+    }
+  };
+
+  const closeMobileMenu = () => {
+    setShowMobileMenu(false);
+    // Restore body scroll when menu is closed
+    document.body.classList.remove('menu-open');
+  };
+
+  // Function to scroll to top of products page
+  const scrollToProductsTop = () => {
+    // Scroll to top of the page
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    // Close mobile menu if open
+    if (showMobileMenu) {
+      closeMobileMenu();
+    }
+  };
+
+  // Remove loading screen - directly show content
+  // if (loading) {
+  //   return (
+  //     <div className="loading-container">
+  //       <div className="loading-spinner">
+  //         <div className="spinner"></div>
+  //         <h2>Loading Products...</h2>
+  //       </div>
+  //     </div>
+  //   );
+  // }
 
   return (
     <div className="app">
+      {/* BOGO Offer Banner */}
+      {showBogoBanner && (
+        <div className="bogo-banner">
+          <div className="bogo-content">
+            <div className="bogo-scroll-container">
+              <div className="bogo-scroll-wrapper">
+                <div className="bogo-scroll-text bogo-text-1">
+                  🎉 BOGO 1+1 Free For All Fragrances • 🎉 BOGO 1+1 Free For All Fragrances • 🎉 BOGO 1+1 Free For All Fragrances • 🎉 BOGO 1+1 Free For All Fragrances • 🎉 BOGO 1+1 Free For All Fragrances
+                </div>
+                <div className="bogo-scroll-text bogo-text-2">
+                  • 🎉 BOGO 1+1 Free For All Fragrances • 🎉 BOGO 1+1 Free For All Fragrances • 🎉 BOGO 1+1 Free For All Fragrances • 🎉 BOGO 1+1 Free For All Fragrances • 🎉 BOGO 1+1 Free For All Fragrances
+                </div>
+              </div>
+            </div>
+            <button 
+              className="bogo-close" 
+              onClick={() => setShowBogoBanner(false)}
+              aria-label="Close offer banner"
+            >
+              ×
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* Header */}
-      <header className="header">
+      <header className={`header products-header ${!showBogoBanner ? 'header-no-bogo' : ''}`}>
         <div className="header-container">
+          {/* Hamburger Menu - Mobile Only */}
+          <button className="hamburger-menu" onClick={toggleMobileMenu}>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <line x1="3" y1="6" x2="21" y2="6"></line>
+              <line x1="3" y1="12" x2="21" y2="12"></line>
+              <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
+          </button>
+
           <div className="logo">
             <Link to="/">
               <h1>{content.global?.brandName || 'ESSENCE'}</h1>
             </Link>
+          </div>
+          
+          {/* Search Bar - Desktop */}
+          <div className="header-search-bar">
+            <form onSubmit={handleSearchSubmit} className="search-form-desktop">
+              <input
+                type="text"
+                placeholder="Search fragrances..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="search-input-desktop"
+              />
+              <button type="submit" className="search-submit-desktop">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <circle cx="11" cy="11" r="8"></circle>
+                  <path d="m21 21-4.35-4.35"></path>
+                </svg>
+              </button>
+            </form>
           </div>
           
           <nav className="nav">
@@ -70,7 +180,7 @@ const ProductsPage = () => {
           </nav>
 
           <div className="header-actions">
-            <button className="search-btn">
+            <button className="search-btn" onClick={toggleSearchBar}>
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                 <circle cx="11" cy="11" r="8"></circle>
                 <path d="m21 21-4.35-4.35"></path>
@@ -85,10 +195,97 @@ const ProductsPage = () => {
             </button>
           </div>
         </div>
+
+        {/* Mobile Search Bar */}
+        {showSearchBar && (
+          <div className="mobile-search-bar">
+            <form onSubmit={handleSearchSubmit} className="search-form">
+              <input
+                type="text"
+                placeholder="Search fragrances..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="search-input"
+                autoFocus
+              />
+              <button type="submit" className="search-submit">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <circle cx="11" cy="11" r="8"></circle>
+                  <path d="m21 21-4.35-4.35"></path>
+                </svg>
+              </button>
+              <button type="button" onClick={toggleSearchBar} className="search-close">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <line x1="18" y1="6" x2="6" y2="18"></line>
+                  <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+              </button>
+            </form>
+          </div>
+        )}
+
+        {/* Mobile Menu Overlay */}
+        {showMobileMenu && (
+          <div className="mobile-menu-overlay" onClick={closeMobileMenu}>
+            <div 
+              className={`mobile-menu ${!showBogoBanner ? 'menu-no-bogo' : ''}`}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="mobile-menu-header">
+                <h3>Menu</h3>
+                <button className="mobile-menu-close" onClick={closeMobileMenu}>
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                  </svg>
+                </button>
+              </div>
+              <nav className="mobile-menu-nav">
+                <Link to="/" className="mobile-menu-link" onClick={closeMobileMenu}>
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                    <polyline points="9,22 9,12 15,12 15,22"></polyline>
+                  </svg>
+                  Home
+                </Link>
+                <Link to="/products" className="mobile-menu-link" onClick={closeMobileMenu}>
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                    <line x1="8" y1="21" x2="16" y2="21"></line>
+                    <line x1="12" y1="17" x2="12" y2="21"></line>
+                  </svg>
+                  Products
+                </Link>
+                <a href="/#collections" className="mobile-menu-link" onClick={closeMobileMenu}>
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="12" cy="7" r="4"></circle>
+                  </svg>
+                  Collections
+                </a>
+                <a href="/#about" className="mobile-menu-link" onClick={closeMobileMenu}>
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="16" x2="12" y2="12"></line>
+                    <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                  </svg>
+                  About
+                </a>
+                <a href="/#contact" className="mobile-menu-link" onClick={closeMobileMenu}>
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                    <polyline points="22,6 12,13 2,6"></polyline>
+                  </svg>
+                  Contact
+                </a>
+              </nav>
+            </div>
+          </div>
+        )}
       </header>
 
       <div className="products-page">
-        <section className="products-page-section">
+        <section className={`products-page-section ${!showBogoBanner ? 'products-no-bogo' : ''}`}>
           <div className="container">
             <div className="section-header">
               <h2>All Products</h2>
@@ -195,7 +392,6 @@ const MainSite = () => {
   const location = useLocation();
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [activeCategory, setActiveCategory] = useState('men');
   const [currentBanner, setCurrentBanner] = useState(0);
   const [prevBanner, setPrevBanner] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
@@ -255,24 +451,37 @@ const MainSite = () => {
   // Use default banners with Supabase CDN URLs
   const banners = defaultBanners;
 
-  // Auto-rotate banners every 5 seconds (pause when dragging)
+  // Auto-rotate banners every 5 seconds (pause when dragging or mobile menu is open)
   React.useEffect(() => {
-    if (isDragging) return; // Don't auto-rotate while dragging
+    if (isDragging || showMobileMenu) return; // Don't auto-rotate while dragging or menu is open
     
     const interval = setInterval(() => {
       setPrevBanner(currentBanner);
       setCurrentBanner((prev) => (prev + 1) % banners.length);
     }, 5000);
     return () => clearInterval(interval);
-  }, [currentBanner, banners.length, isDragging]);
+  }, [currentBanner, banners.length, isDragging, showMobileMenu]);
+
+  // Cleanup body scroll on component unmount
+  React.useEffect(() => {
+    return () => {
+      document.body.classList.remove('menu-open');
+    };
+  }, []);
 
   const handleBannerChange = (index) => {
+    // Prevent banner changes when mobile menu is open
+    if (showMobileMenu) return;
+    
     setPrevBanner(currentBanner);
     setCurrentBanner(index);
   };
 
   // Touch and drag handlers
   const handleDragStart = (e) => {
+    // Prevent banner interactions when mobile menu is open
+    if (showMobileMenu) return;
+    
     setIsDragging(true);
     const clientX = e.type === 'mousedown' ? e.clientX : e.touches[0].clientX;
     setStartX(clientX);
@@ -280,7 +489,8 @@ const MainSite = () => {
   };
 
   const handleDragMove = (e) => {
-    if (!isDragging) return;
+    // Prevent banner interactions when mobile menu is open
+    if (!isDragging || showMobileMenu) return;
     
     e.preventDefault();
     const clientX = e.type === 'mousemove' ? e.clientX : e.touches[0].clientX;
@@ -293,7 +503,8 @@ const MainSite = () => {
   };
 
   const handleDragEnd = () => {
-    if (!isDragging) return;
+    // Prevent banner interactions when mobile menu is open
+    if (!isDragging || showMobileMenu) return;
     
     setIsDragging(false);
     const threshold = 30; // Reduced threshold for better responsiveness
@@ -320,6 +531,11 @@ const MainSite = () => {
   const openProductModal = (product) => {
     setSelectedProduct(product);
     setIsModalOpen(true);
+    // Scroll to products section
+    const productsSection = document.getElementById('collections');
+    if (productsSection) {
+      productsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
   };
 
   const closeProductModal = () => {
@@ -330,10 +546,28 @@ const MainSite = () => {
   // Mobile menu handlers
   const toggleMobileMenu = () => {
     setShowMobileMenu(!showMobileMenu);
+    // Prevent body scroll when menu is open
+    if (!showMobileMenu) {
+      document.body.classList.add('menu-open');
+    } else {
+      document.body.classList.remove('menu-open');
+    }
   };
 
   const closeMobileMenu = () => {
     setShowMobileMenu(false);
+    // Restore body scroll when menu is closed
+    document.body.classList.remove('menu-open');
+  };
+
+  // Function to scroll to top of products page
+  const scrollToProductsTop = () => {
+    // Scroll to top of the page
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    // Close mobile menu if open
+    if (showMobileMenu) {
+      closeMobileMenu();
+    }
   };
 
   // Search handlers
@@ -361,18 +595,17 @@ const MainSite = () => {
     ...(content.unisex?.products || []).map(p => ({ ...p, category: 'unisex' }))
   ];
 
-  const filteredProducts = allProducts.filter(p => p.category === activeCategory);
-
-  if (loading) {
-    return (
-      <div className="loading-container">
-        <div className="loading-spinner">
-          <div className="spinner"></div>
-          <h2>Loading Essence...</h2>
-        </div>
-      </div>
-    );
-  }
+  // Remove loading screen - directly show content
+  // if (loading) {
+  //   return (
+  //     <div className="loading-container">
+  //       <div className="loading-spinner">
+  //         <div className="spinner"></div>
+  //         <h2>Loading Essence...</h2>
+  //       </div>
+  //     </div>
+  //   );
+  // }
 
   return (
     <div className="app">
@@ -475,7 +708,10 @@ const MainSite = () => {
         {/* Mobile Menu Overlay */}
         {showMobileMenu && (
           <div className="mobile-menu-overlay" onClick={closeMobileMenu}>
-            <div className="mobile-menu" onClick={(e) => e.stopPropagation()}>
+            <div 
+              className={`mobile-menu ${!showBogoBanner ? 'menu-no-bogo' : ''}`}
+              onClick={(e) => e.stopPropagation()}
+            >
               <div className="mobile-menu-header">
                 <h3>Menu</h3>
                 <button className="mobile-menu-close" onClick={closeMobileMenu}>
@@ -493,7 +729,7 @@ const MainSite = () => {
                   </svg>
                   Home
                 </Link>
-                <Link to="/products" className="mobile-menu-link" onClick={closeMobileMenu}>
+                <Link to="/products" className="mobile-menu-link" onClick={scrollToProductsTop}>
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                     <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
                     <line x1="8" y1="21" x2="16" y2="21"></line>
@@ -613,6 +849,41 @@ const MainSite = () => {
         </div>
       </section>
 
+      {/* Featured Products */}
+      <section id="collections" className="products-section">
+        <div className="container">
+          <div className="section-header">
+            <h2>Featured</h2>
+            <p>Products</p>
+          </div>
+
+          <div className="products-scroll-container">
+            <div className="products-scroll-wrapper">
+              {allProducts.slice(0, 6).map((product, index) => (
+                <div key={product.id || index} className="product-card-scroll" onClick={() => openProductModal(product)}>
+                  <div className="product-image">
+                    {product.image ? (
+                      <img src={product.image} alt={product.name} />
+                    ) : (
+                      <div className={`product-bottle ${product.category}`}></div>
+                    )}
+                    <div className="product-overlay">
+                      <button className="quick-view-btn">Quick View</button>
+                    </div>
+                  </div>
+                  <div className="product-info">
+                    <span className="product-category">{product.category}</span>
+                    <h3 className="product-name">{product.name}</h3>
+                    <p className="product-notes">{product.notes}</p>
+                    <div className="product-price">{product.price}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Categories Section */}
       <section className="categories">
         <div className="container">
@@ -651,60 +922,6 @@ const MainSite = () => {
                 </div>
               </div>
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Featured Products */}
-      <section id="collections" className="products-section">
-        <div className="container">
-          <div className="section-header">
-            <h2>Featured Products</h2>
-            <p>Handpicked fragrances from our premium collection</p>
-          </div>
-
-          <div className="product-filters">
-            <button 
-              className={`filter-btn ${activeCategory === 'men' ? 'active' : ''}`}
-              onClick={() => setActiveCategory('men')}
-            >
-              Men
-            </button>
-            <button 
-              className={`filter-btn ${activeCategory === 'women' ? 'active' : ''}`}
-              onClick={() => setActiveCategory('women')}
-            >
-              Women
-            </button>
-            <button 
-              className={`filter-btn ${activeCategory === 'unisex' ? 'active' : ''}`}
-              onClick={() => setActiveCategory('unisex')}
-            >
-              Unisex
-            </button>
-          </div>
-
-          <div className="products-grid">
-            {filteredProducts.slice(0, 3).map((product, index) => (
-              <div key={product.id || index} className="product-card" onClick={() => openProductModal(product)}>
-                <div className="product-image">
-                  {product.image ? (
-                    <img src={product.image} alt={product.name} />
-                  ) : (
-                    <div className={`product-bottle ${product.category}`}></div>
-                  )}
-                  <div className="product-overlay">
-                    <button className="quick-view-btn">Quick View</button>
-                  </div>
-                </div>
-                <div className="product-info">
-                  <span className="product-category">{product.category}</span>
-                  <h3 className="product-name">{product.name}</h3>
-                  <p className="product-notes">{product.notes}</p>
-                  <div className="product-price">{product.price}</div>
-                </div>
-              </div>
-            ))}
           </div>
         </div>
       </section>
