@@ -1016,9 +1016,9 @@ const MainSite = () => {
             <div className="footer-section">
               <h4>Contact Info</h4>
               <div className="contact-info">
-                <p>ðŸ“§ info@essence.com</p>
-                <p>ðŸ“ž +1 (555) 123-4567</p>
-                <p>ðŸ“ 123 Fragrance Street, Perfume City</p>
+                <p>📧 info@essence.com</p>
+                <p>📞 +1 (555) 123-4567</p>
+                <p>📍 123 Fragrance Street, Perfume City</p>
               </div>
             </div>
           </div>
