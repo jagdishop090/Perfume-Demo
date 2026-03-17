@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useMemo, Suspense, lazy, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Link, useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import { ContentProvider, useContent } from './context/SupabaseContentContext';
 import ProductModal from './components/ProductModal';
 import { getBannerWithFallbacks } from './utils/bannerFallbacks';
@@ -10,12 +10,13 @@ const AdminPanel = lazy(() => import('./components/ModernAdminPanel'));
 
 const ProductsPage = () => {
   const location = useLocation();
+  const [searchParams] = useSearchParams();
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [activeCategory, setActiveCategory] = useState('all');
   const [showBogoBanner, setShowBogoBanner] = useState(true);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [showSearchBar, setShowSearchBar] = useState(false);
+  const [searchQuery, setSearchQuery] = useState(searchParams.get('search') || '');
+  const [showSearchBar, setShowSearchBar] = useState(!!searchParams.get('search'));
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const { content } = useContent();
 
@@ -151,6 +152,7 @@ const ProductsPage = () => {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="search-input-desktop"
+                autoFocus={!!searchParams.get('search') || searchParams.get('search') === ''}
               />
               <button type="submit" className="search-submit-desktop">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor">
@@ -380,6 +382,7 @@ const ProductsPage = () => {
 };
 const MainSite = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentBanner, setCurrentBanner] = useState(0);
@@ -560,21 +563,16 @@ const MainSite = () => {
     }
   };
 
-  // Search handlers
+  // Search handlers - clicking search icon navigates to products with search open
   const toggleSearchBar = () => {
-    setShowSearchBar(!showSearchBar);
-    if (showSearchBar) {
-      setSearchQuery('');
-    }
+    navigate('/products?search=');
   };
 
   const handleSearchSubmit = (e) => {
     e.preventDefault();
     if (searchQuery.trim()) {
-      // Implement search functionality here
-      console.log('Searching for:', searchQuery);
-      // You can add navigation to products page with search query
-      // navigate(`/products?search=${encodeURIComponent(searchQuery)}`);
+      setShowSearchBar(false);
+      navigate(`/products?search=${encodeURIComponent(searchQuery.trim())}`);
     }
   };
 
