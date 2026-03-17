@@ -107,10 +107,10 @@ const ProductsPage = () => {
             <div className="bogo-scroll-container">
               <div className="bogo-scroll-wrapper">
                 <div className="bogo-scroll-text bogo-text-1">
-                  ðŸŽ‰ BOGO 1+1 Free For All Fragrances â€¢ ðŸŽ‰ BOGO 1+1 Free For All Fragrances â€¢ ðŸŽ‰ BOGO 1+1 Free For All Fragrances â€¢ ðŸŽ‰ BOGO 1+1 Free For All Fragrances â€¢ ðŸŽ‰ BOGO 1+1 Free For All Fragrances
+                  🎉 BOGO 1+1 Free For All Fragrances • 🎉 BOGO 1+1 Free For All Fragrances • 🎉 BOGO 1+1 Free For All Fragrances • 🎉 BOGO 1+1 Free For All Fragrances • 🎉 BOGO 1+1 Free For All Fragrances
                 </div>
                 <div className="bogo-scroll-text bogo-text-2">
-                  â€¢ ðŸŽ‰ BOGO 1+1 Free For All Fragrances â€¢ ðŸŽ‰ BOGO 1+1 Free For All Fragrances â€¢ ðŸŽ‰ BOGO 1+1 Free For All Fragrances â€¢ ðŸŽ‰ BOGO 1+1 Free For All Fragrances â€¢ ðŸŽ‰ BOGO 1+1 Free For All Fragrances
+                  • 🎉 BOGO 1+1 Free For All Fragrances • 🎉 BOGO 1+1 Free For All Fragrances • 🎉 BOGO 1+1 Free For All Fragrances • 🎉 BOGO 1+1 Free For All Fragrances • 🎉 BOGO 1+1 Free For All Fragrances
                 </div>
               </div>
             </div>
@@ -119,7 +119,7 @@ const ProductsPage = () => {
               onClick={() => setShowBogoBanner(false)}
               aria-label="Close offer banner"
             >
-              Ã—
+              ×
             </button>
           </div>
         </div>
@@ -594,10 +594,10 @@ const MainSite = () => {
             <div className="bogo-scroll-container">
               <div className="bogo-scroll-wrapper">
                 <div className="bogo-scroll-text bogo-text-1">
-                  ðŸŽ‰ BOGO 1+1 Free For All Fragrances â€¢ ðŸŽ‰ BOGO 1+1 Free For All Fragrances â€¢ ðŸŽ‰ BOGO 1+1 Free For All Fragrances â€¢ ðŸŽ‰ BOGO 1+1 Free For All Fragrances â€¢ ðŸŽ‰ BOGO 1+1 Free For All Fragrances
+                  🎉 BOGO 1+1 Free For All Fragrances • 🎉 BOGO 1+1 Free For All Fragrances • 🎉 BOGO 1+1 Free For All Fragrances • 🎉 BOGO 1+1 Free For All Fragrances • 🎉 BOGO 1+1 Free For All Fragrances
                 </div>
                 <div className="bogo-scroll-text bogo-text-2">
-                  â€¢ ðŸŽ‰ BOGO 1+1 Free For All Fragrances â€¢ ðŸŽ‰ BOGO 1+1 Free For All Fragrances â€¢ ðŸŽ‰ BOGO 1+1 Free For All Fragrances â€¢ ðŸŽ‰ BOGO 1+1 Free For All Fragrances â€¢ ðŸŽ‰ BOGO 1+1 Free For All Fragrances
+                  • 🎉 BOGO 1+1 Free For All Fragrances • 🎉 BOGO 1+1 Free For All Fragrances • 🎉 BOGO 1+1 Free For All Fragrances • 🎉 BOGO 1+1 Free For All Fragrances • 🎉 BOGO 1+1 Free For All Fragrances
                 </div>
               </div>
             </div>
@@ -606,7 +606,7 @@ const MainSite = () => {
               onClick={() => setShowBogoBanner(false)}
               aria-label="Close offer banner"
             >
-              Ã—
+              ×
             </button>
           </div>
         </div>
