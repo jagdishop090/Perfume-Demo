@@ -1192,6 +1192,11 @@ body.menu-open .filter-btn {
   background: #F1EDE6;
 }
 
+.contact-spacer {
+  height: 4rem;
+  background: #1a1a1a;
+}
+
 .contact-wrapper {
   max-width: 480px;
   margin: 0 auto;

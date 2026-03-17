@@ -1015,6 +1015,9 @@ const MainSite = () => {
         </div>
       </section>
 
+      {/* Dark spacer below contact */}
+      <div className="contact-spacer"></div>
+
       {/* Footer */}
       <footer className="footer">
         <div className="container">
