@@ -17,7 +17,7 @@ const ProductsPage = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [showSearchBar, setShowSearchBar] = useState(false);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
-  const { content, loading } = useContent();
+  const { content } = useContent();
 
   // Scroll to top when products page loads
   useEffect(() => {
@@ -83,16 +83,6 @@ const ProductsPage = () => {
     setShowMobileMenu(false);
     // Restore body scroll when menu is closed
     document.body.classList.remove('menu-open');
-  };
-
-  // Function to scroll to top of products page
-  const scrollToProductsTop = () => {
-    // Scroll to top of the page
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-    // Close mobile menu if open
-    if (showMobileMenu) {
-      closeMobileMenu();
-    }
   };
 
   // Remove loading screen - directly show content
@@ -401,7 +391,7 @@ const MainSite = () => {
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const [showSearchBar, setShowSearchBar] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
-  const { content, loading } = useContent();
+  const { content } = useContent();
 
   // Banner images - using Supabase CDN URLs for reliable delivery
   // These URLs are served from Supabase CDN and will work on all platforms
