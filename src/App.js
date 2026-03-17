@@ -107,10 +107,10 @@ const ProductsPage = () => {
             <div className="bogo-scroll-container">
               <div className="bogo-scroll-wrapper">
                 <div className="bogo-scroll-text bogo-text-1">
-                  🎉 BOGO 1+1 Free For All Fragrances • 🎉 BOGO 1+1 Free For All Fragrances • 🎉 BOGO 1+1 Free For All Fragrances • 🎉 BOGO 1+1 Free For All Fragrances • 🎉 BOGO 1+1 Free For All Fragrances
+                  ðŸŽ‰ BOGO 1+1 Free For All Fragrances â€¢ ðŸŽ‰ BOGO 1+1 Free For All Fragrances â€¢ ðŸŽ‰ BOGO 1+1 Free For All Fragrances â€¢ ðŸŽ‰ BOGO 1+1 Free For All Fragrances â€¢ ðŸŽ‰ BOGO 1+1 Free For All Fragrances
                 </div>
                 <div className="bogo-scroll-text bogo-text-2">
-                  • 🎉 BOGO 1+1 Free For All Fragrances • 🎉 BOGO 1+1 Free For All Fragrances • 🎉 BOGO 1+1 Free For All Fragrances • 🎉 BOGO 1+1 Free For All Fragrances • 🎉 BOGO 1+1 Free For All Fragrances
+                  â€¢ ðŸŽ‰ BOGO 1+1 Free For All Fragrances â€¢ ðŸŽ‰ BOGO 1+1 Free For All Fragrances â€¢ ðŸŽ‰ BOGO 1+1 Free For All Fragrances â€¢ ðŸŽ‰ BOGO 1+1 Free For All Fragrances â€¢ ðŸŽ‰ BOGO 1+1 Free For All Fragrances
                 </div>
               </div>
             </div>
@@ -119,7 +119,7 @@ const ProductsPage = () => {
               onClick={() => setShowBogoBanner(false)}
               aria-label="Close offer banner"
             >
-              ×
+              Ã—
             </button>
           </div>
         </div>
@@ -392,8 +392,6 @@ const MainSite = () => {
   const [dragOffset, setDragOffset] = useState(0);
   const [showBogoBanner, setShowBogoBanner] = useState(true);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
-  const [showSearchBar, setShowSearchBar] = useState(false);
-  const [searchQuery, setSearchQuery] = useState('');
   const { content } = useContent();
 
   // Banner images - using Supabase CDN URLs for reliable delivery
@@ -568,14 +566,6 @@ const MainSite = () => {
     navigate('/products?search=');
   };
 
-  const handleSearchSubmit = (e) => {
-    e.preventDefault();
-    if (searchQuery.trim()) {
-      setShowSearchBar(false);
-      navigate(`/products?search=${encodeURIComponent(searchQuery.trim())}`);
-    }
-  };
-
   // Combine all products for the featured section
   const allProducts = [
     ...(content.men?.products || []).map(p => ({ ...p, category: 'men' })),
@@ -604,10 +594,10 @@ const MainSite = () => {
             <div className="bogo-scroll-container">
               <div className="bogo-scroll-wrapper">
                 <div className="bogo-scroll-text bogo-text-1">
-                  🎉 BOGO 1+1 Free For All Fragrances • 🎉 BOGO 1+1 Free For All Fragrances • 🎉 BOGO 1+1 Free For All Fragrances • 🎉 BOGO 1+1 Free For All Fragrances • 🎉 BOGO 1+1 Free For All Fragrances
+                  ðŸŽ‰ BOGO 1+1 Free For All Fragrances â€¢ ðŸŽ‰ BOGO 1+1 Free For All Fragrances â€¢ ðŸŽ‰ BOGO 1+1 Free For All Fragrances â€¢ ðŸŽ‰ BOGO 1+1 Free For All Fragrances â€¢ ðŸŽ‰ BOGO 1+1 Free For All Fragrances
                 </div>
                 <div className="bogo-scroll-text bogo-text-2">
-                  • 🎉 BOGO 1+1 Free For All Fragrances • 🎉 BOGO 1+1 Free For All Fragrances • 🎉 BOGO 1+1 Free For All Fragrances • 🎉 BOGO 1+1 Free For All Fragrances • 🎉 BOGO 1+1 Free For All Fragrances
+                  â€¢ ðŸŽ‰ BOGO 1+1 Free For All Fragrances â€¢ ðŸŽ‰ BOGO 1+1 Free For All Fragrances â€¢ ðŸŽ‰ BOGO 1+1 Free For All Fragrances â€¢ ðŸŽ‰ BOGO 1+1 Free For All Fragrances â€¢ ðŸŽ‰ BOGO 1+1 Free For All Fragrances
                 </div>
               </div>
             </div>
@@ -616,7 +606,7 @@ const MainSite = () => {
               onClick={() => setShowBogoBanner(false)}
               aria-label="Close offer banner"
             >
-              ×
+              Ã—
             </button>
           </div>
         </div>
@@ -664,34 +654,6 @@ const MainSite = () => {
             </button>
           </div>
         </div>
-
-        {/* Mobile Search Bar */}
-        {showSearchBar && (
-          <div className="mobile-search-bar">
-            <form onSubmit={handleSearchSubmit} className="search-form">
-              <input
-                type="text"
-                placeholder="Search fragrances..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="search-input"
-                autoFocus
-              />
-              <button type="submit" className="search-submit">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                  <circle cx="11" cy="11" r="8"></circle>
-                  <path d="m21 21-4.35-4.35"></path>
-                </svg>
-              </button>
-              <button type="button" onClick={toggleSearchBar} className="search-close">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                  <line x1="18" y1="6" x2="6" y2="18"></line>
-                  <line x1="6" y1="6" x2="18" y2="18"></line>
-                </svg>
-              </button>
-            </form>
-          </div>
-        )}
 
         {/* Mobile Menu Overlay */}
         {showMobileMenu && (
@@ -793,7 +755,7 @@ const MainSite = () => {
                     onError={(e) => {
                       console.log('Banner image failed to load:', e.target.src);
                       
-                      // Try fallback sequence: Supabase → Local root → Local Banners → SVG placeholder
+                      // Try fallback sequence: Supabase â†’ Local root â†’ Local Banners â†’ SVG placeholder
                       if (banner.fallback && e.target.src !== banner.fallback) {
                         console.log('Trying local fallback:', banner.fallback);
                         e.target.src = banner.fallback;
@@ -1067,9 +1029,9 @@ const MainSite = () => {
             <div className="footer-section">
               <h4>Contact Info</h4>
               <div className="contact-info">
-                <p>📧 info@essence.com</p>
-                <p>📞 +1 (555) 123-4567</p>
-                <p>📍 123 Fragrance Street, Perfume City</p>
+                <p>ðŸ“§ info@essence.com</p>
+                <p>ðŸ“ž +1 (555) 123-4567</p>
+                <p>ðŸ“ 123 Fragrance Street, Perfume City</p>
               </div>
             </div>
           </div>
