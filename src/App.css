@@ -730,7 +730,7 @@ body.menu-open .filter-btn {
   overflow-y: hidden;
   scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
-  padding: 0;
+  padding: 0 2rem;
   margin: 0;
 }
 
@@ -755,10 +755,9 @@ body.menu-open .filter-btn {
 .products-scroll-wrapper {
   display: flex;
   gap: 2rem;
-  padding: 0;
+  padding: 0.5rem 0;
   width: fit-content;
-  margin: 0 auto;
-  justify-content: center;
+  margin: 0;
 }
 
 .product-card-scroll {
@@ -2066,16 +2065,18 @@ body.menu-open .filter-btn {
     overflow-y: hidden;
     scroll-behavior: smooth;
     -webkit-overflow-scrolling: touch;
-    padding: 0;
+    padding: 0 1rem;
     margin: 0;
+    /* Ensure padding is visible during scroll */
+    scroll-padding-left: 1rem;
   }
 
   .products-scroll-wrapper {
     display: flex;
     gap: 1rem;
-    padding: 0 1rem;
+    padding: 0.25rem 0;
     width: fit-content;
-    margin: 0 auto;
+    margin: 0;
   }
 
   .product-card-scroll {
