@@ -621,7 +621,7 @@ const MainSite = () => {
             <Link to="/" className={`nav-link ${location.pathname === '/' ? 'active' : ''}`}>Home</Link>
             <Link to="/products" className={`nav-link ${location.pathname === '/products' ? 'active' : ''}`}>Products</Link>
             <a href="#collections" className="nav-link">Collections</a>
-            <a href="#about" className="nav-link">About</a>
+            <a href="/#about" className="nav-link">About</a>
             <a href="#contact" className="nav-link">Contact</a>
           </nav>
 
@@ -681,7 +681,7 @@ const MainSite = () => {
                   </svg>
                   Collections
                 </a>
-                <a href="#about" className="mobile-menu-link" onClick={closeMobileMenu}>
+                <a href="/#about" className="mobile-menu-link" onClick={closeMobileMenu}>
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                     <circle cx="12" cy="12" r="10"></circle>
                     <line x1="12" y1="16" x2="12" y2="12"></line>
@@ -996,10 +996,10 @@ const MainSite = () => {
             <div className="footer-section">
               <h4>Quick Links</h4>
               <ul>
-                <li><a href="#home">Home</a></li>
-                <li><a href="#collections">Collections</a></li>
-                <li><a href="#about">About Us</a></li>
-                <li><a href="#contact">Contact</a></li>
+                <li><a href="/#home">Home</a></li>
+                <li><a href="/#collections">Collections</a></li>
+                <li><a href="/#about">About Us</a></li>
+                <li><a href="/#contact">Contact</a></li>
               </ul>
             </div>
             
@@ -1054,7 +1054,7 @@ const MainSite = () => {
           </svg>
           <span>Products</span>
         </Link>
-        <a href="#about" className="mobile-nav-item">
+        <a href="/#about" className="mobile-nav-item">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
             <circle cx="12" cy="12" r="10"></circle>
             <line x1="12" y1="16" x2="12" y2="12"></line>
