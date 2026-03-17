@@ -946,25 +946,11 @@ const MainSite = () => {
             </div>
             <div className="about-image">
               <div className="about-visual">
-                <div className="perfume-bottles">
-                  <div className="bottle bottle-1">
-                    <img 
-                      src="https://images.unsplash.com/photo-1541643600914-78b084683702?w=300&q=80&fit=crop" 
-                      alt="Luxury perfume bottle"
-                    />
-                  </div>
-                  <div className="bottle bottle-2">
-                    <img 
-                      src="https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?w=300&q=80&fit=crop" 
-                      alt="Elegant fragrance"
-                    />
-                  </div>
-                  <div className="bottle bottle-3">
-                    <img 
-                      src="https://images.unsplash.com/photo-1563170351-be82bc888aa4?w=300&q=80&fit=crop" 
-                      alt="Premium perfume"
-                    />
-                  </div>
+                <div className="about-single-img">
+                  <img 
+                    src="https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?w=500&q=80&fit=crop" 
+                    alt="Luxury perfume collection"
+                  />
                 </div>
               </div>
             </div>

@@ -1104,43 +1104,20 @@ body.menu-open .filter-btn {
   position: relative;
 }
 
-.perfume-bottles {
-  display: flex;
-  gap: 1rem;
-  align-items: flex-end;
-}
-
-.bottle {
-  border-radius: 16px;
-  overflow: hidden;
-  position: relative;
-  box-shadow: 0 8px 30px rgba(58, 45, 40, 0.2);
-  flex-shrink: 0;
-}
-
-.bottle img {
+.about-single-img {
   width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-.bottle-1 {
-  width: 130px;
-  height: 180px;
+  max-width: 420px;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 12px 40px rgba(58, 45, 40, 0.2);
   animation: float 4s ease-in-out infinite;
 }
 
-.bottle-2 {
-  width: 160px;
-  height: 230px;
-  animation: float 4s ease-in-out infinite 1s;
-}
-
-.bottle-3 {
-  width: 140px;
-  height: 200px;
-  animation: float 4s ease-in-out infinite 2s;
+.about-single-img img {
+  width: 100%;
+  height: 420px;
+  object-fit: cover;
+  display: block;
 }
 
 /* NEWSLETTER SECTION */
