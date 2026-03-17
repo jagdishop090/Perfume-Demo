@@ -285,30 +285,18 @@ const ProductsPage = () => {
             </div>
 
             <div className="product-filters">
-              <button 
-                className={`filter-btn ${activeCategory === 'all' ? 'active' : ''}`}
-                onClick={() => setActiveCategory('all')}
-              >
-                All Products
-              </button>
-              <button 
-                className={`filter-btn ${activeCategory === 'men' ? 'active' : ''}`}
-                onClick={() => setActiveCategory('men')}
-              >
-                Men
-              </button>
-              <button 
-                className={`filter-btn ${activeCategory === 'women' ? 'active' : ''}`}
-                onClick={() => setActiveCategory('women')}
-              >
-                Women
-              </button>
-              <button 
-                className={`filter-btn ${activeCategory === 'unisex' ? 'active' : ''}`}
-                onClick={() => setActiveCategory('unisex')}
-              >
-                Unisex
-              </button>
+              <span
+                className={`filter-text ${activeCategory === 'men' ? 'active' : ''}`}
+                onClick={() => setActiveCategory(activeCategory === 'men' ? 'all' : 'men')}
+              >Men</span>
+              <span
+                className={`filter-text ${activeCategory === 'women' ? 'active' : ''}`}
+                onClick={() => setActiveCategory(activeCategory === 'women' ? 'all' : 'women')}
+              >Women</span>
+              <span
+                className={`filter-text ${activeCategory === 'unisex' ? 'active' : ''}`}
+                onClick={() => setActiveCategory(activeCategory === 'unisex' ? 'all' : 'unisex')}
+              >Unisex</span>
             </div>
 
             <div className="products-grid">
