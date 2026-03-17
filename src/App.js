@@ -281,7 +281,6 @@ const ProductsPage = () => {
           <div className="container">
             <div className="section-header">
               <h2>All Products</h2>
-              <p>Explore our complete collection of premium fragrances</p>
             </div>
 
             <div className="product-filters">
