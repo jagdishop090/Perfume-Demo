@@ -13,7 +13,7 @@ const ProductsPage = () => {
   const [searchParams] = useSearchParams();
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [activeCategory, setActiveCategory] = useState('all');
+  const [activeCategory, setActiveCategory] = useState(searchParams.get('category') || 'all');
   const [showBogoBanner, setShowBogoBanner] = useState(true);
   const [searchQuery, setSearchQuery] = useState(searchParams.get('search') || '');
   const [showSearchBar, setShowSearchBar] = useState(!!searchParams.get('search'));
@@ -831,7 +831,7 @@ const MainSite = () => {
           </div>
           
           <div className="category-grid">
-            <div className="category-card men">
+            <div className="category-card men" onClick={() => window.location.href='/products?category=men'} style={{cursor:'pointer'}}>
               <div className="category-image">
                 <div className="category-overlay">
                   <h3>Men's Collection</h3>
@@ -841,7 +841,7 @@ const MainSite = () => {
               </div>
             </div>
             
-            <div className="category-card women">
+            <div className="category-card women" onClick={() => window.location.href='/products?category=women'} style={{cursor:'pointer'}}>
               <div className="category-image">
                 <div className="category-overlay">
                   <h3>Women's Collection</h3>
@@ -851,7 +851,7 @@ const MainSite = () => {
               </div>
             </div>
             
-            <div className="category-card unisex">
+            <div className="category-card unisex" onClick={() => window.location.href='/products?category=unisex'} style={{cursor:'pointer'}}>
               <div className="category-image">
                 <div className="category-overlay">
                   <h3>Unisex Collection</h3>
