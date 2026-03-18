@@ -854,7 +854,7 @@ const MainSite = () => {
 
           <div className="category-list">
             <div className="category-row cat-men" onClick={() => window.location.href='/products?category=men'}>
-              <div className="cat-bg" style={{backgroundImage: "url('https://images.unsplash.com/photo-1523293182086-7651a899d37f?w=800&q=80')"}}></div>
+              <div className="cat-bg" style={{backgroundImage: "url('https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=800&q=80')"}}></div>
               <span className="cat-icon">
                 <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4">
                   <circle cx="10" cy="14" r="5"/>
@@ -871,7 +871,7 @@ const MainSite = () => {
             </div>
 
             <div className="category-row cat-women" onClick={() => window.location.href='/products?category=women'}>
-              <div className="cat-bg" style={{backgroundImage: "url('https://images.unsplash.com/photo-1541643600914-78b084683702?w=800&q=80')"}}></div>
+              <div className="cat-bg" style={{backgroundImage: "url('https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=800&q=80')"}}></div>
               <span className="cat-icon">
                 <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4">
                   <circle cx="12" cy="9" r="5"/>
@@ -888,7 +888,7 @@ const MainSite = () => {
             </div>
 
             <div className="category-row cat-unisex" onClick={() => window.location.href='/products?category=unisex'}>
-              <div className="cat-bg" style={{backgroundImage: "url('https://images.unsplash.com/photo-1594035910387-fea47794261f?w=800&q=80')"}}></div>
+              <div className="cat-bg" style={{backgroundImage: "url('https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?w=800&q=80')"}}></div>
               <span className="cat-icon">
                 <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4">
                   <circle cx="11" cy="11" r="4.5"/>
@@ -941,7 +941,7 @@ const MainSite = () => {
               <div className="about-visual">
                 <div className="about-single-img">
                   <img 
-                    src="https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?w=500&q=80&fit=crop" 
+                    src={require('./assets/images/about-perfume.png')} 
                     alt="Luxury perfume collection"
                   />
                 </div>
