@@ -812,38 +812,57 @@ const MainSite = () => {
         <div className="container">
           <div className="section-header">
             <h2>Shop by Category</h2>
-            <p>Discover our curated collections for every personality</p>
           </div>
-          
-          <div className="category-grid">
-            <div className="category-card men" onClick={() => window.location.href='/products?category=men'} style={{cursor:'pointer'}}>
-              <div className="category-image">
-                <div className="category-overlay">
-                  <h3>Men's Collection</h3>
-                  <p>Bold & Sophisticated</p>
-                  <button className="category-btn">Explore</button>
-                </div>
+
+          <div className="category-list">
+            <div className="category-row" onClick={() => window.location.href='/products?category=men'}>
+              <span className="cat-icon">
+                <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4">
+                  <circle cx="10" cy="14" r="5"/>
+                  <line x1="14.5" y1="9.5" x2="20" y2="4"/>
+                  <polyline points="16 4 20 4 20 8"/>
+                </svg>
+              </span>
+              <div className="cat-info">
+                <h3 className="cat-title">Men</h3>
+                <p className="cat-desc">Bold &amp; Sophisticated</p>
               </div>
+              <span className="cat-tag">Woody · Spicy · Fresh</span>
+              <svg className="cat-arrow" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
             </div>
-            
-            <div className="category-card women" onClick={() => window.location.href='/products?category=women'} style={{cursor:'pointer'}}>
-              <div className="category-image">
-                <div className="category-overlay">
-                  <h3>Women's Collection</h3>
-                  <p>Elegant & Enchanting</p>
-                  <button className="category-btn">Explore</button>
-                </div>
+
+            <div className="category-row" onClick={() => window.location.href='/products?category=women'}>
+              <span className="cat-icon">
+                <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4">
+                  <circle cx="12" cy="9" r="5"/>
+                  <line x1="12" y1="14" x2="12" y2="20"/>
+                  <line x1="9" y1="18" x2="15" y2="18"/>
+                </svg>
+              </span>
+              <div className="cat-info">
+                <h3 className="cat-title">Women</h3>
+                <p className="cat-desc">Elegant &amp; Enchanting</p>
               </div>
+              <span className="cat-tag">Floral · Sweet · Musky</span>
+              <svg className="cat-arrow" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
             </div>
-            
-            <div className="category-card unisex" onClick={() => window.location.href='/products?category=unisex'} style={{cursor:'pointer'}}>
-              <div className="category-image">
-                <div className="category-overlay">
-                  <h3>Unisex Collection</h3>
-                  <p>Universal Appeal</p>
-                  <button className="category-btn">Explore</button>
-                </div>
+
+            <div className="category-row" onClick={() => window.location.href='/products?category=unisex'}>
+              <span className="cat-icon">
+                <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4">
+                  <circle cx="11" cy="11" r="4.5"/>
+                  <line x1="14.5" y1="7.5" x2="19" y2="3"/>
+                  <polyline points="16 3 19 3 19 6"/>
+                  <line x1="11" y1="15.5" x2="11" y2="21"/>
+                  <line x1="8.5" y1="19" x2="13.5" y2="19"/>
+                </svg>
+              </span>
+              <div className="cat-info">
+                <h3 className="cat-title">Unisex</h3>
+                <p className="cat-desc">Universal Appeal</p>
               </div>
+              <span className="cat-tag">Citrus · Amber · Oud</span>
+              <svg className="cat-arrow" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
             </div>
           </div>
         </div>
