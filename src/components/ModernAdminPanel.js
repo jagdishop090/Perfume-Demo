@@ -125,28 +125,67 @@ const ModernAdminPanel = () => {
         const imageUrl = await uploadImage(file, 'products');
         console.log('Product image upload result:', imageUrl);
         
-        // Update the product with the new image
+        // Update the product with the new main image
         await updateProduct(product.id, {
           name: product.name,
           price: product.price,
           notes: product.notes,
           productImage: imageUrl,
+          productImages: product.images || [],
           isFeatured: product.isFeatured || false
         });
         
-        alert('Product image uploaded successfully to Supabase Storage and saved to database!');
+        alert('Main image uploaded successfully!');
         setSaving(false);
       } catch (error) {
         console.error('Error uploading product image:', error);
-        
-        let errorMessage = 'Error uploading product image: ' + error.message;
-        if (error.message.includes('bucket not configured')) {
-          errorMessage += '\n\nPlease check SUPABASE_STORAGE_SETUP.md for setup instructions.';
-        }
-        
-        alert(errorMessage);
+        alert('Error uploading product image: ' + error.message);
         setSaving(false);
       }
+    }
+  };
+
+  const handleProductExtraImageUpload = async (event, product) => {
+    const file = event.target.files[0];
+    if (file) {
+      try {
+        setSaving(true);
+        const imageUrl = await uploadImage(file, 'products');
+        const updatedImages = [...(product.images || []), imageUrl];
+        await updateProduct(product.id, {
+          name: product.name,
+          price: product.price,
+          notes: product.notes,
+          productImage: product.image || '',
+          productImages: updatedImages,
+          isFeatured: product.isFeatured || false
+        });
+        alert('Extra image added successfully!');
+        setSaving(false);
+      } catch (error) {
+        console.error('Error uploading extra image:', error);
+        alert('Error: ' + error.message);
+        setSaving(false);
+      }
+    }
+  };
+
+  const handleRemoveExtraImage = async (product, imgUrl) => {
+    try {
+      setSaving(true);
+      const updatedImages = (product.images || []).filter(u => u !== imgUrl);
+      await updateProduct(product.id, {
+        name: product.name,
+        price: product.price,
+        notes: product.notes,
+        productImage: product.image || '',
+        productImages: updatedImages,
+        isFeatured: product.isFeatured || false
+      });
+      setSaving(false);
+    } catch (error) {
+      console.error('Error removing image:', error);
+      setSaving(false);
     }
   };
 
@@ -680,26 +719,55 @@ const ModernAdminPanel = () => {
                       <tr key={product.id || index}>
                         <td>
                           <div className="product-image-cell">
-                            {product.image ? (
-                              <img src={product.image} alt={product.name} />
-                            ) : (
-                              <div className="no-image">No Image</div>
-                            )}
-                            <div className="image-upload-btn">
-                              <input 
-                                type="file" 
-                                accept="image/*"
-                                onChange={(e) => handleProductImageUpload(e, product)}
-                                className="hidden-file-input"
-                                id={`product-image-${product.id}`}
-                                disabled={saving}
-                              />
-                              <label 
-                                htmlFor={`product-image-${product.id}`} 
-                                className="upload-image-label"
-                              >
-                                {saving ? 'Uploading...' : 'Upload'}
-                              </label>
+                            {/* Main image */}
+                            <div style={{marginBottom: '6px'}}>
+                              <p style={{fontSize:'11px', color:'#888', margin:'0 0 3px'}}>Main</p>
+                              {product.image ? (
+                                <img src={product.image} alt={product.name} />
+                              ) : (
+                                <div className="no-image">No Image</div>
+                              )}
+                              <div className="image-upload-btn">
+                                <input 
+                                  type="file" 
+                                  accept="image/*"
+                                  onChange={(e) => handleProductImageUpload(e, product)}
+                                  className="hidden-file-input"
+                                  id={`product-image-${product.id}`}
+                                  disabled={saving}
+                                />
+                                <label htmlFor={`product-image-${product.id}`} className="upload-image-label">
+                                  {saving ? '...' : 'Set Main'}
+                                </label>
+                              </div>
+                            </div>
+                            {/* Extra images */}
+                            <div>
+                              <p style={{fontSize:'11px', color:'#888', margin:'0 0 3px'}}>Extra</p>
+                              <div style={{display:'flex', gap:'4px', flexWrap:'wrap', marginBottom:'4px'}}>
+                                {(product.images || []).map((img, i) => (
+                                  <div key={i} style={{position:'relative'}}>
+                                    <img src={img} alt={`extra-${i}`} style={{width:'36px', height:'36px', objectFit:'cover', borderRadius:'4px'}} />
+                                    <button
+                                      onClick={() => handleRemoveExtraImage(product, img)}
+                                      style={{position:'absolute', top:'-4px', right:'-4px', background:'#ef4444', color:'#fff', border:'none', borderRadius:'50%', width:'14px', height:'14px', fontSize:'9px', cursor:'pointer', lineHeight:'14px', padding:0}}
+                                    >×</button>
+                                  </div>
+                                ))}
+                              </div>
+                              <div className="image-upload-btn">
+                                <input
+                                  type="file"
+                                  accept="image/*"
+                                  onChange={(e) => handleProductExtraImageUpload(e, product)}
+                                  className="hidden-file-input"
+                                  id={`product-extra-${product.id}`}
+                                  disabled={saving}
+                                />
+                                <label htmlFor={`product-extra-${product.id}`} className="upload-image-label">
+                                  {saving ? '...' : '+ Add'}
+                                </label>
+                              </div>
                             </div>
                           </div>
                         </td>

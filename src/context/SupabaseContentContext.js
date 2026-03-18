@@ -199,6 +199,7 @@ export const ContentProvider = ({ children }) => {
             price: product.price,
             notes: product.notes,
             image: product.product_image || '',
+            images: product.product_images || [],
             isFeatured: product.is_featured
           };
           
@@ -474,6 +475,7 @@ export const ContentProvider = ({ children }) => {
           price: productData.price,
           notes: productData.notes,
           product_image: productData.productImage || '',
+          product_images: productData.productImages || [],
           is_featured: productData.isFeatured || false,
           updated_at: new Date().toISOString()
         })

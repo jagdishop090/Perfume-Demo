@@ -910,6 +910,19 @@ const MainSite = () => {
         </div>
       </section>
 
+      {/* Video Section */}
+      <section className="video-section">
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="brand-video"
+        >
+          <source src="/brand-video.mp4" type="video/mp4" />
+        </video>
+      </section>
+
       {/* About Section */}
       <section id="about" className="about-section">
         <div className="container">

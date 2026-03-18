@@ -736,3 +736,35 @@
 .unisex-modal .modal-info {
   scrollbar-color: rgba(255, 140, 0, 0.6) rgba(255, 140, 0, 0.1);
 }
+
+/* Thumbnail gallery */
+.modal-thumbnails {
+  display: flex;
+  gap: 8px;
+  padding: 10px 12px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  background: #f9f6f2;
+}
+
+.modal-thumbnails::-webkit-scrollbar {
+  display: none;
+}
+
+.modal-thumb {
+  width: 56px;
+  height: 56px;
+  object-fit: cover;
+  border-radius: 8px;
+  cursor: pointer;
+  border: 2px solid transparent;
+  opacity: 0.6;
+  transition: opacity 0.2s, border-color 0.2s;
+  flex-shrink: 0;
+}
+
+.modal-thumb.active,
+.modal-thumb:hover {
+  opacity: 1;
+  border-color: #3A2D28;
+}
