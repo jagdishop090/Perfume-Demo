@@ -200,7 +200,7 @@ const ModernAdminPanel = () => {
         const fileExt = file.name.split('.').pop();
         const exactFileName = `banners/${bannerName.replace(/\.[^.]+$/, '')}.${fileExt}`;
 
-        const { data, error } = await supabase.storage
+        const { error } = await supabase.storage
           .from('perfume-images')
           .upload(exactFileName, file, { cacheControl: '3600', upsert: true });
 
