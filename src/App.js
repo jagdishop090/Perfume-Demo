@@ -853,7 +853,8 @@ const MainSite = () => {
           </div>
 
           <div className="category-list">
-            <div className="category-row" onClick={() => window.location.href='/products?category=men'}>
+            <div className="category-row cat-men" onClick={() => window.location.href='/products?category=men'}>
+              <div className="cat-bg" style={{backgroundImage: "url('https://images.unsplash.com/photo-1523293182086-7651a899d37f?w=800&q=80')"}}></div>
               <span className="cat-icon">
                 <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4">
                   <circle cx="10" cy="14" r="5"/>
@@ -869,7 +870,8 @@ const MainSite = () => {
               <svg className="cat-arrow" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
             </div>
 
-            <div className="category-row" onClick={() => window.location.href='/products?category=women'}>
+            <div className="category-row cat-women" onClick={() => window.location.href='/products?category=women'}>
+              <div className="cat-bg" style={{backgroundImage: "url('https://images.unsplash.com/photo-1541643600914-78b084683702?w=800&q=80')"}}></div>
               <span className="cat-icon">
                 <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4">
                   <circle cx="12" cy="9" r="5"/>
@@ -885,7 +887,8 @@ const MainSite = () => {
               <svg className="cat-arrow" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
             </div>
 
-            <div className="category-row" onClick={() => window.location.href='/products?category=unisex'}>
+            <div className="category-row cat-unisex" onClick={() => window.location.href='/products?category=unisex'}>
+              <div className="cat-bg" style={{backgroundImage: "url('https://images.unsplash.com/photo-1594035910387-fea47794261f?w=800&q=80')"}}></div>
               <span className="cat-icon">
                 <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4">
                   <circle cx="11" cy="11" r="4.5"/>
