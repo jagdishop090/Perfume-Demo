@@ -17,6 +17,10 @@
       }
     },
     {
+      "src": "/brand-video\\.mp4",
+      "dest": "/brand-video.mp4"
+    },
+    {
       "src": "/(.*)",
       "dest": "/index.html"
     }
