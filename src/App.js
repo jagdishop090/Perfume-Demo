@@ -819,29 +819,53 @@ const MainSite = () => {
             <p>Products</p>
           </div>
 
-          <div className="products-scroll-container">
-            <div className="products-scroll-wrapper">
-              {allProducts.slice(0, 6).map((product, index) => (
-                <div key={product.id || index} className="product-card-scroll" onClick={() => openProductModal(product)}>
-                  <div className="product-image">
-                    {product.image ? (
-                      <img src={product.image} alt={product.name} />
-                    ) : (
-                      <div className={`product-bottle ${product.category}`}></div>
-                    )}
-                    <div className="product-overlay">
-                      <button className="quick-view-btn">Quick View</button>
+          <div className="products-scroll-outer">
+            <button
+              className="scroll-arrow scroll-arrow-left"
+              onClick={() => {
+                const el = document.getElementById('featured-scroll');
+                if (el) el.scrollBy({ left: -320, behavior: 'smooth' });
+              }}
+              aria-label="Scroll left"
+            >
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M15 18l-6-6 6-6"/></svg>
+            </button>
+
+            <div className="products-scroll-container" id="featured-scroll">
+              <div className="products-scroll-wrapper">
+                {allProducts.slice(0, 6).map((product, index) => (
+                  <div key={product.id || index} className="product-card-scroll" onClick={() => openProductModal(product)}>
+                    <div className="product-image">
+                      {product.image ? (
+                        <img src={product.image} alt={product.name} />
+                      ) : (
+                        <div className={`product-bottle ${product.category}`}></div>
+                      )}
+                      <div className="product-overlay">
+                        <button className="quick-view-btn">Quick View</button>
+                      </div>
+                    </div>
+                    <div className="product-info">
+                      <span className="product-category">{product.category}</span>
+                      <h3 className="product-name">{product.name}</h3>
+                      <p className="product-notes">{product.notes}</p>
+                      <div className="product-price">{product.price}</div>
                     </div>
                   </div>
-                  <div className="product-info">
-                    <span className="product-category">{product.category}</span>
-                    <h3 className="product-name">{product.name}</h3>
-                    <p className="product-notes">{product.notes}</p>
-                    <div className="product-price">{product.price}</div>
-                  </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
+
+            <button
+              className="scroll-arrow scroll-arrow-right"
+              onClick={() => {
+                const el = document.getElementById('featured-scroll');
+                if (el) el.scrollBy({ left: 320, behavior: 'smooth' });
+              }}
+              aria-label="Scroll right"
+            >
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
           </div>
         </div>
       </section>

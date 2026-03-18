@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import './ProductModal.css';
 
 const ProductModal = ({ product, isOpen, onClose, mode }) => {
   const [activeImg, setActiveImg] = useState(0);
+  const touchStartX = useRef(null);
 
   if (!isOpen || !product) return null;
 
@@ -23,6 +24,24 @@ const ProductModal = ({ product, isOpen, onClose, mode }) => {
     if (e.target === e.currentTarget) onClose();
   };
 
+  const handleTouchStart = (e) => {
+    touchStartX.current = e.touches[0].clientX;
+  };
+
+  const handleTouchEnd = (e) => {
+    if (touchStartX.current === null || allImages.length <= 1) return;
+    const diff = touchStartX.current - e.changedTouches[0].clientX;
+    if (Math.abs(diff) < 40) return; // ignore small taps
+    if (diff > 0) {
+      // swipe left → next
+      setActiveImg(i => (i + 1) % allImages.length);
+    } else {
+      // swipe right → prev
+      setActiveImg(i => (i - 1 + allImages.length) % allImages.length);
+    }
+    touchStartX.current = null;
+  };
+
   return (
     <div className={`modal-overlay ${mode}-modal`} onClick={handleOverlayClick}>
       <div className="modal-content">
@@ -32,8 +51,20 @@ const ProductModal = ({ product, isOpen, onClose, mode }) => {
           <div className="modal-image-section">
             {allImages.length > 0 ? (
               <>
-                <div className="modal-image-container">
+                <div
+                  className="modal-image-container"
+                  onTouchStart={handleTouchStart}
+                  onTouchEnd={handleTouchEnd}
+                >
                   <img src={allImages[activeImg]} alt={product.name} className="modal-product-image" />
+                  {/* Dot indicators — mobile only */}
+                  {allImages.length > 1 && (
+                    <div className="modal-img-dots">
+                      {allImages.map((_, i) => (
+                        <span key={i} className={`modal-img-dot ${i === activeImg ? 'active' : ''}`} />
+                      ))}
+                    </div>
+                  )}
                 </div>
                 {allImages.length > 1 && (
                   <div className="modal-thumbnails">

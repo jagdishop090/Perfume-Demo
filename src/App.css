@@ -905,31 +905,58 @@ body.menu-open .product-card {
 }
 
 /* Horizontal Scrollable Products */
+.products-scroll-outer {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0;
+}
+
+.scroll-arrow {
+  flex-shrink: 0;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  border: none;
+  background: #3A2D28;
+  color: #F1EDE6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.15s;
+  z-index: 2;
+  box-shadow: 0 4px 14px rgba(58, 45, 40, 0.25);
+}
+
+.scroll-arrow:hover {
+  background: #A48374;
+  transform: scale(1.08);
+}
+
+.scroll-arrow-left { margin-right: 0.75rem; }
+.scroll-arrow-right { margin-left: 0.75rem; }
+
+/* Hide arrows on mobile — touch scroll handles it */
+@media (max-width: 768px) {
+  .scroll-arrow { display: none; }
+  .products-scroll-outer { display: block; }
+}
+
 .products-scroll-container {
+  flex: 1;
   overflow-x: auto;
   overflow-y: hidden;
   scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
-  padding: 0 2rem;
+  padding: 0;
   margin: 0;
+  /* Hide scrollbar on desktop */
+  scrollbar-width: none;
 }
 
 .products-scroll-container::-webkit-scrollbar {
-  height: 6px;
-}
-
-.products-scroll-container::-webkit-scrollbar-track {
-  background: #EBE3DB;
-  border-radius: 10px;
-}
-
-.products-scroll-container::-webkit-scrollbar-thumb {
-  background: #CBAD8D;
-  border-radius: 10px;
-}
-
-.products-scroll-container::-webkit-scrollbar-thumb:hover {
-  background: #A48374;
+  display: none;
 }
 
 .products-scroll-wrapper {
