@@ -156,21 +156,27 @@ const ModernAdminPanel = () => {
       try {
         setSaving(true);
         console.log('Replacing banner:', bannerName, 'with:', file.name);
-        
-        const imageUrl = await uploadImage(file, 'banners');
-        console.log('Banner replace result:', imageUrl);
-        
-        alert(`Banner ${bannerName} uploaded successfully to Supabase Storage!\n\nNew URL: ${imageUrl}\n\nNote: To replace the actual banner file, you would need to update your banner references to use this new URL.`);
+
+        // Upload directly with the exact banner filename so the site picks it up
+        const fileExt = file.name.split('.').pop();
+        const exactFileName = `banners/${bannerName.replace(/\.[^.]+$/, '')}.${fileExt}`;
+
+        const { data, error } = await supabase.storage
+          .from('perfume-images')
+          .upload(exactFileName, file, { cacheControl: '3600', upsert: true });
+
+        if (error) throw new Error(error.message);
+
+        const { data: { publicUrl } } = supabase.storage
+          .from('perfume-images')
+          .getPublicUrl(exactFileName);
+
+        console.log('Banner replaced at:', publicUrl);
+        alert(`Banner replaced successfully!\n\nThe new image is now live on the site.\n\nURL: ${publicUrl}`);
         setSaving(false);
       } catch (error) {
         console.error('Error replacing banner:', error);
-        
-        let errorMessage = 'Error replacing banner: ' + error.message;
-        if (error.message.includes('bucket not configured')) {
-          errorMessage += '\n\nPlease check SUPABASE_STORAGE_SETUP.md for setup instructions.';
-        }
-        
-        alert(errorMessage);
+        alert('Error replacing banner: ' + error.message);
         setSaving(false);
       }
     }

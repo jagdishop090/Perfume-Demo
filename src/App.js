@@ -395,10 +395,11 @@ const MainSite = () => {
 
   // Banner images - using Supabase CDN URLs for reliable delivery
   // These URLs are served from Supabase CDN and will work on all platforms
+  const cacheBust = `?t=${Math.floor(Date.now() / 300000)}`; // busts every 5 minutes
   const supabaseBannerUrls = [
-    "https://tqrztmpxiagerohadtfl.supabase.co/storage/v1/object/public/perfume-images/banners/banner-1.jpg",
-    "https://tqrztmpxiagerohadtfl.supabase.co/storage/v1/object/public/perfume-images/banners/banner-2.jpg",
-    "https://tqrztmpxiagerohadtfl.supabase.co/storage/v1/object/public/perfume-images/banners/banner-3.jpg"
+    `https://tqrztmpxiagerohadtfl.supabase.co/storage/v1/object/public/perfume-images/banners/banner-1.jpg${cacheBust}`,
+    `https://tqrztmpxiagerohadtfl.supabase.co/storage/v1/object/public/perfume-images/banners/banner-2.jpg${cacheBust}`,
+    `https://tqrztmpxiagerohadtfl.supabase.co/storage/v1/object/public/perfume-images/banners/banner-3.jpg${cacheBust}`
   ];
 
   // Banner configuration with Supabase URLs as primary source
