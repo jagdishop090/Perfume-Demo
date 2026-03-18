@@ -165,7 +165,26 @@ const ProductsPage = () => {
           
           <nav className="nav">
             <Link to="/" className={`nav-link ${location.pathname === '/' ? 'active' : ''}`}>Home</Link>
-            <Link to="/products" className={`nav-link ${location.pathname === '/products' ? 'active' : ''}`}>Products</Link>
+            <div className="nav-dropdown">
+              <Link to="/products" className={`nav-link ${location.pathname === '/products' ? 'active' : ''}`}>
+                Products
+                <svg className="dropdown-chevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M6 9l6 6 6-6"/></svg>
+              </Link>
+              <div className="nav-dropdown-menu">
+                <a href="/products?category=men" className="nav-dropdown-item">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><circle cx="10" cy="14" r="5"/><line x1="14.5" y1="9.5" x2="20" y2="4"/><polyline points="16 4 20 4 20 8"/></svg>
+                  Men
+                </a>
+                <a href="/products?category=women" className="nav-dropdown-item">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><circle cx="12" cy="9" r="5"/><line x1="12" y1="14" x2="12" y2="20"/><line x1="9" y1="18" x2="15" y2="18"/></svg>
+                  Women
+                </a>
+                <a href="/products?category=unisex" className="nav-dropdown-item">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><circle cx="11" cy="11" r="4.5"/><line x1="14.5" y1="7.5" x2="19" y2="3"/><polyline points="16 3 19 3 19 6"/><line x1="11" y1="15.5" x2="11" y2="21"/><line x1="8.5" y1="19" x2="13.5" y2="19"/></svg>
+                  Unisex
+                </a>
+              </div>
+            </div>
             <a href="/#collections" className="nav-link">Collections</a>
             <a href="/#about" className="nav-link">About</a>
             <a href="/#contact" className="nav-link">Contact</a>
@@ -612,7 +631,26 @@ const MainSite = () => {
           
           <nav className="nav">
             <Link to="/" className={`nav-link ${location.pathname === '/' ? 'active' : ''}`}>Home</Link>
-            <Link to="/products" className={`nav-link ${location.pathname === '/products' ? 'active' : ''}`}>Products</Link>
+            <div className="nav-dropdown">
+              <Link to="/products" className={`nav-link ${location.pathname === '/products' ? 'active' : ''}`}>
+                Products
+                <svg className="dropdown-chevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M6 9l6 6 6-6"/></svg>
+              </Link>
+              <div className="nav-dropdown-menu">
+                <a href="/products?category=men" className="nav-dropdown-item">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><circle cx="10" cy="14" r="5"/><line x1="14.5" y1="9.5" x2="20" y2="4"/><polyline points="16 4 20 4 20 8"/></svg>
+                  Men
+                </a>
+                <a href="/products?category=women" className="nav-dropdown-item">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><circle cx="12" cy="9" r="5"/><line x1="12" y1="14" x2="12" y2="20"/><line x1="9" y1="18" x2="15" y2="18"/></svg>
+                  Women
+                </a>
+                <a href="/products?category=unisex" className="nav-dropdown-item">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><circle cx="11" cy="11" r="4.5"/><line x1="14.5" y1="7.5" x2="19" y2="3"/><polyline points="16 3 19 3 19 6"/><line x1="11" y1="15.5" x2="11" y2="21"/><line x1="8.5" y1="19" x2="13.5" y2="19"/></svg>
+                  Unisex
+                </a>
+              </div>
+            </div>
             <a href="#collections" className="nav-link">Collections</a>
             <a href="/#about" className="nav-link">About</a>
             <a href="#contact" className="nav-link">Contact</a>
