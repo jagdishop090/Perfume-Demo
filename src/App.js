@@ -2,6 +2,7 @@ import React, { useState, useCallback, useMemo, Suspense, lazy, useEffect } from
 import { BrowserRouter as Router, Routes, Route, Link, useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import { ContentProvider, useContent } from './context/SupabaseContentContext';
 import ProductModal from './components/ProductModal';
+import ScrollVideoSection from './components/ScrollVideoSection';
 import { getBannerWithFallbacks } from './utils/bannerFallbacks';
 import './App.css';
 
@@ -393,7 +394,7 @@ const MainSite = () => {
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const { content } = useContent();
 
-  // Banner images - using Supabase CDN URLs for reliable delivery
+  // Scroll-scrub video removed
   // These URLs are served from Supabase CDN and will work on all platforms
   const cacheBust = `?t=${Math.floor(Date.now() / 300000)}`; // busts every 5 minutes
   const supabaseBannerUrls = [
@@ -869,6 +870,9 @@ const MainSite = () => {
           </div>
         </div>
       </section>
+
+      {/* Scroll Video Section */}
+      <ScrollVideoSection />
 
       {/* Categories Section */}
       <section className="categories">

@@ -1163,7 +1163,7 @@ body.menu-open .product-card {
 .scroll-arrow-left { margin-right: 0.75rem; }
 .scroll-arrow-right { margin-left: 0.75rem; }
 
-/* Hide arrows on mobile — touch scroll handles it */
+/* Hide arrows on mobile - touch scroll handles it */
 @media (max-width: 768px) {
   .scroll-arrow { display: none; }
   .products-scroll-outer { display: block; }

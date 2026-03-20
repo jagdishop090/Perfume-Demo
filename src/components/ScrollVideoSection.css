@@ -1,0 +1,124 @@
+/* Container — exactly 100vh, no extra space */
+.svs-container {
+  position: relative;
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+}
+
+/* Sticky panel fills the container */
+.svs-sticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+  background: #000;
+}
+
+/* Video — fills viewport completely */
+.svs-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+/* Gradient overlay */
+.svs-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.08) 0%,
+    rgba(0, 0, 0, 0.3) 55%,
+    rgba(0, 0, 0, 0.6) 100%
+  );
+  pointer-events: none;
+}
+
+/* Text */
+.svs-text-wrap {
+  position: absolute;
+  bottom: 14%;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  width: 90%;
+  max-width: 680px;
+  pointer-events: none;
+}
+
+.svs-eyebrow {
+  font-size: 0.72rem;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: #C9A84C;
+  margin: 0 0 0.9rem;
+  opacity: 0;
+}
+
+.svs-heading {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.8rem, 4.5vw, 3.2rem);
+  font-weight: 300;
+  color: #fff;
+  line-height: 1.25;
+  margin: 0;
+  letter-spacing: 0.5px;
+  opacity: 0;
+}
+
+/* Progress bar */
+.svs-progress-track {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.svs-progress-bar {
+  height: 100%;
+  width: 0%;
+  background: #C9A84C;
+  transition: width 0.05s linear;
+}
+
+/* Scroll hint */
+.svs-scroll-hint {
+  position: absolute;
+  bottom: 28px;
+  right: 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  opacity: 0.6;
+}
+
+.svs-scroll-hint span {
+  font-size: 0.65rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: #fff;
+}
+
+.svs-scroll-line {
+  width: 1px;
+  height: 36px;
+  background: linear-gradient(to bottom, #fff, transparent);
+  animation: scrollPulse 1.6s ease-in-out infinite;
+}
+
+@keyframes scrollPulse {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 1; }
+}
+
+@media (max-width: 768px) {
+  .svs-scroll-hint { display: none; }
+}

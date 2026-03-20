@@ -1,0 +1,27 @@
+/* Tall container — scroll distance drives the video */
+.sv-container {
+  position: relative;
+  height: 400vh;
+}
+
+/* Sticky inner — stays pinned while container scrolls */
+.sv-sticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* Video — full screen, no black bars */
+.sv-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+@media (max-width: 768px) {
+  .sv-video {
+    object-position: center center;
+  }
+}

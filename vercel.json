@@ -21,6 +21,10 @@
       "dest": "/brand-video.mp4"
     },
     {
+      "src": "/scroll-video\\.mp4",
+      "dest": "/scroll-video.mp4"
+    },
+    {
       "src": "/(.*)",
       "dest": "/index.html"
     }
