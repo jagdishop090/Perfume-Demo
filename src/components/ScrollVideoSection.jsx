@@ -14,113 +14,121 @@ const ScrollVideoSection = () => {
     if (!section || !video) return;
 
     let duration = 0;
-    let progress = 0;
+    let targetProgress = 0;   // where we want to be (0..1)
+    let renderedTime = -1;    // last time we actually set video.currentTime
     let raf = null;
     let active = false;
     let savedScrollY = 0;
     let touchStartY = 0;
-    let cooldown = false;  // prevents re-activation right after deactivate
+    let cooldown = false;
+    let lastSeekTime = 0;     // throttle seeks to avoid browser choke
 
-    // ── Force video load on all devices ─────────────────────────────────────
+    // ── Video load ───────────────────────────────────────────────────────────
     video.load();
     const onMeta = () => {
       duration = video.duration || 0;
+      // iOS unlock trick
       const p = video.play();
       if (p) p.then(() => { video.pause(); video.currentTime = 0; }).catch(() => {});
     };
     video.addEventListener('loadedmetadata', onMeta);
     if (video.readyState >= 1) onMeta();
 
-    // ── Activate / Deactivate ────────────────────────────────────────────────
+    // ── Activate ─────────────────────────────────────────────────────────────
     const activate = (fromBelow = false) => {
       if (active || cooldown) return;
       savedScrollY = section.offsetTop;
       window.scrollTo(0, savedScrollY);
       document.body.style.overflow = 'hidden';
       active = true;
-      // Set progress to correct end based on entry direction
-      if (fromBelow) {
-        progress = 1; // entering from below = reverse play from end
-      } else {
-        progress = 0; // entering from above = forward play from start
-      }
+      targetProgress = fromBelow ? 1 : 0;
     };
 
+    // ── Deactivate ───────────────────────────────────────────────────────────
     const deactivate = (dir = 0) => {
       if (!active) return;
       document.body.style.overflow = '';
       active = false;
       cooldown = true;
       setTimeout(() => { cooldown = false; }, 800);
-
       if (dir > 0) {
-        // Finished going down — jump scroll to just past the section bottom
         window.scrollTo(0, section.offsetTop + section.offsetHeight + 1);
       } else if (dir < 0) {
-        // Finished going up — jump scroll to just before the section top
         window.scrollTo(0, section.offsetTop - 1);
       }
     };
 
-    // ── RAF — only drives video + UI, no scroll pinning ─────────────────────
-    const tick = () => {
+    // ── RAF loop ─────────────────────────────────────────────────────────────
+    const tick = (now) => {
       raf = requestAnimationFrame(tick);
 
-      // Keep page pinned while active
       if (active) window.scrollTo(0, savedScrollY);
-
       if (!duration) return;
 
-      const t = progress * duration;
-      video.currentTime = t;
+      const targetTime = targetProgress * duration;
 
+      // Only seek if we've moved more than 1 frame (~33ms at 30fps)
+      // AND enough time has passed since last seek (throttle to 30fps max)
+      const timeDiff = Math.abs(targetTime - renderedTime);
+      const msSinceLast = now - lastSeekTime;
+
+      if (timeDiff > 0.033 && msSinceLast >= 32) {
+        video.currentTime = targetTime;
+        renderedTime = targetTime;
+        lastSeekTime = now;
+      }
+
+      // UI updates every frame (cheap)
       if (progressRef.current)
-        progressRef.current.style.width = `${progress * 100}%`;
+        progressRef.current.style.width = `${targetProgress * 100}%`;
 
       if (textRef.current) {
-        const v = Math.min(1, Math.max(0, (progress - 0.3) / 0.3));
+        const v = Math.min(1, Math.max(0, (targetProgress - 0.3) / 0.3));
         textRef.current.style.opacity = v;
         textRef.current.style.transform = `translateY(${(1 - v) * 20}px)`;
       }
       if (subTextRef.current) {
-        const v = Math.min(1, Math.max(0, (progress - 0.15) / 0.3));
+        const v = Math.min(1, Math.max(0, (targetProgress - 0.15) / 0.3));
         subTextRef.current.style.opacity = v;
         subTextRef.current.style.transform = `translateY(${(1 - v) * 16}px)`;
       }
     };
     raf = requestAnimationFrame(tick);
 
-    // ── Section is "reachable" — viewport is anywhere over the section ───────
+    // ── Helpers ───────────────────────────────────────────────────────────────
     const sectionInRange = () => {
-      const rect = section.getBoundingClientRect();
-      // section top is above or at viewport bottom, section bottom is below viewport top
-      return rect.top < window.innerHeight && rect.bottom > 0;
+      const r = section.getBoundingClientRect();
+      return r.top < window.innerHeight && r.bottom > 0;
     };
 
-    // ── Wheel ────────────────────────────────────────────────────────────────
-    const onWheel = (e) => {
-      if (!active) {
-        if (!sectionInRange()) return;
-        const rect = section.getBoundingClientRect();
-        const goingDown = e.deltaY > 0 && rect.top > -10;
-        const goingUp   = e.deltaY < 0 && rect.bottom < window.innerHeight + 10;
-        if (!goingDown && !goingUp) return;
-        activate(goingUp); // fromBelow = true when scrolling up into section
-      }
+    const tryActivate = (delta) => {
+      if (active || cooldown || !sectionInRange()) return false;
+      const r = section.getBoundingClientRect();
+      const goingDown = delta > 0 && r.top > -10;
+      const goingUp   = delta < 0 && r.bottom < window.innerHeight + 10;
+      if (!goingDown && !goingUp) return false;
+      activate(goingUp);
+      return true;
+    };
 
+    // ── Wheel ─────────────────────────────────────────────────────────────────
+    const onWheel = (e) => {
+      if (!active && !tryActivate(e.deltaY)) return;
       e.preventDefault();
 
       let delta = e.deltaY;
       if (e.deltaMode === 1) delta *= 40;
       if (e.deltaMode === 2) delta *= 800;
+      // Clamp so fast scroll doesn't jump entire video
+      delta = Math.max(-200, Math.min(200, delta));
 
-      progress = Math.min(1, Math.max(0, progress + delta / 600));
+      targetProgress = Math.min(1, Math.max(0, targetProgress + delta / 600));
 
-      if (progress >= 1) deactivate(+1);
-      if (progress <= 0) deactivate(-1);
+      if (targetProgress >= 1) deactivate(+1);
+      else if (targetProgress <= 0) deactivate(-1);
     };
 
-    // ── Touch ────────────────────────────────────────────────────────────────
+    // ── Touch ─────────────────────────────────────────────────────────────────
     const onTouchStart = (e) => {
       touchStartY = e.touches[0].clientY;
     };
@@ -129,32 +137,20 @@ const ScrollVideoSection = () => {
       const dy = touchStartY - e.touches[0].clientY;
       touchStartY = e.touches[0].clientY;
 
-      if (!active) {
-        if (!sectionInRange()) return;
-        const rect = section.getBoundingClientRect();
-        const goingDown = dy > 0 && rect.top > -10;
-        const goingUp   = dy < 0 && rect.bottom < window.innerHeight + 10;
-        if (!goingDown && !goingUp) return;
-        activate(goingUp);
-      }
-
+      if (!active && !tryActivate(dy)) return;
       e.preventDefault();
 
-      progress = Math.min(1, Math.max(0, progress + dy / 400));
+      targetProgress = Math.min(1, Math.max(0, targetProgress + dy / 400));
 
-      if (progress >= 1) deactivate(+1);
-      if (progress <= 0) deactivate(-1);
+      if (targetProgress >= 1) deactivate(+1);
+      else if (targetProgress <= 0) deactivate(-1);
     };
 
-    // ── Scroll listener — catches fast/momentum scroll that lands on section ─
+    // ── Scroll fallback (fast/momentum scroll) ────────────────────────────────
     const onScroll = () => {
       if (active || cooldown) return;
-      const rect = section.getBoundingClientRect();
-      // Fast scroll landed with section covering viewport — detect direction from scroll position
-      if (rect.top <= 0 && rect.bottom > 0) {
-        // If we're past section top, we came from above (scrolling down)
-        activate(false);
-      }
+      const r = section.getBoundingClientRect();
+      if (r.top <= 0 && r.bottom > 0) activate(false);
     };
 
     window.addEventListener('wheel', onWheel, { passive: false });
