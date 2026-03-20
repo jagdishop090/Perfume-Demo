@@ -122,7 +122,7 @@ const ScrollVideoSection = () => {
       // Clamp so fast scroll doesn't jump entire video
       delta = Math.max(-200, Math.min(200, delta));
 
-      targetProgress = Math.min(1, Math.max(0, targetProgress + delta / 600));
+      targetProgress = Math.min(1, Math.max(0, targetProgress + delta / 1200));
 
       if (targetProgress >= 1) deactivate(+1);
       else if (targetProgress <= 0) deactivate(-1);
@@ -140,7 +140,7 @@ const ScrollVideoSection = () => {
       if (!active && !tryActivate(dy)) return;
       e.preventDefault();
 
-      targetProgress = Math.min(1, Math.max(0, targetProgress + dy / 400));
+      targetProgress = Math.min(1, Math.max(0, targetProgress + dy / 800));
 
       if (targetProgress >= 1) deactivate(+1);
       else if (targetProgress <= 0) deactivate(-1);
