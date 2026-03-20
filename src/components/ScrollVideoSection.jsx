@@ -21,10 +21,10 @@ const ScrollVideoSection = () => {
     let duration = 0;
     let lockedScrollY = 0;
 
-    // ── Lock / Unlock ────────────────────────────────────────────────────────
     const lock = () => {
       if (locked) return;
-      lockedScrollY = window.scrollY;
+      lockedScrollY = section.offsetTop;
+      window.scrollTo(0, lockedScrollY);
       document.body.style.overflow = 'hidden';
       locked = true;
     };
@@ -33,20 +33,17 @@ const ScrollVideoSection = () => {
       if (!locked) return;
       document.body.style.overflow = '';
       locked = false;
-      // Nudge 1px in the travel direction so the browser continues scrolling
-      window.scrollTo(0, lockedScrollY + direction * 1);
+      window.scrollTo(0, lockedScrollY + direction * 2);
     };
 
-    // ── Video metadata ───────────────────────────────────────────────────────
     const onMetadata = () => { duration = video.duration || 0; };
     video.addEventListener('loadedmetadata', onMetadata);
     if (video.readyState >= 1) onMetadata();
 
-    // ── RAF loop ─────────────────────────────────────────────────────────────
+    // RAF — pin scroll while locked, lerp video currentTime
     const tick = () => {
       raf = requestAnimationFrame(tick);
 
-      // Pin scroll while locked
       if (locked) window.scrollTo(0, lockedScrollY);
 
       if (!duration) return;
@@ -78,29 +75,26 @@ const ScrollVideoSection = () => {
 
       if (locked) {
         if (targetTime >= duration && currentTime >= duration * 0.97) unlock(+1);
-        if (targetTime <= 0   && currentTime <= duration * 0.03)  unlock(-1);
+        if (targetTime <= 0 && currentTime <= duration * 0.03) unlock(-1);
       }
     };
     raf = requestAnimationFrame(tick);
 
-    // ── IntersectionObserver — fires as soon as section enters viewport ──────
-    // threshold:0 = fires the instant even 1px is visible
+    // Lock when section is fully covering the viewport (threshold 1.0)
+    // This means the section top has scrolled to viewport top — not before
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting && !locked) {
-            // Snap scroll to section top and lock immediately
-            lockedScrollY = section.offsetTop;
-            window.scrollTo(0, lockedScrollY);
             lock();
           }
         });
       },
-      { threshold: 0 }
+      // rootMargin: trigger only when section top aligns with viewport top
+      { threshold: 0, rootMargin: '0px 0px -99% 0px' }
     );
     observer.observe(section);
 
-    // ── Wheel ────────────────────────────────────────────────────────────────
     const onWheel = (e) => {
       if (!locked) return;
       e.preventDefault();
@@ -114,7 +108,6 @@ const ScrollVideoSection = () => {
       targetTime = Math.min(duration, Math.max(0, targetTime + (delta / 100) * 0.4));
     };
 
-    // ── Touch ────────────────────────────────────────────────────────────────
     const onTouchStart = (e) => {
       touchStartY = e.touches[0].clientY;
     };
