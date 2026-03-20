@@ -2,72 +2,61 @@ import { useRef, useEffect } from 'react';
 import './ScrollVideoSection.css';
 
 const ScrollVideoSection = () => {
-  const sectionRef = useRef(null);
+  const containerRef = useRef(null);
   const videoRef = useRef(null);
   const progressRef = useRef(null);
   const textRef = useRef(null);
   const subTextRef = useRef(null);
 
   useEffect(() => {
-    const section = sectionRef.current;
+    const container = containerRef.current;
     const video = videoRef.current;
-    if (!section || !video) return;
+    if (!container || !video) return;
 
-    let locked = false;
-    let targetTime = 0;
-    let currentTime = 0;
-    let raf = null;
-    let touchStartY = 0;
     let duration = 0;
-    let lockedScrollY = 0;
+    let raf = null;
+    let targetTime = 0;
+    let displayTime = 0;
 
-    const lock = () => {
-      if (locked) return;
-      lockedScrollY = section.offsetTop;
-      window.scrollTo(0, lockedScrollY);
-      document.body.style.overflow = 'hidden';
-      locked = true;
-    };
-
-    const unlock = (direction = 0) => {
-      if (!locked) return;
-      document.body.style.overflow = '';
-      locked = false;
-      window.scrollTo(0, lockedScrollY + direction * 2);
-    };
+    // Force video to load on all devices including iOS
+    video.load();
 
     const onMetadata = () => {
       duration = video.duration || 0;
-      // iOS Safari requires a play+pause to unlock currentTime scrubbing
-      const playPromise = video.play();
-      if (playPromise !== undefined) {
-        playPromise.then(() => { video.pause(); video.currentTime = 0; }).catch(() => {});
-      }
+      // iOS unlock: play then immediately pause to allow currentTime scrubbing
+      const p = video.play();
+      if (p) p.then(() => { video.pause(); video.currentTime = 0; }).catch(() => {});
     };
+
     video.addEventListener('loadedmetadata', onMetadata);
     if (video.readyState >= 1) onMetadata();
 
-    // Force load on mobile — iOS ignores preload="auto"
-    video.load();
+    // Map scroll position to video progress (0..1)
+    const getProgress = () => {
+      const rect = container.getBoundingClientRect();
+      const scrollable = container.offsetHeight - window.innerHeight;
+      if (scrollable <= 0) return 0;
+      // How far the container top has scrolled above viewport top
+      const scrolled = -rect.top;
+      return Math.min(1, Math.max(0, scrolled / scrollable));
+    };
 
-    // RAF — pin scroll while locked, lerp video currentTime
     const tick = () => {
       raf = requestAnimationFrame(tick);
-
-      if (locked) window.scrollTo(0, lockedScrollY);
-
       if (!duration) return;
 
-      const diff = targetTime - currentTime;
+      const p = getProgress();
+      targetTime = p * duration;
+
+      // Lerp displayTime toward targetTime for smooth scrubbing
+      const diff = targetTime - displayTime;
       if (Math.abs(diff) > 0.001) {
-        currentTime += diff * 0.15;
-        video.currentTime = currentTime;
-      } else if (currentTime !== targetTime) {
-        currentTime = targetTime;
-        video.currentTime = currentTime;
+        displayTime += diff * 0.2;
+      } else {
+        displayTime = targetTime;
       }
 
-      const p = currentTime / duration;
+      video.currentTime = displayTime;
 
       if (progressRef.current)
         progressRef.current.style.width = `${p * 100}%`;
@@ -78,78 +67,23 @@ const ScrollVideoSection = () => {
         textRef.current.style.transform = `translateY(${(1 - t) * 20}px)`;
       }
       if (subTextRef.current) {
-        const t = Math.min(1, Math.max(0, (p - 0.2) / 0.3));
+        const t = Math.min(1, Math.max(0, (p - 0.15) / 0.3));
         subTextRef.current.style.opacity = t;
         subTextRef.current.style.transform = `translateY(${(1 - t) * 16}px)`;
-      }
-
-      if (locked) {
-        if (targetTime >= duration && currentTime >= duration * 0.97) unlock(+1);
-        if (targetTime <= 0 && currentTime <= duration * 0.03) unlock(-1);
       }
     };
     raf = requestAnimationFrame(tick);
 
-    // Lock when section is fully covering the viewport (threshold 1.0)
-    // This means the section top has scrolled to viewport top — not before
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting && !locked) {
-            lock();
-          }
-        });
-      },
-      // rootMargin: trigger only when section top aligns with viewport top
-      { threshold: 0, rootMargin: '0px 0px -99% 0px' }
-    );
-    observer.observe(section);
-
-    const onWheel = (e) => {
-      if (!locked) return;
-      e.preventDefault();
-
-      let delta = e.deltaY;
-      if (e.deltaMode === 1) delta *= 40;
-      if (e.deltaMode === 2) delta *= 800;
-      delta = Math.max(-150, Math.min(150, delta));
-
-      if (!duration) return;
-      targetTime = Math.min(duration, Math.max(0, targetTime + (delta / 100) * 0.4));
-    };
-
-    const onTouchStart = (e) => {
-      touchStartY = e.touches[0].clientY;
-    };
-
-    const onTouchMove = (e) => {
-      if (!locked) return;
-      e.preventDefault();
-
-      const dy = touchStartY - e.touches[0].clientY;
-      touchStartY = e.touches[0].clientY;
-
-      if (!duration) return;
-      targetTime = Math.min(duration, Math.max(0, targetTime + (dy / 150) * 0.4));
-    };
-
-    window.addEventListener('wheel', onWheel, { passive: false });
-    window.addEventListener('touchstart', onTouchStart, { passive: true });
-    window.addEventListener('touchmove', onTouchMove, { passive: false });
-
     return () => {
-      unlock();
-      observer.disconnect();
       if (raf) cancelAnimationFrame(raf);
       video.removeEventListener('loadedmetadata', onMetadata);
-      window.removeEventListener('wheel', onWheel);
-      window.removeEventListener('touchstart', onTouchStart);
-      window.removeEventListener('touchmove', onTouchMove);
     };
   }, []);
 
   return (
-    <div ref={sectionRef} className="svs-container">
+    // Tall container — height controls how much scroll = full video
+    // 400vh = user scrolls 4 viewport heights to play full video
+    <div ref={containerRef} className="svs-container">
       <div className="svs-sticky">
         <video
           ref={videoRef}
@@ -160,20 +94,16 @@ const ScrollVideoSection = () => {
           preload="auto"
           src="/scroll-video.mp4"
         />
-
         <div className="svs-overlay" />
-
         <div className="svs-text-wrap">
           <p ref={subTextRef} className="svs-eyebrow">The Essence of Luxury</p>
           <h2 ref={textRef} className="svs-heading">
             Crafted for Those<br />Who Dare to Stand Out
           </h2>
         </div>
-
         <div className="svs-progress-track">
           <div ref={progressRef} className="svs-progress-bar" />
         </div>
-
         <div className="svs-scroll-hint">
           <span>scroll</span>
           <div className="svs-scroll-line" />
