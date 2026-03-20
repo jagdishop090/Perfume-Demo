@@ -36,9 +36,19 @@ const ScrollVideoSection = () => {
       window.scrollTo(0, lockedScrollY + direction * 2);
     };
 
-    const onMetadata = () => { duration = video.duration || 0; };
+    const onMetadata = () => {
+      duration = video.duration || 0;
+      // iOS Safari requires a play+pause to unlock currentTime scrubbing
+      const playPromise = video.play();
+      if (playPromise !== undefined) {
+        playPromise.then(() => { video.pause(); video.currentTime = 0; }).catch(() => {});
+      }
+    };
     video.addEventListener('loadedmetadata', onMetadata);
     if (video.readyState >= 1) onMetadata();
+
+    // Force load on mobile — iOS ignores preload="auto"
+    video.load();
 
     // RAF — pin scroll while locked, lerp video currentTime
     const tick = () => {
@@ -146,10 +156,10 @@ const ScrollVideoSection = () => {
           className="svs-video"
           muted
           playsInline
+          webkit-playsinline="true"
           preload="auto"
-        >
-          <source src="/scroll-video.mp4" type="video/mp4" />
-        </video>
+          src="/scroll-video.mp4"
+        />
 
         <div className="svs-overlay" />
 
