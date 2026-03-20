@@ -879,6 +879,232 @@ body.menu-open .product-card {
   border-radius: 20px;
 }
 
+/* FRAGRANCE NOTES SECTION */
+.notes-section {
+  background: linear-gradient(160deg, #1a1410 0%, #2d2018 50%, #1a1410 100%);
+  padding: 6rem 0 5rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.notes-section::before {
+  content: '';
+  position: absolute;
+  top: -80px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(212,175,55,0.07) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.notes-header {
+  text-align: center;
+  margin-bottom: 4rem;
+}
+
+.notes-eyebrow {
+  display: inline-block;
+  font-size: 0.75rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: #C9A84C;
+  margin-bottom: 1rem;
+  opacity: 0.9;
+}
+
+.notes-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 3rem;
+  font-weight: 300;
+  color: #F5EDD8;
+  margin: 0 0 0.75rem;
+  letter-spacing: 1px;
+}
+
+.notes-subtitle {
+  font-size: 0.95rem;
+  color: rgba(245, 237, 216, 0.5);
+  margin: 0;
+  letter-spacing: 0.5px;
+}
+
+/* Pyramid layout */
+.notes-pyramid {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.notes-tier {
+  display: flex;
+  align-items: center;
+  gap: 3rem;
+  padding: 2rem 0;
+}
+
+.notes-tier-label {
+  flex-shrink: 0;
+  width: 160px;
+  text-align: right;
+}
+
+.tier-tag {
+  display: inline-block;
+  font-size: 0.7rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 0.3rem 0.9rem;
+  border-radius: 20px;
+  font-weight: 600;
+  background: rgba(201,168,76,0.15);
+  color: #C9A84C;
+  border: 1px solid rgba(201,168,76,0.3);
+  margin-bottom: 0.5rem;
+}
+
+.tier-heart .tier-tag {
+  background: rgba(255,179,198,0.12);
+  color: #FFB3C6;
+  border-color: rgba(255,179,198,0.3);
+}
+
+.tier-base .tier-tag {
+  background: rgba(164,131,116,0.15);
+  color: #C8956C;
+  border-color: rgba(164,131,116,0.3);
+}
+
+.tier-desc {
+  font-size: 0.75rem;
+  color: rgba(245,237,216,0.35);
+  margin: 0;
+  line-height: 1.4;
+  letter-spacing: 0.3px;
+}
+
+.notes-cards {
+  display: flex;
+  gap: 1.25rem;
+  flex-wrap: wrap;
+}
+
+.note-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+  cursor: default;
+  transition: transform 0.25s ease;
+}
+
+.note-card:hover {
+  transform: translateY(-6px);
+}
+
+.note-icon {
+  width: 88px;
+  height: 88px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 14px;
+  transition: background 0.25s, border-color 0.25s, box-shadow 0.25s;
+  backdrop-filter: blur(4px);
+}
+
+.note-card:hover .note-icon {
+  background: rgba(201,168,76,0.1);
+  border-color: rgba(201,168,76,0.3);
+  box-shadow: 0 8px 28px rgba(201,168,76,0.12);
+}
+
+.note-icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.note-name {
+  font-size: 0.78rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: rgba(245,237,216,0.65);
+  font-weight: 500;
+}
+
+/* Divider */
+.notes-divider {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  padding: 0 0 0 196px; /* align with cards */
+  opacity: 0.2;
+}
+
+.divider-line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(201,168,76,0.8), transparent);
+}
+
+.divider-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #C9A84C;
+  flex-shrink: 0;
+  margin: 0 8px;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .notes-section {
+    padding: 4rem 0 3.5rem;
+  }
+
+  .notes-title {
+    font-size: 2rem;
+  }
+
+  .notes-header {
+    margin-bottom: 2.5rem;
+  }
+
+  .notes-tier {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.25rem;
+    padding: 1.5rem 0;
+  }
+
+  .notes-tier-label {
+    width: auto;
+    text-align: left;
+  }
+
+  .notes-cards {
+    gap: 1rem;
+  }
+
+  .note-icon {
+    width: 72px;
+    height: 72px;
+    padding: 12px;
+  }
+
+  .note-name {
+    font-size: 0.72rem;
+  }
+
+  .notes-divider {
+    padding: 0;
+  }
+}
+
 /* PRODUCTS SECTION */
 .products-section {
   padding: 6rem 0;

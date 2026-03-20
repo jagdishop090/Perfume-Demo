@@ -947,6 +947,211 @@ const MainSite = () => {
         </video>
       </section>
 
+      {/* Fragrance Notes Section */}
+      <section className="notes-section">
+        <div className="container">
+          <div className="notes-header">
+            <span className="notes-eyebrow">The Art of Scent</span>
+            <h2 className="notes-title">Fragrance Notes</h2>
+            <p className="notes-subtitle">Every great perfume tells a story in three acts</p>
+          </div>
+
+          <div className="notes-pyramid">
+            {/* Top Notes */}
+            <div className="notes-tier notes-top">
+              <div className="notes-tier-label">
+                <span className="tier-tag">Top Notes</span>
+                <p className="tier-desc">First impression · fades in 15–30 min</p>
+              </div>
+              <div className="notes-cards">
+                <div className="note-card">
+                  <div className="note-icon">
+                    {/* Bergamot */}
+                    <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <circle cx="40" cy="42" r="22" fill="#FFF3C4" stroke="#E8C84A" strokeWidth="1.5"/>
+                      <circle cx="40" cy="42" r="14" fill="#FFE566" opacity="0.5"/>
+                      <path d="M40 20 C40 20 36 10 40 6 C44 10 40 20 40 20Z" fill="#7CB87A" stroke="#5A9A58" strokeWidth="1"/>
+                      <path d="M40 20 C40 20 30 14 28 8 C34 8 40 20 40 20Z" fill="#7CB87A" stroke="#5A9A58" strokeWidth="1"/>
+                      <circle cx="33" cy="38" r="2" fill="#E8C84A" opacity="0.6"/>
+                      <circle cx="47" cy="44" r="1.5" fill="#E8C84A" opacity="0.6"/>
+                      <circle cx="38" cy="50" r="1.5" fill="#E8C84A" opacity="0.6"/>
+                    </svg>
+                  </div>
+                  <span className="note-name">Bergamot</span>
+                </div>
+                <div className="note-card">
+                  <div className="note-icon">
+                    {/* Lemon */}
+                    <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <ellipse cx="40" cy="42" rx="20" ry="24" fill="#FFF9C4" stroke="#F5D020" strokeWidth="1.5"/>
+                      <ellipse cx="40" cy="42" rx="13" ry="16" fill="#FFF176" opacity="0.5"/>
+                      <path d="M40 18 C40 18 37 10 40 6 C43 10 40 18 40 18Z" fill="#7CB87A" stroke="#5A9A58" strokeWidth="1"/>
+                      <line x1="40" y1="28" x2="40" y2="56" stroke="#F5D020" strokeWidth="0.8" opacity="0.5"/>
+                      <line x1="26" y1="42" x2="54" y2="42" stroke="#F5D020" strokeWidth="0.8" opacity="0.5"/>
+                    </svg>
+                  </div>
+                  <span className="note-name">Lemon</span>
+                </div>
+                <div className="note-card">
+                  <div className="note-icon">
+                    {/* Pink Pepper */}
+                    <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <circle cx="40" cy="44" r="16" fill="#FFD6D6" stroke="#E8A0A0" strokeWidth="1.5"/>
+                      <circle cx="32" cy="36" r="8" fill="#FFBCBC" stroke="#E8A0A0" strokeWidth="1.2"/>
+                      <circle cx="50" cy="38" r="6" fill="#FFCECE" stroke="#E8A0A0" strokeWidth="1.2"/>
+                      <circle cx="38" cy="52" r="7" fill="#FFD0D0" stroke="#E8A0A0" strokeWidth="1.2"/>
+                      <path d="M36 20 C36 20 34 12 38 8 C42 12 40 20 40 20Z" fill="#7CB87A" stroke="#5A9A58" strokeWidth="1"/>
+                    </svg>
+                  </div>
+                  <span className="note-name">Pink Pepper</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Divider line */}
+            <div className="notes-divider">
+              <div className="divider-line"></div>
+              <span className="divider-dot"></span>
+              <div className="divider-line"></div>
+            </div>
+
+            {/* Heart Notes */}
+            <div className="notes-tier notes-heart">
+              <div className="notes-tier-label">
+                <span className="tier-tag tier-heart">Heart Notes</span>
+                <p className="tier-desc">The soul of the fragrance · lasts 2–4 hrs</p>
+              </div>
+              <div className="notes-cards">
+                <div className="note-card">
+                  <div className="note-icon">
+                    {/* Rose */}
+                    <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M40 58 C40 58 20 46 20 32 C20 24 28 18 36 22 C38 23 40 25 40 25 C40 25 42 23 44 22 C52 18 60 24 60 32 C60 46 40 58 40 58Z" fill="#FFB3C6" stroke="#E8829A" strokeWidth="1.5"/>
+                      <path d="M40 50 C40 50 26 40 26 30 C26 25 32 22 37 25 C38.5 26 40 28 40 28 C40 28 41.5 26 43 25 C48 22 54 25 54 30 C54 40 40 50 40 50Z" fill="#FF8FAB" opacity="0.6"/>
+                      <path d="M40 20 C40 20 37 12 40 8 C43 12 40 20 40 20Z" fill="#7CB87A" stroke="#5A9A58" strokeWidth="1"/>
+                      <path d="M34 22 C34 22 26 18 24 12 C30 12 34 22 34 22Z" fill="#7CB87A" stroke="#5A9A58" strokeWidth="1"/>
+                    </svg>
+                  </div>
+                  <span className="note-name">Rose</span>
+                </div>
+                <div className="note-card">
+                  <div className="note-icon">
+                    {/* Jasmine */}
+                    <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <circle cx="40" cy="40" r="6" fill="#FFF9E6" stroke="#F0D060" strokeWidth="1.2"/>
+                      <ellipse cx="40" cy="24" rx="5" ry="9" fill="#FFFDE0" stroke="#E8D080" strokeWidth="1.2"/>
+                      <ellipse cx="40" cy="56" rx="5" ry="9" fill="#FFFDE0" stroke="#E8D080" strokeWidth="1.2"/>
+                      <ellipse cx="24" cy="40" rx="9" ry="5" fill="#FFFDE0" stroke="#E8D080" strokeWidth="1.2"/>
+                      <ellipse cx="56" cy="40" rx="9" ry="5" fill="#FFFDE0" stroke="#E8D080" strokeWidth="1.2"/>
+                      <ellipse cx="28.7" cy="28.7" rx="5" ry="9" fill="#FFFDE0" stroke="#E8D080" strokeWidth="1.2" transform="rotate(-45 28.7 28.7)"/>
+                      <ellipse cx="51.3" cy="51.3" rx="5" ry="9" fill="#FFFDE0" stroke="#E8D080" strokeWidth="1.2" transform="rotate(-45 51.3 51.3)"/>
+                      <ellipse cx="51.3" cy="28.7" rx="5" ry="9" fill="#FFFDE0" stroke="#E8D080" strokeWidth="1.2" transform="rotate(45 51.3 28.7)"/>
+                      <ellipse cx="28.7" cy="51.3" rx="5" ry="9" fill="#FFFDE0" stroke="#E8D080" strokeWidth="1.2" transform="rotate(45 28.7 51.3)"/>
+                    </svg>
+                  </div>
+                  <span className="note-name">Jasmine</span>
+                </div>
+                <div className="note-card">
+                  <div className="note-icon">
+                    {/* Peony */}
+                    <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <circle cx="40" cy="40" r="8" fill="#FFD6E8" stroke="#E8A0C0" strokeWidth="1"/>
+                      <path d="M40 14 C36 14 30 20 32 28 C34 22 38 20 40 20 C42 20 46 22 48 28 C50 20 44 14 40 14Z" fill="#FFB3D1" stroke="#E8A0C0" strokeWidth="1.2"/>
+                      <path d="M40 66 C36 66 30 60 32 52 C34 58 38 60 40 60 C42 60 46 58 48 52 C50 60 44 66 40 66Z" fill="#FFB3D1" stroke="#E8A0C0" strokeWidth="1.2"/>
+                      <path d="M14 40 C14 36 20 30 28 32 C22 34 20 38 20 40 C20 42 22 46 28 48 C20 50 14 44 14 40Z" fill="#FFB3D1" stroke="#E8A0C0" strokeWidth="1.2"/>
+                      <path d="M66 40 C66 36 60 30 52 32 C58 34 60 38 60 40 C60 42 58 46 52 48 C60 50 66 44 66 40Z" fill="#FFB3D1" stroke="#E8A0C0" strokeWidth="1.2"/>
+                    </svg>
+                  </div>
+                  <span className="note-name">Peony</span>
+                </div>
+                <div className="note-card">
+                  <div className="note-icon">
+                    {/* Lavender */}
+                    <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <line x1="40" y1="70" x2="40" y2="30" stroke="#7CB87A" strokeWidth="2"/>
+                      <ellipse cx="40" cy="26" rx="4" ry="6" fill="#C9B1E8" stroke="#A080C8" strokeWidth="1.2"/>
+                      <ellipse cx="33" cy="34" rx="3.5" ry="5.5" fill="#C9B1E8" stroke="#A080C8" strokeWidth="1.2"/>
+                      <ellipse cx="47" cy="34" rx="3.5" ry="5.5" fill="#C9B1E8" stroke="#A080C8" strokeWidth="1.2"/>
+                      <ellipse cx="36" cy="42" rx="3" ry="5" fill="#B89FD8" stroke="#A080C8" strokeWidth="1.2"/>
+                      <ellipse cx="44" cy="42" rx="3" ry="5" fill="#B89FD8" stroke="#A080C8" strokeWidth="1.2"/>
+                      <path d="M34 62 C34 62 28 56 30 50" stroke="#7CB87A" strokeWidth="1.5" fill="none"/>
+                      <path d="M46 62 C46 62 52 56 50 50" stroke="#7CB87A" strokeWidth="1.5" fill="none"/>
+                    </svg>
+                  </div>
+                  <span className="note-name">Lavender</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Divider line */}
+            <div className="notes-divider">
+              <div className="divider-line"></div>
+              <span className="divider-dot"></span>
+              <div className="divider-line"></div>
+            </div>
+
+            {/* Base Notes */}
+            <div className="notes-tier notes-base">
+              <div className="notes-tier-label">
+                <span className="tier-tag tier-base">Base Notes</span>
+                <p className="tier-desc">The lasting memory · stays 6–8+ hrs</p>
+              </div>
+              <div className="notes-cards">
+                <div className="note-card">
+                  <div className="note-icon">
+                    {/* Oud / Wood */}
+                    <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <rect x="34" y="18" width="12" height="48" rx="4" fill="#C8956C" stroke="#A0704A" strokeWidth="1.5"/>
+                      <path d="M28 30 C28 30 18 28 16 22 C22 20 28 30 28 30Z" fill="#8B6340" stroke="#6B4A28" strokeWidth="1"/>
+                      <path d="M52 30 C52 30 62 28 64 22 C58 20 52 30 52 30Z" fill="#8B6340" stroke="#6B4A28" strokeWidth="1"/>
+                      <path d="M28 44 C28 44 18 42 16 36 C22 34 28 44 28 44Z" fill="#8B6340" stroke="#6B4A28" strokeWidth="1"/>
+                      <path d="M52 44 C52 44 62 42 64 36 C58 34 52 44 52 44Z" fill="#8B6340" stroke="#6B4A28" strokeWidth="1"/>
+                      <ellipse cx="40" cy="18" rx="6" ry="4" fill="#A0704A" opacity="0.5"/>
+                    </svg>
+                  </div>
+                  <span className="note-name">Oud</span>
+                </div>
+                <div className="note-card">
+                  <div className="note-icon">
+                    {/* Amber */}
+                    <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <polygon points="40,12 62,30 54,56 26,56 18,30" fill="#FFD08A" stroke="#E8A840" strokeWidth="1.5"/>
+                      <polygon points="40,22 54,34 48,50 32,50 26,34" fill="#FFB84A" opacity="0.6"/>
+                      <circle cx="40" cy="38" r="6" fill="#FFA020" opacity="0.4"/>
+                      <line x1="40" y1="12" x2="40" y2="22" stroke="#E8A840" strokeWidth="1" opacity="0.6"/>
+                    </svg>
+                  </div>
+                  <span className="note-name">Amber</span>
+                </div>
+                <div className="note-card">
+                  <div className="note-icon">
+                    {/* Musk */}
+                    <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <circle cx="40" cy="40" r="20" fill="#EDE0D4" stroke="#C8B0A0" strokeWidth="1.5"/>
+                      <circle cx="40" cy="40" r="13" fill="#E0D0C4" stroke="#C8B0A0" strokeWidth="1"/>
+                      <circle cx="40" cy="40" r="7" fill="#D4C0B0" stroke="#C8B0A0" strokeWidth="1"/>
+                      <path d="M40 20 Q50 30 40 40 Q30 30 40 20Z" fill="white" opacity="0.3"/>
+                    </svg>
+                  </div>
+                  <span className="note-name">Musk</span>
+                </div>
+                <div className="note-card">
+                  <div className="note-icon">
+                    {/* Sandalwood */}
+                    <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M40 68 C40 68 24 54 24 38 C24 28 32 20 40 20 C48 20 56 28 56 38 C56 54 40 68 40 68Z" fill="#D4A574" stroke="#A07848" strokeWidth="1.5"/>
+                      <path d="M40 58 C40 58 30 48 30 38 C30 32 34 26 40 26 C46 26 50 32 50 38 C50 48 40 58 40 58Z" fill="#C49060" opacity="0.5"/>
+                      <path d="M40 20 C40 20 37 12 40 8 C43 12 40 20 40 20Z" fill="#7CB87A" stroke="#5A9A58" strokeWidth="1"/>
+                    </svg>
+                  </div>
+                  <span className="note-name">Sandalwood</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* About Section */}
       <section id="about" className="about-section">
         <div className="container">
