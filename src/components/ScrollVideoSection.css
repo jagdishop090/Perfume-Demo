@@ -1,11 +1,10 @@
-/* Tall container — native scroll drives the video */
+/* Exactly 100vh — no extra space */
 .svs-container {
   position: relative;
-  height: 400vh; /* 4x viewport = full video plays over this scroll distance */
+  height: 100vh;
   width: 100%;
 }
 
-/* Sticky panel — stays pinned while container scrolls */
 .svs-sticky {
   position: sticky;
   top: 0;
@@ -15,7 +14,6 @@
   background: #000;
 }
 
-/* Video fills the sticky panel completely */
 .svs-video {
   position: absolute;
   inset: 0;
@@ -27,7 +25,6 @@
   display: block;
 }
 
-/* Gradient overlay */
 .svs-overlay {
   position: absolute;
   inset: 0;
@@ -40,7 +37,6 @@
   pointer-events: none;
 }
 
-/* Text */
 .svs-text-wrap {
   position: absolute;
   bottom: 14%;
@@ -72,7 +68,6 @@
   opacity: 0;
 }
 
-/* Progress bar */
 .svs-progress-track {
   position: absolute;
   bottom: 0;
@@ -88,7 +83,6 @@
   background: #C9A84C;
 }
 
-/* Scroll hint */
 .svs-scroll-hint {
   position: absolute;
   bottom: 28px;
@@ -120,10 +114,5 @@
 }
 
 @media (max-width: 768px) {
-  .svs-container {
-    height: 350vh;
-  }
-  .svs-scroll-hint {
-    display: none;
-  }
+  .svs-scroll-hint { display: none; }
 }

@@ -2,88 +2,179 @@ import { useRef, useEffect } from 'react';
 import './ScrollVideoSection.css';
 
 const ScrollVideoSection = () => {
-  const containerRef = useRef(null);
+  const sectionRef = useRef(null);
   const videoRef = useRef(null);
   const progressRef = useRef(null);
   const textRef = useRef(null);
   const subTextRef = useRef(null);
 
   useEffect(() => {
-    const container = containerRef.current;
+    const section = sectionRef.current;
     const video = videoRef.current;
-    if (!container || !video) return;
+    if (!section || !video) return;
 
     let duration = 0;
+    let progress = 0;
     let raf = null;
-    let targetTime = 0;
-    let displayTime = 0;
+    let active = false;
+    let savedScrollY = 0;
+    let touchStartY = 0;
+    let cooldown = false;  // prevents re-activation right after deactivate
 
-    // Force video to load on all devices including iOS
+    // ── Force video load on all devices ─────────────────────────────────────
     video.load();
-
-    const onMetadata = () => {
+    const onMeta = () => {
       duration = video.duration || 0;
-      // iOS unlock: play then immediately pause to allow currentTime scrubbing
       const p = video.play();
       if (p) p.then(() => { video.pause(); video.currentTime = 0; }).catch(() => {});
     };
+    video.addEventListener('loadedmetadata', onMeta);
+    if (video.readyState >= 1) onMeta();
 
-    video.addEventListener('loadedmetadata', onMetadata);
-    if (video.readyState >= 1) onMetadata();
-
-    // Map scroll position to video progress (0..1)
-    const getProgress = () => {
-      const rect = container.getBoundingClientRect();
-      const scrollable = container.offsetHeight - window.innerHeight;
-      if (scrollable <= 0) return 0;
-      // How far the container top has scrolled above viewport top
-      const scrolled = -rect.top;
-      return Math.min(1, Math.max(0, scrolled / scrollable));
+    // ── Activate / Deactivate ────────────────────────────────────────────────
+    const activate = (fromBelow = false) => {
+      if (active || cooldown) return;
+      savedScrollY = section.offsetTop;
+      window.scrollTo(0, savedScrollY);
+      document.body.style.overflow = 'hidden';
+      active = true;
+      // Set progress to correct end based on entry direction
+      if (fromBelow) {
+        progress = 1; // entering from below = reverse play from end
+      } else {
+        progress = 0; // entering from above = forward play from start
+      }
     };
 
+    const deactivate = (dir = 0) => {
+      if (!active) return;
+      document.body.style.overflow = '';
+      active = false;
+      cooldown = true;
+      setTimeout(() => { cooldown = false; }, 800);
+
+      if (dir > 0) {
+        // Finished going down — jump scroll to just past the section bottom
+        window.scrollTo(0, section.offsetTop + section.offsetHeight + 1);
+      } else if (dir < 0) {
+        // Finished going up — jump scroll to just before the section top
+        window.scrollTo(0, section.offsetTop - 1);
+      }
+    };
+
+    // ── RAF — only drives video + UI, no scroll pinning ─────────────────────
     const tick = () => {
       raf = requestAnimationFrame(tick);
+
+      // Keep page pinned while active
+      if (active) window.scrollTo(0, savedScrollY);
+
       if (!duration) return;
 
-      const p = getProgress();
-      targetTime = p * duration;
-
-      // Lerp displayTime toward targetTime for smooth scrubbing
-      const diff = targetTime - displayTime;
-      if (Math.abs(diff) > 0.001) {
-        displayTime += diff * 0.2;
-      } else {
-        displayTime = targetTime;
-      }
-
-      video.currentTime = displayTime;
+      const t = progress * duration;
+      video.currentTime = t;
 
       if (progressRef.current)
-        progressRef.current.style.width = `${p * 100}%`;
+        progressRef.current.style.width = `${progress * 100}%`;
 
       if (textRef.current) {
-        const t = Math.min(1, Math.max(0, (p - 0.3) / 0.3));
-        textRef.current.style.opacity = t;
-        textRef.current.style.transform = `translateY(${(1 - t) * 20}px)`;
+        const v = Math.min(1, Math.max(0, (progress - 0.3) / 0.3));
+        textRef.current.style.opacity = v;
+        textRef.current.style.transform = `translateY(${(1 - v) * 20}px)`;
       }
       if (subTextRef.current) {
-        const t = Math.min(1, Math.max(0, (p - 0.15) / 0.3));
-        subTextRef.current.style.opacity = t;
-        subTextRef.current.style.transform = `translateY(${(1 - t) * 16}px)`;
+        const v = Math.min(1, Math.max(0, (progress - 0.15) / 0.3));
+        subTextRef.current.style.opacity = v;
+        subTextRef.current.style.transform = `translateY(${(1 - v) * 16}px)`;
       }
     };
     raf = requestAnimationFrame(tick);
 
+    // ── Section is "reachable" — viewport is anywhere over the section ───────
+    const sectionInRange = () => {
+      const rect = section.getBoundingClientRect();
+      // section top is above or at viewport bottom, section bottom is below viewport top
+      return rect.top < window.innerHeight && rect.bottom > 0;
+    };
+
+    // ── Wheel ────────────────────────────────────────────────────────────────
+    const onWheel = (e) => {
+      if (!active) {
+        if (!sectionInRange()) return;
+        const rect = section.getBoundingClientRect();
+        const goingDown = e.deltaY > 0 && rect.top > -10;
+        const goingUp   = e.deltaY < 0 && rect.bottom < window.innerHeight + 10;
+        if (!goingDown && !goingUp) return;
+        activate(goingUp); // fromBelow = true when scrolling up into section
+      }
+
+      e.preventDefault();
+
+      let delta = e.deltaY;
+      if (e.deltaMode === 1) delta *= 40;
+      if (e.deltaMode === 2) delta *= 800;
+
+      progress = Math.min(1, Math.max(0, progress + delta / 600));
+
+      if (progress >= 1) deactivate(+1);
+      if (progress <= 0) deactivate(-1);
+    };
+
+    // ── Touch ────────────────────────────────────────────────────────────────
+    const onTouchStart = (e) => {
+      touchStartY = e.touches[0].clientY;
+    };
+
+    const onTouchMove = (e) => {
+      const dy = touchStartY - e.touches[0].clientY;
+      touchStartY = e.touches[0].clientY;
+
+      if (!active) {
+        if (!sectionInRange()) return;
+        const rect = section.getBoundingClientRect();
+        const goingDown = dy > 0 && rect.top > -10;
+        const goingUp   = dy < 0 && rect.bottom < window.innerHeight + 10;
+        if (!goingDown && !goingUp) return;
+        activate(goingUp);
+      }
+
+      e.preventDefault();
+
+      progress = Math.min(1, Math.max(0, progress + dy / 400));
+
+      if (progress >= 1) deactivate(+1);
+      if (progress <= 0) deactivate(-1);
+    };
+
+    // ── Scroll listener — catches fast/momentum scroll that lands on section ─
+    const onScroll = () => {
+      if (active || cooldown) return;
+      const rect = section.getBoundingClientRect();
+      // Fast scroll landed with section covering viewport — detect direction from scroll position
+      if (rect.top <= 0 && rect.bottom > 0) {
+        // If we're past section top, we came from above (scrolling down)
+        activate(false);
+      }
+    };
+
+    window.addEventListener('wheel', onWheel, { passive: false });
+    window.addEventListener('touchstart', onTouchStart, { passive: true });
+    window.addEventListener('touchmove', onTouchMove, { passive: false });
+    window.addEventListener('scroll', onScroll, { passive: true });
+
     return () => {
+      deactivate();
       if (raf) cancelAnimationFrame(raf);
-      video.removeEventListener('loadedmetadata', onMetadata);
+      video.removeEventListener('loadedmetadata', onMeta);
+      window.removeEventListener('wheel', onWheel);
+      window.removeEventListener('touchstart', onTouchStart);
+      window.removeEventListener('touchmove', onTouchMove);
+      window.removeEventListener('scroll', onScroll);
     };
   }, []);
 
   return (
-    // Tall container — height controls how much scroll = full video
-    // 400vh = user scrolls 4 viewport heights to play full video
-    <div ref={containerRef} className="svs-container">
+    <div ref={sectionRef} className="svs-container">
       <div className="svs-sticky">
         <video
           ref={videoRef}
