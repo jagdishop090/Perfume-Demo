@@ -92,8 +92,7 @@ const ScrollVideoSection = () => {
             // Snap scroll to section top and lock immediately
             lockedScrollY = section.offsetTop;
             window.scrollTo(0, lockedScrollY);
-            document.body.style.overflow = 'hidden';
-            locked = true;
+            lock();
           }
         });
       },
