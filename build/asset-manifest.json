@@ -1,14 +1,14 @@
 {
   "files": {
-    "main.css": "/static/css/main.5a0a4a20.css",
-    "main.js": "/static/js/main.8c13e5c4.js",
+    "main.css": "/static/css/main.448bf40f.css",
+    "main.js": "/static/js/main.77917b16.js",
     "static/css/880.181af0d7.chunk.css": "/static/css/880.181af0d7.chunk.css",
     "static/js/880.1c500b59.chunk.js": "/static/js/880.1c500b59.chunk.js",
     "static/media/about-perfume.png": "/static/media/about-perfume.4d0ec5b10211e44f272b.png",
     "index.html": "/index.html"
   },
   "entrypoints": [
-    "static/css/main.5a0a4a20.css",
-    "static/js/main.8c13e5c4.js"
+    "static/css/main.448bf40f.css",
+    "static/js/main.77917b16.js"
   ]
 }

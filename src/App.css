@@ -34,7 +34,7 @@ body {
 }
 
 .container {
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
   padding: 0 2rem;
   width: 100%;
@@ -287,7 +287,7 @@ body.menu-open .product-card {
   align-items: center;
   justify-content: space-between;
   padding: 1rem 2rem;
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
 }
 
@@ -297,7 +297,7 @@ body.menu-open .product-card {
 }
 
 .logo h1 {
-  font-size: 1.8rem;
+  font-size: clamp(1.4rem, 2vw, 2rem);
   font-weight: 700;
   color: #3A2D28;
   text-decoration: none;
@@ -310,14 +310,14 @@ body.menu-open .product-card {
 
 .nav {
   display: flex;
-  gap: 2rem;
+  gap: clamp(1rem, 2vw, 2.5rem);
 }
 
 .nav-link {
   text-decoration: none;
   color: #A48374;
   font-weight: 500;
-  font-size: 0.95rem;
+  font-size: clamp(0.85rem, 1vw, 1rem);
   transition: all 0.3s ease;
   position: relative;
 }
@@ -454,8 +454,8 @@ body.menu-open .product-card {
 .hero-banner {
   margin-top: 120px; /* Increased gap: BOGO banner (36px) + header (70px) + gap (14px) */
   position: relative;
-  height: 55vh;
-  min-height: 450px;
+  height: clamp(400px, 58vh, 700px);
+  min-height: 400px;
   overflow: hidden;
   width: 100%;
   transition: margin-top 0.3s ease;
@@ -605,7 +605,7 @@ body.menu-open .product-card {
 }
 
 .banner-title {
-  font-size: 3rem;
+  font-size: clamp(1.8rem, 3.5vw, 3.5rem);
   font-weight: 700;
   line-height: 1.1;
   color: #F1EDE6;
@@ -688,14 +688,14 @@ body.menu-open .product-card {
 }
 
 .section-header h2 {
-  font-size: 2.5rem;
+  font-size: clamp(1.8rem, 3vw, 3rem);
   font-weight: 700;
   color: #3A2D28;
   margin-bottom: 1rem;
 }
 
 .section-header p {
-  font-size: 1.1rem;
+  font-size: clamp(0.95rem, 1.2vw, 1.15rem);
   color: #A48374;
   max-width: 600px;
   margin: 0 auto;
@@ -823,7 +823,7 @@ body.menu-open .product-card {
 }
 
 .cat-title {
-  font-size: 2rem;
+  font-size: clamp(1.4rem, 2.5vw, 2.2rem);
   font-weight: 700;
   color: #fff;
   font-family: 'Playfair Display', serif;
@@ -1107,7 +1107,7 @@ body.menu-open .product-card {
 
 /* PRODUCTS SECTION */
 .products-section {
-  padding: 6rem 0;
+  padding: clamp(3rem, 6vw, 7rem) 0;
   background: linear-gradient(135deg, #EBE3DB 0%, #D1C7BD 100%);
 }
 
@@ -1117,14 +1117,14 @@ body.menu-open .product-card {
 }
 
 .products-section .section-header h2 {
-  font-size: 2.5rem;
+  font-size: clamp(1.8rem, 3vw, 3rem);
   font-weight: 700;
   color: #3A2D28;
   margin-bottom: 1rem;
 }
 
 .products-section .section-header p {
-  font-size: 1.1rem;
+  font-size: clamp(0.95rem, 1.2vw, 1.15rem);
   color: #A48374;
   max-width: 600px;
   margin: 0 auto;
@@ -1194,7 +1194,7 @@ body.menu-open .product-card {
 }
 
 .product-card-scroll {
-  flex: 0 0 280px;
+  flex: 0 0 clamp(240px, 22vw, 320px);
   background: #F1EDE6;
   border-radius: 20px;
   overflow: hidden;
@@ -1210,7 +1210,7 @@ body.menu-open .product-card {
 }
 
 .product-card-scroll .product-image {
-  height: 250px;
+  height: clamp(200px, 20vw, 280px);
   background: linear-gradient(135deg, #EBE3DB 0%, #D1C7BD 100%);
   display: flex;
   align-items: center;
@@ -1496,14 +1496,14 @@ body.menu-open .product-card {
 
 /* ABOUT SECTION */
 .about-section {
-  padding: 6rem 0;
+  padding: clamp(3rem, 6vw, 7rem) 0;
   background: #EBE3DB;
 }
 
 .about-content {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 4rem;
+  gap: clamp(2rem, 4vw, 5rem);
   align-items: center;
 }
 
@@ -1518,7 +1518,7 @@ body.menu-open .product-card {
 }
 
 .about-text h2 {
-  font-size: 2.5rem;
+  font-size: clamp(1.8rem, 3vw, 3rem);
   font-weight: 700;
   color: #3A2D28;
   margin-bottom: 1.5rem;
@@ -1526,7 +1526,7 @@ body.menu-open .product-card {
 }
 
 .about-text p {
-  font-size: 1.1rem;
+  font-size: clamp(0.95rem, 1.2vw, 1.15rem);
   color: #A48374;
   line-height: 1.7;
   margin-bottom: 2rem;
@@ -1544,7 +1544,7 @@ body.menu-open .product-card {
 
 .stat-number {
   display: block;
-  font-size: 2.5rem;
+  font-size: clamp(1.8rem, 2.5vw, 2.8rem);
   font-weight: 800;
   color: #3A2D28;
   margin-bottom: 0.5rem;
@@ -2114,14 +2114,14 @@ body.menu-open .product-card {
 }
 
 .products-page-section .section-header h2 {
-  font-size: 2.5rem;
+  font-size: clamp(1.8rem, 3vw, 3rem);
   font-weight: 700;
   color: #3A2D28;
   margin-bottom: 1rem;
 }
 
 .products-page-section .section-header p {
-  font-size: 1.1rem;
+  font-size: clamp(0.95rem, 1.2vw, 1.15rem);
   color: #A48374;
   max-width: 600px;
   margin: 0 auto;
