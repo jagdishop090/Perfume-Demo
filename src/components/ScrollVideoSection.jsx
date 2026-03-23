@@ -15,46 +15,47 @@ const ScrollVideoSection = () => {
     const video = videoRef.current;
     if (!section || !video) return;
 
-    // ── MOBILE: forward → reverse loop, no scroll control ────────────────────
+    // ── MOBILE: forward → reverse loop driven entirely by RAF ────────────────
     if (isMobileDevice()) {
       let forward = true;
       let raf = null;
-      const SPEED = 0.03; // seconds per frame at 60fps
+      let ready = false;
+      let lastTime = null;
+      const SPEED = 0.5; // seconds per real second (0.5x speed feels smooth)
 
-      const onMeta = () => {
-        video.currentTime = 0;
-        video.play().catch(() => {});
+      const startLoop = () => {
+        if (ready) return;
+        ready = true;
+        // iOS unlock: play then immediately pause so seeking works
+        const p = video.play();
+        if (p) p.then(() => { video.pause(); video.currentTime = 0; }).catch(() => {});
       };
 
-      const tick = () => {
+      const tick = (now) => {
         raf = requestAnimationFrame(tick);
-        if (video.paused || !video.duration) return;
+        if (!ready || !video.duration) return;
+
+        const dt = lastTime ? Math.min((now - lastTime) / 1000, 0.1) : 0;
+        lastTime = now;
 
         if (forward) {
-          video.currentTime = Math.min(video.currentTime + SPEED, video.duration);
-          if (video.currentTime >= video.duration) {
-            forward = false;
-          }
+          video.currentTime = Math.min(video.currentTime + SPEED * dt, video.duration);
+          if (video.currentTime >= video.duration - 0.05) forward = false;
         } else {
-          video.currentTime = Math.max(video.currentTime - SPEED, 0);
-          if (video.currentTime <= 0) {
-            forward = true;
-          }
+          video.currentTime = Math.max(video.currentTime - SPEED * dt, 0);
+          if (video.currentTime <= 0.05) forward = true;
         }
 
-        // progress bar
-        if (progressRef.current && video.duration) {
-          const p = video.currentTime / video.duration;
-          progressRef.current.style.width = `${p * 100}%`;
+        if (progressRef.current) {
+          progressRef.current.style.width = `${(video.currentTime / video.duration) * 100}%`;
         }
-        // text fade
-        if (textRef.current && video.duration) {
+        if (textRef.current) {
           const p = video.currentTime / video.duration;
           const v = Math.min(1, Math.max(0, (p - 0.3) / 0.3));
           textRef.current.style.opacity = v;
           textRef.current.style.transform = `translateY(${(1 - v) * 20}px)`;
         }
-        if (subTextRef.current && video.duration) {
+        if (subTextRef.current) {
           const p = video.currentTime / video.duration;
           const v = Math.min(1, Math.max(0, (p - 0.15) / 0.3));
           subTextRef.current.style.opacity = v;
@@ -63,16 +64,18 @@ const ScrollVideoSection = () => {
       };
 
       video.muted = true;
-      video.playsInline = true;
       video.loop = false;
-      video.addEventListener('loadedmetadata', onMeta);
-      if (video.readyState >= 1) onMeta();
+      video.preload = 'auto';
+      video.addEventListener('loadedmetadata', startLoop);
+      video.addEventListener('canplay', startLoop);
+      if (video.readyState >= 2) startLoop();
+      video.load();
       raf = requestAnimationFrame(tick);
 
       return () => {
         cancelAnimationFrame(raf);
-        video.removeEventListener('loadedmetadata', onMeta);
-        video.pause();
+        video.removeEventListener('loadedmetadata', startLoop);
+        video.removeEventListener('canplay', startLoop);
       };
     }
 
