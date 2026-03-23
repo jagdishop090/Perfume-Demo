@@ -21,7 +21,7 @@ const ScrollVideoSection = () => {
       let raf = null;
       let ready = false;
       let lastTime = null;
-      const SPEED = 0.5; // seconds per real second (0.5x speed feels smooth)
+      const SPEED = 1.2; // seconds per real second
 
       const startLoop = () => {
         if (ready) return;
