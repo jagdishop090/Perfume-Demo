@@ -953,15 +953,22 @@ const MainSite = () => {
 
       {/* Video Section */}
       <section className="video-section">
-        <video
-          autoPlay
-          loop
-          muted
-          playsInline
-          className="brand-video"
-        >
-          <source src="/brand-video.mp4" type="video/mp4" />
-        </video>
+        <div className="video-container">
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="brand-video"
+          >
+            <source src="/brand-video.mp4" type="video/mp4" />
+          </video>
+          <div className="video-overlay-text">
+            <span className="video-eyebrow">The Essence Experience</span>
+            <h2 className="video-title">Luxury You Can Feel</h2>
+            <p className="video-sub">Crafted for those who dare to stand out</p>
+          </div>
+        </div>
       </section>
 
       {/* About Section */}

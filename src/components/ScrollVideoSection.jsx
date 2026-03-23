@@ -104,10 +104,19 @@ const ScrollVideoSection = () => {
     const tryActivate = (delta) => {
       if (active || cooldown || !sectionInRange()) return false;
       const r = section.getBoundingClientRect();
-      const goingDown = delta > 0 && r.top > -10;
-      const goingUp   = delta < 0 && r.bottom < window.innerHeight + 10;
-      if (!goingDown && !goingUp) return false;
-      activate(goingUp);
+      const isMobile = window.matchMedia('(max-width: 768px)').matches;
+      if (isMobile) {
+        // On mobile: only activate when section top is exactly at viewport top (±4px)
+        // This prevents the effect from triggering while still scrolling toward the section
+        const goingDown = delta > 0 && r.top >= -4 && r.top <= 4;
+        const goingUp   = delta < 0 && r.bottom >= window.innerHeight - 4 && r.bottom <= window.innerHeight + 4;
+        if (!goingDown && !goingUp) return false;
+      } else {
+        const goingDown = delta > 0 && r.top >= -10 && r.top <= 0;
+        const goingUp   = delta < 0 && r.bottom >= window.innerHeight && r.bottom <= window.innerHeight + 10;
+        if (!goingDown && !goingUp) return false;
+      }
+      activate(delta < 0);
       return true;
     };
 
@@ -150,7 +159,9 @@ const ScrollVideoSection = () => {
     const onScroll = () => {
       if (active || cooldown) return;
       const r = section.getBoundingClientRect();
-      if (r.top <= 0 && r.bottom > 0) activate(false);
+      const isMobile = window.matchMedia('(max-width: 768px)').matches;
+      const tolerance = isMobile ? 2 : 5;
+      if (r.top <= tolerance && r.top >= -tolerance && r.bottom > 0) activate(false);
     };
 
     window.addEventListener('wheel', onWheel, { passive: false });
