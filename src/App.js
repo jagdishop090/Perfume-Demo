@@ -407,35 +407,44 @@ const MainSite = () => {
   const defaultBanners = [
     {
       id: 1,
-      primary: supabaseBannerUrls[0], // Supabase CDN (most reliable)
-      fallback: '/banner-1.jpg', // Local fallback
-      fallback2: '/Banners/banner-1.jpg', // Secondary local fallback
+      primary: supabaseBannerUrls[0],
+      fallback: '/banner-1.jpg',
+      fallback2: '/Banners/banner-1.jpg',
       placeholder: getBannerWithFallbacks('/banner-1.jpg', '/Banners/banner-1.jpg', 'banner1').placeholder,
-      title: 'Introducing',
-      subtitle: 'SIGNATURE COLLECTION',
-      description: 'Discover the art of luxury fragrance',
+      eyebrow: 'New Arrival',
+      title: 'Signature\nCollection',
+      slogan: 'Where every drop tells\na story of luxury.',
+      description: 'Handcrafted from the world\'s rarest ingredients — each bottle is a masterpiece made for those who refuse to be ordinary.',
+      cta: 'Explore Now',
+      tag: '01 / 03',
       alt: 'Premium Fragrance Collection'
     },
     {
       id: 2,
-      primary: supabaseBannerUrls[1], // Supabase CDN (most reliable)
-      fallback: '/banner-2.jpg', // Local fallback
-      fallback2: '/Banners/banner-2.jpg', // Secondary local fallback
+      primary: supabaseBannerUrls[1],
+      fallback: '/banner-2.jpg',
+      fallback2: '/Banners/banner-2.jpg',
       placeholder: getBannerWithFallbacks('/banner-2.jpg', '/Banners/banner-2.jpg', 'banner2').placeholder,
-      title: 'Experience',
-      subtitle: 'TIMELESS ELEGANCE',
-      description: 'Crafted with the finest ingredients',
+      eyebrow: 'Timeless Elegance',
+      title: 'Born to\nBe Worn',
+      slogan: 'Scents that linger\nlong after you leave.',
+      description: 'Inspired by the golden age of perfumery — bold, sensual, and utterly unforgettable. This is fragrance as an art form.',
+      cta: 'Shop Collection',
+      tag: '02 / 03',
       alt: 'Luxury Perfume Experience'
     },
     {
       id: 3,
-      primary: supabaseBannerUrls[2], // Supabase CDN (most reliable)
-      fallback: '/banner-3.jpg', // Local fallback
-      fallback2: '/Banners/banner-3.jpg', // Secondary local fallback
+      primary: supabaseBannerUrls[2],
+      fallback: '/banner-3.jpg',
+      fallback2: '/Banners/banner-3.jpg',
       placeholder: getBannerWithFallbacks('/banner-3.jpg', '/Banners/banner-3.jpg', 'banner3').placeholder,
-      title: 'Explore',
-      subtitle: 'EXCLUSIVE SCENTS',
-      description: 'Where sophistication meets passion',
+      eyebrow: 'Exclusive Scents',
+      title: 'Dare to\nStand Out',
+      slogan: 'Your scent is your\nsilent signature.',
+      description: 'Curated for the bold and the beautiful. Discover fragrances that command attention and leave a lasting impression.',
+      cta: 'Discover More',
+      tag: '03 / 03',
       alt: 'Exclusive Scent Collection'
     }
   ];
@@ -746,7 +755,21 @@ const MainSite = () => {
               }`}
             >
               <div className="banner-content-wrapper">
-                <div 
+
+                {/* LEFT PANEL */}
+                <div className="banner-side-panel banner-left">
+                  <span className="bsp-eyebrow">{banner.eyebrow}</span>
+                  <h2 className="bsp-title">
+                    {banner.title.split('\n').map((l, i) => (
+                      <span key={i}>{l}{i < banner.title.split('\n').length - 1 && <br/>}</span>
+                    ))}
+                  </h2>
+                  <div className="bsp-divider" />
+                  <p className="bsp-slogan">{banner.slogan.replace('\n', ' ')}</p>
+                </div>
+
+                {/* CENTER IMAGE */}
+                <div
                   className="banner-image-section"
                   onMouseDown={handleDragStart}
                   onMouseMove={handleDragMove}
@@ -755,45 +778,35 @@ const MainSite = () => {
                   onTouchStart={handleDragStart}
                   onTouchMove={handleDragMove}
                   onTouchEnd={handleDragEnd}
-                  style={{
-                    cursor: isDragging ? 'grabbing' : 'grab',
-                    userSelect: 'none'
-                  }}
+                  style={{ cursor: isDragging ? 'grabbing' : 'grab', userSelect: 'none' }}
                 >
-                  <img 
-                    src={banner.primary} 
+                  <img
+                    src={banner.primary}
                     alt={banner.alt}
                     className="banner-image"
                     draggable={false}
                     onError={(e) => {
-                      console.log('Banner image failed to load:', e.target.src);
-                      
-                      // Try fallback sequence: Supabase â†’ Local root â†’ Local Banners â†’ SVG placeholder
                       if (banner.fallback && e.target.src !== banner.fallback) {
-                        console.log('Trying local fallback:', banner.fallback);
                         e.target.src = banner.fallback;
                       } else if (banner.fallback2 && e.target.src !== banner.fallback2) {
-                        console.log('Trying secondary fallback:', banner.fallback2);
                         e.target.src = banner.fallback2;
                       } else if (banner.placeholder && e.target.src !== banner.placeholder) {
-                        console.log('Using SVG placeholder');
                         e.target.src = banner.placeholder;
                       } else {
-                        // Hide the image if all fallbacks fail - CSS gradient will show
                         e.target.style.display = 'none';
-                        console.log('All banner image fallbacks failed, showing CSS gradient');
                       }
                     }}
                   />
                 </div>
-                <div className="banner-text-section">
-                  <div className="banner-text-content">
-                    <span className="banner-intro">{banner.title}</span>
-                    <h1 className="banner-title">{banner.subtitle}</h1>
-                    <p className="banner-description">{banner.description}</p>
-                    <button className="banner-cta">Shop Now</button>
-                  </div>
+
+                {/* RIGHT PANEL */}
+                <div className="banner-side-panel banner-right">
+                  <p className="bsp-desc">{banner.description}</p>
+                  <div className="bsp-divider" />
+                  <button className="bsp-cta" onClick={() => navigate('/products')}>{banner.cta}</button>
+                  <span className="bsp-tag">{banner.tag}</span>
                 </div>
+
               </div>
             </div>
           ))}
